@@ -43,3 +43,28 @@ Regras de uso:
 2026-11-25. O pedido é uma peça chamativa para portfólio, mas o handout manda (§0.5,
 §11, §12). O impacto visual vem de tipografia grande, textura SVG/CSS, luz de latão em
 gradiente e micro-interações em CSS. Nada de WebGL, vídeo ou bibliotecas de animação.
+
+## D-007 — Textos em JSON bilíngue; `copy.md` é gerado
+
+2026-11-25. O handout pede `src/content/copy.md`. Com dois idiomas, o código precisa ler os
+textos de forma estruturada. A fonte única são os JSONs de `src/data/`, com `{ "pt": …, "en": … }`.
+`src/content/copy.md` é gerado por `npm run copy:md` só para revisão humana. Assim não existem
+duas cópias para manter sincronizadas.
+
+## D-008 — Agenda fictícia em padrão semanal
+
+2026-11-25. Datas fixas em `agenda.json` ficariam no passado em poucos dias. A agenda guarda
+blocos ocupados por dia da semana e por barbeiro, mais a pausa de almoço. O fluxo de
+agendamento (Fase 5) aplica o padrão às próximas datas e esconde horários que já passaram hoje.
+Grade de início a cada 30 min (`slotStepMinutes`). O serviço precisa caber inteiro antes do
+fechamento e sem cruzar blocos ocupados.
+
+## D-009 — Detalhes de conteúdo
+
+2026-11-25.
+
+- A versão EN mantém preços em R$ (o negócio é em Recife). A nota de serviços avisa "Brazilian reais".
+- Avaliações usam só inicial + bairro (ex.: "R., Boa Viagem"), sem nome completo nem foto de rosto.
+- Barbeiros só com primeiro nome/apelido (Jonas, Bié, Caio), para reduzir a chance de coincidir com pessoa real.
+- Clube: benefícios extras ("prioridade no sábado", "cancele quando quiser") reforçam a ideia de recorrência.
+- Os textos de `/case` ficam para a Fase 8 porque dependem de números medidos.

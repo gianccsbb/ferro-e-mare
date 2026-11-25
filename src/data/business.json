@@ -1,0 +1,23 @@
+{
+  "name": "Ferro & Maré Barbearia",
+  "shortName": "Ferro & Maré",
+  "fictional": true,
+  "address": {
+    "street": "Rua do Exemplo, 000",
+    "neighborhood": "Recife Antigo",
+    "city": "Recife",
+    "region": "PE",
+    "postalCode": "50000-000",
+    "country": "BR"
+  },
+  "geo": { "lat": -8.0631, "lng": -34.8711 },
+  "mapsQuery": "Recife Antigo, Recife - PE",
+  "phoneEnv": "PUBLIC_PHONE_DEMO",
+  "whatsappEnv": "PUBLIC_WHATSAPP_DEMO",
+  "social": {
+    "instagram": "https://instagram.com/",
+    "instagramHandle": "@ferroemare.exemplo"
+  },
+  "payment": ["Pix", "Crédito", "Débito", "Dinheiro"],
+  "priceRange": "R$"
+}

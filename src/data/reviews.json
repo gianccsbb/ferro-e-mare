@@ -1,0 +1,50 @@
+[
+  {
+    "author": "R.",
+    "place": {
+      "pt": "Boa Viagem",
+      "en": "Boa Viagem"
+    },
+    "stars": 5,
+    "text": {
+      "pt": "Agendei no almoço, cheguei e sentei na hora. Sem fila, sem enrolação.",
+      "en": "Booked on my lunch break, showed up and sat right down. No line, no fuss."
+    }
+  },
+  {
+    "author": "M.",
+    "place": {
+      "pt": "Casa Forte",
+      "en": "Casa Forte"
+    },
+    "stars": 5,
+    "text": {
+      "pt": "A barba na toalha quente vale cada centavo. E o café é bom de verdade.",
+      "en": "The hot-towel shave is worth every cent. And the coffee is actually good."
+    }
+  },
+  {
+    "author": "L.",
+    "place": {
+      "pt": "Espinheiro",
+      "en": "Espinheiro"
+    },
+    "stars": 5,
+    "text": {
+      "pt": "Levei meu filho de 6 anos com medo de chorar. Saiu pedindo pra voltar.",
+      "en": "Took my 6-year-old expecting tears. He left asking when we're coming back."
+    }
+  },
+  {
+    "author": "T.",
+    "place": {
+      "pt": "Graças",
+      "en": "Graças"
+    },
+    "stars": 5,
+    "text": {
+      "pt": "Assino o Clube faz quatro meses. Corte sempre em dia e ainda sai mais barato que pagar avulso.",
+      "en": "I've been in the Club for four months. My cut's always fresh, and it costs less than paying per visit."
+    }
+  }
+]

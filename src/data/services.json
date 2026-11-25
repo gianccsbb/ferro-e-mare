@@ -1,0 +1,54 @@
+[
+  {
+    "id": "corte",
+    "duration": 40,
+    "price": 50,
+    "name": { "pt": "Corte", "en": "Haircut" },
+    "desc": {
+      "pt": "Máquina, tesoura ou os dois. Lavagem e finalização inclusas.",
+      "en": "Clippers, scissors or both. Wash and styling included."
+    }
+  },
+  {
+    "id": "barba",
+    "duration": 30,
+    "price": 40,
+    "name": { "pt": "Barba com toalha quente", "en": "Hot-towel beard shave" },
+    "desc": {
+      "pt": "Toalha quente, navalha e balm. O café vem junto.",
+      "en": "Hot towel, straight razor and balm. Coffee comes with it."
+    }
+  },
+  {
+    "id": "corte-barba",
+    "duration": 70,
+    "price": 80,
+    "featured": true,
+    "badge": { "pt": "Mais pedido", "en": "Most booked" },
+    "name": { "pt": "Corte + barba", "en": "Haircut + beard" },
+    "desc": {
+      "pt": "O serviço completo, R$ 10 a menos que separado. Chegou, sentou, saiu outro.",
+      "en": "The full service, R$ 10 less than booking both. Walk in, sit down, walk out a new man."
+    }
+  },
+  {
+    "id": "pezinho",
+    "duration": 15,
+    "price": 20,
+    "name": { "pt": "Pezinho / acabamento", "en": "Neckline & edge-up" },
+    "desc": {
+      "pt": "Mantém o corte em dia entre uma visita e outra.",
+      "en": "Keeps your cut sharp between visits."
+    }
+  },
+  {
+    "id": "sobrancelha",
+    "duration": 10,
+    "price": 15,
+    "name": { "pt": "Sobrancelha na navalha", "en": "Straight-razor brow cleanup" },
+    "desc": {
+      "pt": "Só o necessário. Ninguém percebe o que mudou, só que ficou melhor.",
+      "en": "Just enough. Nobody can tell what changed, only that it looks better."
+    }
+  }
+]

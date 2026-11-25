@@ -1,0 +1,35 @@
+[
+  {
+    "id": "jonas",
+    "name": "Jonas",
+    "days": [2, 3, 4, 5, 6],
+    "specialty": { "pt": "Degradê e cortes modernos", "en": "Fades and modern cuts" },
+    "bio": {
+      "pt": "Doze anos de máquina na mão. O degradê dele parece feito com régua.",
+      "en": "Twelve years with the clippers. His fades look like they were drawn with a ruler."
+    },
+    "cta": { "pt": "Agendar com Jonas", "en": "Book with Jonas" }
+  },
+  {
+    "id": "bie",
+    "name": "Bié",
+    "days": [2, 3, 4, 5, 6],
+    "specialty": { "pt": "Barba clássica na navalha", "en": "Classic straight-razor shaves" },
+    "bio": {
+      "pt": "Toalha quente, navalha afiada e conversa boa. Barba aqui é com ele.",
+      "en": "Hot towel, sharp razor and good conversation. Beards are his department."
+    },
+    "cta": { "pt": "Agendar com Bié", "en": "Book with Bié" }
+  },
+  {
+    "id": "caio",
+    "name": "Caio",
+    "days": [3, 4, 5, 6],
+    "specialty": { "pt": "Cortes infantis e social", "en": "Kids' cuts and classic styles" },
+    "bio": {
+      "pt": "Paciência de sobra. Criança entra desconfiada e sai querendo voltar.",
+      "en": "Endless patience. Kids walk in suspicious and walk out asking to come back."
+    },
+    "cta": { "pt": "Agendar com Caio", "en": "Book with Caio" }
+  }
+]
