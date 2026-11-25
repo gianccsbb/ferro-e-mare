@@ -97,3 +97,29 @@ só na galeria de cortes, onde o cliente quer ver resultado. Créditos em
 radiais, sem imagem), faixa letreiro (CSS, 48 s por volta, para com `prefers-reduced-motion`),
 cartão de sócio no Clube, nome gigante em contorno no rodapé. O card "Mais pedido" vem primeiro no
 DOM e ocupa 2 colunas, para a grade fechar sem buracos e a ordem do Tab seguir a ordem visual.
+
+## D-014 — Agendamento: ilha em TypeScript puro, HTML gerado no servidor (Fase 5)
+
+- Os 4 passos são HTML estático; o script (~2,5 KB gzip + lógica 2,2 KB) só alterna passos,
+  calcula a agenda e monta a mensagem. Sem framework → JS total do site ≈ 6 KB gzip.
+- Sem JS: formulário oculto, aparece o fallback (WhatsApp + telefone).
+- Toque/clique em serviço, barbeiro ou horário avança sozinho (4 toques até o fim);
+  pelo teclado não avança (setas mudam a opção), usa-se "Continuar".
+- Hoje: horários só a partir de agora + 30 min. "Qualquer um" = união das agendas livres.
+- Estado em sessionStorage (try/catch): sobrevive a recarregar/voltar do WhatsApp.
+
+## D-015 — Confirmar é um link real para o WhatsApp
+
+- `<a target="_blank">` cujo href é montado no clique: abertura direta pelo gesto do
+  usuário, não cai em bloqueador de pop-up. A aba atual segue para /obrigado após 900 ms.
+
+## D-016 — Celular: máscara BR + modo internacional
+
+- `(81) 9 9999-9999` por padrão; começando com `+`, aceita número estrangeiro (8–15 dígitos).
+  Motivo: prospects de fora (público-alvo do portfólio) precisam conseguir testar.
+
+## D-017 — /obrigado: resumo, .ics e Google Agenda gerados no navegador
+
+- `.ics` (com alarme 1 h antes) via Blob, sem servidor. Link do Google Agenda ao lado
+  (mais prático no Android). "O WhatsApp não abriu?" reabre a mesma mensagem.
+- Recife é UTC−3 fixo (sem horário de verão desde 2019): conversão direta.

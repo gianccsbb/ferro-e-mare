@@ -1,12 +1,12 @@
 ---
-// /obrigado e /en/thank-you. Fase 3: esqueleto. O resumo e o .ics vêm na Fase 5
-// (lidos do sessionStorage gravado pelo fluxo de agendamento).
+// /obrigado e /en/thank-you: lê o agendamento salvo na sessão pelo fluxo,
+// mostra o resumo, gera o .ics no navegador e oferece reabrir o WhatsApp.
 import type { Lang } from '../i18n/ui';
 import Base from '../layouts/Base.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import Icon from './Icon.astro';
-import { copy, translator } from '../lib/content';
+import { copy, business, translator } from '../lib/content';
 
 interface Props {
   lang: Lang;
@@ -14,37 +14,163 @@ interface Props {
 const { lang } = Astro.props;
 const t = translator(lang);
 const c = copy.thanks;
+const b = copy.booking;
 const home = lang === 'pt' ? '/' : '/en/';
+const a = business.address;
+const cfg = {
+  calendarTitle: t(c.calendarTitle),
+  calendarDescription: t(c.calendarDescription),
+  location: `${business.name}, ${a.street}, ${a.neighborhood}, ${a.city} - ${a.region}`,
+  minutes: t(copy.services.minutes),
+};
 ---
 
 <Base title={t(copy.seo.thanks.title)} description={t(copy.seo.thanks.description)}>
   <Header lang={lang} slot="header" />
   <section class="section surface-ink" aria-labelledby="thanks-title">
-    <div class="container narrow">
+    <div class="container narrow" id="thanks" data-cfg={JSON.stringify(cfg)}>
+      <div class="stamp" aria-hidden="true">
+        <Icon name="check" size={28} />
+      </div>
       <p class="eyebrow">{t(c.eyebrow)}</p>
       <h1 id="thanks-title">{t(c.title)}</h1>
       <p class="lead">{t(c.body)}</p>
 
-      <div id="thanks-summary" class="card summary">
+      <div id="thanks-summary" class="summary plate">
         <h2 class="h-small">{t(c.summary)}</h2>
-        <p class="muted">{t(c.empty)}</p>
+        <p class="muted" data-empty>
+          {t(c.empty)}
+        </p>
+        <dl hidden data-filled>
+          <div>
+            <dt>{t(b.steps.service)}</dt>
+            <dd data-sum="service"></dd>
+          </div>
+          <div>
+            <dt>{t(b.steps.barber)}</dt>
+            <dd data-sum="barber"></dd>
+          </div>
+          <div>
+            <dt>{t(b.steps.datetime)}</dt>
+            <dd data-sum="when"></dd>
+          </div>
+          <div>
+            <dt>{t(b.nameLabel)}</dt>
+            <dd data-sum="name"></dd>
+          </div>
+          <div class="total">
+            <dt>{t(b.total)}</dt>
+            <dd data-sum="price"></dd>
+          </div>
+        </dl>
       </div>
 
-      <div class="actions">
-        <a class="btn btn-ghost" href={home}>
-          <Icon name="chevronLeft" />
-          {t(c.back)}
+      <div class="actions" hidden data-filled>
+        <button type="button" class="btn btn-primary" id="ics">
+          <Icon name="calendar" />
+          {t(c.addToCalendar)}
+        </button>
+        <a class="btn btn-ghost" id="gcal" href="#" target="_blank" rel="noopener">
+          <Icon name="calendar" />
+          {t(c.googleCalendar)}
         </a>
       </div>
+      <p class="again" hidden data-filled>
+        <a id="wa-again" href="#" target="_blank" rel="noopener">
+          <Icon name="chat" size={18} />
+          {t(c.whatsappAgain)}
+        </a>
+      </p>
+
+      <p class="back">
+        <a class="btn btn-ghost btn-sm" href={home}>
+          <Icon name="chevronLeft" size={18} />
+          {t(c.back)}
+        </a>
+      </p>
     </div>
   </section>
   <Footer lang={lang} slot="footer" />
 </Base>
 
+<script>
+  import { buildIcs, googleCalendarUrl, recifeToUtc, type CalEvent } from '../lib/ics';
+  import { fill } from '../lib/booking';
+
+  type Done = {
+    service: string;
+    duration: number;
+    price: number;
+    barber: string;
+    day: string;
+    dateLabel: string;
+    time: string;
+    timeLabel: string;
+    name: string;
+    waUrl: string;
+  };
+
+  const root = document.getElementById('thanks');
+  let done: Done | null = null;
+  try {
+    done = JSON.parse(sessionStorage.getItem('fm-booking-done') ?? 'null');
+  } catch {
+    done = null;
+  }
+
+  if (root && done) {
+    const cfg = JSON.parse(root.dataset.cfg ?? '{}');
+    const set = (k: string, v: string) => {
+      const el = root.querySelector(`[data-sum="${k}"]`);
+      if (el) el.textContent = v;
+    };
+    set('service', `${done.service} · ${fill(cfg.minutes, { n: done.duration })}`);
+    set('barber', done.barber);
+    set('when', `${done.dateLabel} · ${done.timeLabel}`);
+    set('name', done.name);
+    set('price', `R$ ${done.price}`);
+    root.querySelector('[data-empty]')?.setAttribute('hidden', '');
+    root.querySelectorAll<HTMLElement>('[data-filled]').forEach((el) => (el.hidden = false));
+
+    const ev: CalEvent = {
+      title: fill(cfg.calendarTitle, { service: done.service }),
+      start: recifeToUtc(done.day, done.time),
+      durationMin: done.duration,
+      location: cfg.location,
+      description: `${done.service} · ${done.barber}\n${cfg.calendarDescription}`,
+    };
+    (document.getElementById('gcal') as HTMLAnchorElement).href = googleCalendarUrl(ev);
+    (document.getElementById('wa-again') as HTMLAnchorElement).href = done.waUrl;
+    document.getElementById('ics')?.addEventListener('click', () => {
+      const blob = new Blob([buildIcs(ev)], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = Object.assign(document.createElement('a'), {
+        href: url,
+        download: `ferro-e-mare-${done!.day}.ics`,
+      });
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+  }
+</script>
+
 <style>
   .narrow {
     max-width: 40rem;
     min-height: 60dvh;
+  }
+  .stamp {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: var(--space-4);
+    border: 2px solid var(--cta);
+    border-radius: 50%;
+    color: var(--cta);
+    box-shadow: 0 0 0 6px rgb(224 160 74 / 0.12);
   }
   h1 {
     margin-block: var(--space-3) var(--space-4);
@@ -53,17 +179,67 @@ const home = lang === 'pt' ? '/' : '/en/';
     color: var(--steel);
   }
   .summary {
+    --rivet: rgb(192 138 62 / 0.55);
     margin-top: var(--space-6);
+    padding: var(--space-6) var(--space-5) var(--space-5);
+    border: 1px solid var(--brass);
+    border-radius: var(--radius);
     background: var(--navy);
   }
   .h-small {
     font-size: var(--fs-h3);
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  dl {
+    display: grid;
+    gap: var(--space-2);
+  }
+  dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  dt {
+    color: var(--steel);
+    font-size: var(--fs-small);
+  }
+  dd {
+    margin: 0;
+    text-align: right;
+    font-weight: 600;
+  }
+  .total {
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--line);
+  }
+  .total dd {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--cta);
   }
   .actions {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .again a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap);
+    margin-top: var(--space-3);
+    color: var(--cta);
+    font-weight: 600;
+    text-underline-offset: 4px;
+  }
+  .back {
     margin-top: var(--space-6);
+  }
+  @media (min-width: 480px) {
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+    }
   }
 </style>

@@ -1,8 +1,9 @@
 ---
-// Fase 3: só o modo degradado (sem JS). A ilha de 4 passos entra na Fase 5,
-// montada dentro de #booking-root e substituindo este fallback.
+// Componente-estrela: agendamento em 4 passos (handout §5).
+// O HTML dos passos é gerado aqui (servidor); o script só controla passos,
+// agenda e mensagem. Sem JS, o formulário fica oculto e aparece o fallback.
 import type { Lang } from '../i18n/ui';
-import { copy, translator } from '../lib/content';
+import { copy, services, team, translator, fmt, brl } from '../lib/content';
 import { waLink, telLink, formatPhone } from '../lib/contact';
 import Icon from './Icon.astro';
 
@@ -12,6 +13,33 @@ interface Props {
 const { lang } = Astro.props;
 const t = translator(lang);
 const c = copy.booking;
+const stepKeys = ['service', 'barber', 'datetime', 'details'] as const;
+
+// Strings e dados que o script precisa (só do idioma atual).
+const cfg = {
+  lang,
+  progress: t(c.progress),
+  steps: stepKeys.map((k) => t(c.steps[k])),
+  anyBarber: t(c.anyBarber),
+  today: t(c.today),
+  tomorrow: t(c.tomorrow),
+  noSlots: t(c.noSlots),
+  minutes: t(copy.services.minutes),
+  errors: {
+    service: t(c.errors.service),
+    barber: t(c.errors.barber),
+    slot: t(c.errors.slot),
+    name: t(c.errors.name),
+    phone: t(c.errors.phone),
+  },
+  message: t(c.whatsappMessage),
+  opening: t(c.opening),
+  thanksUrl: lang === 'pt' ? '/obrigado/' : '/en/thank-you/',
+  services: Object.fromEntries(
+    services.map((s) => [s.id, { name: t(s.name), duration: s.duration, price: s.price }]),
+  ),
+  barbers: Object.fromEntries(team.map((m) => [m.id, m.name])),
+};
 ---
 
 <section id="agendar" class="section surface-navy" aria-labelledby="agendar-title">
@@ -23,7 +51,8 @@ const c = copy.booking;
     </div>
 
     <div id="booking-root" class="panel plate">
-      <div class="fallback">
+      <!-- Fallback sem JS -->
+      <div id="booking-fallback" class="fallback">
         <p>{t(c.noJs)}</p>
         <div class="actions">
           <a class="btn btn-primary" href={waLink(t(c.whatsappGeneric))} rel="noopener">
@@ -36,9 +65,504 @@ const c = copy.booking;
           </a>
         </div>
       </div>
+
+      <form id="booking" class="booking" hidden novalidate data-cfg={JSON.stringify(cfg)}>
+        <ol class="stepper" aria-label={t(c.stepsNav)}>
+          {stepKeys.map((k, i) => (
+            <li>
+              <button type="button" data-goto={i + 1} aria-current={i === 0 ? 'step' : undefined}>
+                <span class="num">{i + 1}</span>
+                <span class="lbl">{t(c.steps[k])}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <p id="bk-live" class="progress" aria-live="polite">
+          {fmt(t(c.progress), { n: 1 })} · {t(c.steps.service)}
+        </p>
+
+        <!-- Passo 1: serviço -->
+        <fieldset data-step="1">
+          <legend tabindex="-1">{t(c.steps.service)}</legend>
+          <div class="options">
+            {services.map((s) => (
+              <label class="opt">
+                <input type="radio" name="service" value={s.id} />
+                <span class="opt-main">
+                  <span class="opt-title">{t(s.name)}</span>
+                  <span class="opt-sub">{fmt(t(copy.services.minutes), { n: s.duration })}</span>
+                </span>
+                <span class="opt-price">{brl(s.price)}</span>
+              </label>
+            ))}
+          </div>
+          <p class="err" data-err="1" aria-live="polite"></p>
+        </fieldset>
+
+        <!-- Passo 2: barbeiro -->
+        <fieldset data-step="2" hidden>
+          <legend tabindex="-1">{t(c.steps.barber)}</legend>
+          <div class="options">
+            <label class="opt">
+              <input type="radio" name="barber" value="any" />
+              <span class="opt-main">
+                <span class="opt-title">{t(c.anyBarber)}</span>
+                <span class="opt-sub">{t(c.anyBarberHint)}</span>
+              </span>
+              <Icon name="clock" size={18} class="opt-icon" />
+            </label>
+            {team.map((m) => (
+              <label class="opt">
+                <input type="radio" name="barber" value={m.id} />
+                <span class="opt-main">
+                  <span class="opt-title">{m.name}</span>
+                  <span class="opt-sub">{t(m.specialty)}</span>
+                </span>
+                <Icon name="scissors" size={18} class="opt-icon" />
+              </label>
+            ))}
+          </div>
+          <p class="err" data-err="2" aria-live="polite"></p>
+        </fieldset>
+
+        <!-- Passo 3: dia e horário (preenchido pelo script) -->
+        <fieldset data-step="3" hidden>
+          <legend tabindex="-1">{t(c.steps.datetime)}</legend>
+          <fieldset class="sub">
+            <legend class="sub-legend">{t(c.dayLegend)}</legend>
+            <div id="bk-days" class="days"></div>
+          </fieldset>
+          <fieldset class="sub">
+            <legend class="sub-legend">{t(c.timeLegend)}</legend>
+            <div id="bk-slots" class="slots"></div>
+          </fieldset>
+          <p class="err" data-err="3" aria-live="polite"></p>
+        </fieldset>
+
+        <!-- Passo 4: dados -->
+        <fieldset data-step="4" hidden>
+          <legend tabindex="-1">{t(c.steps.details)}</legend>
+          <div class="field">
+            <label for="bk-name">{t(c.nameLabel)}</label>
+            <input
+              id="bk-name"
+              name="name"
+              type="text"
+              autocomplete="given-name"
+              autocapitalize="words"
+              maxlength="40"
+              aria-describedby="bk-name-err"
+            />
+            <p id="bk-name-err" class="err" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="bk-phone">{t(c.phoneLabel)}</label>
+            <input
+              id="bk-phone"
+              name="phone"
+              type="tel"
+              inputmode="tel"
+              autocomplete="tel"
+              placeholder={t(c.phonePlaceholder)}
+              maxlength="20"
+              aria-describedby="bk-phone-hint bk-phone-err"
+            />
+            <p id="bk-phone-hint" class="hint">
+              {t(c.phoneHint)}
+            </p>
+            <p id="bk-phone-err" class="err" aria-live="polite"></p>
+          </div>
+
+          <div class="summary">
+            <p class="sub-legend">{t(c.summary)}</p>
+            <dl>
+              <div>
+                <dt>{t(c.steps.service)}</dt>
+                <dd data-sum="service"></dd>
+              </div>
+              <div>
+                <dt>{t(c.steps.barber)}</dt>
+                <dd data-sum="barber"></dd>
+              </div>
+              <div>
+                <dt>{t(c.steps.datetime)}</dt>
+                <dd data-sum="when"></dd>
+              </div>
+              <div class="total">
+                <dt>{t(c.total)}</dt>
+                <dd data-sum="price"></dd>
+              </div>
+            </dl>
+          </div>
+        </fieldset>
+
+        <div class="nav">
+          <button type="button" id="bk-back" class="btn btn-ghost btn-sm" hidden>
+            <Icon name="chevronLeft" size={18} />
+            {t(c.back)}
+          </button>
+          <button type="button" id="bk-next" class="btn btn-primary">
+            {t(c.next)}
+            <Icon name="arrow" size={18} />
+          </button>
+          <a
+            id="bk-confirm"
+            class="btn btn-primary"
+            href={waLink(t(c.whatsappGeneric))}
+            target="_blank"
+            rel="noopener"
+            hidden
+          >
+            <Icon name="chat" />
+            {t(c.confirm)}
+          </a>
+        </div>
+      </form>
     </div>
   </div>
 </section>
+
+<script>
+  import { PUBLIC_WHATSAPP_DEMO } from 'astro:env/client';
+  import hoursJson from '../data/hours.json';
+  import * as B from '../lib/booking';
+  import type { Week } from '../lib/hours';
+
+  type Cfg = {
+    lang: 'pt' | 'en';
+    progress: string;
+    steps: string[];
+    anyBarber: string;
+    today: string;
+    tomorrow: string;
+    noSlots: string;
+    minutes: string;
+    errors: Record<'service' | 'barber' | 'slot' | 'name' | 'phone', string>;
+    message: string;
+    opening: string;
+    thanksUrl: string;
+    services: Record<string, { name: string; duration: number; price: number }>;
+    barbers: Record<string, string>;
+  };
+  type State = {
+    step: number;
+    service: string;
+    barber: string;
+    day: string;
+    slot: string;
+    name: string;
+    phone: string;
+  };
+
+  const KEY = 'fm-booking';
+  const DONE_KEY = 'fm-booking-done';
+  const read = (k: string) => {
+    try {
+      return JSON.parse(sessionStorage.getItem(k) ?? 'null');
+    } catch {
+      return null;
+    }
+  };
+  const write = (k: string, v: unknown) => {
+    try {
+      if (v === null) sessionStorage.removeItem(k);
+      else sessionStorage.setItem(k, JSON.stringify(v));
+    } catch {
+      /* modo privado / storage bloqueado: segue sem persistir */
+    }
+  };
+
+  const form = document.getElementById('booking') as HTMLFormElement | null;
+  if (form) init(form);
+
+  function init(form: HTMLFormElement) {
+    const cfg = JSON.parse(form.dataset.cfg ?? '{}') as Cfg;
+    const lang = cfg.lang;
+    const week = hoursJson.week as unknown as Week;
+    const waNumber = PUBLIC_WHATSAPP_DEMO.replace(/\D/g, '');
+
+    const state: State = {
+      step: 1,
+      service: '',
+      barber: '',
+      day: '',
+      slot: '',
+      name: '',
+      phone: '',
+      ...(read(KEY) as Partial<State> | null),
+    };
+    const save = () => write(KEY, state);
+
+    // JS ok: troca o fallback pelo formulário.
+    document.getElementById('booking-fallback')?.setAttribute('hidden', '');
+    form.hidden = false;
+
+    const $ = <T extends Element>(sel: string) => form.querySelector<T>(sel)!;
+    const steps = [...form.querySelectorAll<HTMLFieldSetElement>('fieldset[data-step]')];
+    const live = $<HTMLElement>('#bk-live');
+    const back = $<HTMLButtonElement>('#bk-back');
+    const next = $<HTMLButtonElement>('#bk-next');
+    const confirm = $<HTMLAnchorElement>('#bk-confirm');
+    const daysBox = $<HTMLElement>('#bk-days');
+    const slotsBox = $<HTMLElement>('#bk-slots');
+    const nameIn = $<HTMLInputElement>('#bk-name');
+    const phoneIn = $<HTMLInputElement>('#bk-phone');
+
+    // Toque/clique avança sozinho; teclado (setas no grupo de rádio) não.
+    let byPointer = false;
+    form.addEventListener('pointerdown', () => (byPointer = true));
+    form.addEventListener('keydown', () => (byPointer = false));
+
+    const svc = () => cfg.services[state.service];
+    const duration = () => svc()?.duration ?? 40;
+    const now = () => B.todayIn(hoursJson.timezone);
+
+    const currentDays = () =>
+      B.nextOpenDays(week, hoursJson.bookingWindowOpenDays, now(), state.barber || B.ANY);
+    const slotsOf = (day: B.Day) =>
+      B.slotsFor(
+        day,
+        duration(),
+        state.barber || B.ANY,
+        week,
+        hoursJson.slotStepMinutes,
+        now().min,
+      );
+
+    function check(name: string, value: string) {
+      form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]`).forEach((i) => {
+        i.checked = i.value === value;
+      });
+    }
+
+    function renderDays() {
+      const days = currentDays();
+      if (!days.some((d) => d.iso === state.day)) {
+        state.day = (days.find((d) => slotsOf(d).length) ?? days[0])?.iso ?? '';
+      }
+      daysBox.innerHTML = days
+        .map((d) => {
+          const top =
+            d.offset === 0 ? cfg.today : d.offset === 1 ? cfg.tomorrow : B.weekdayShort(d, lang);
+          const full = B.dateLabel(d, lang);
+          return `<label class="chip"><input type="radio" name="day" value="${d.iso}" aria-label="${top === B.weekdayShort(d, lang) ? full : `${top}, ${full}`}"${d.iso === state.day ? ' checked' : ''}><span class="chip-top" aria-hidden="true">${top}</span><span class="chip-bottom" aria-hidden="true">${B.dateShort(d, lang)}</span></label>`;
+        })
+        .join('');
+      renderSlots();
+    }
+
+    function renderSlots() {
+      const day = currentDays().find((d) => d.iso === state.day);
+      const slots = day ? slotsOf(day) : [];
+      if (!slots.some((s) => s.time === state.slot)) state.slot = '';
+      slotsBox.innerHTML = slots.length
+        ? slots
+            .map(
+              (s) =>
+                `<label class="slot"><input type="radio" name="slot" value="${s.time}"${s.time === state.slot ? ' checked' : ''}><span>${B.timeLabel(s.time, lang)}</span></label>`,
+            )
+            .join('')
+        : `<p class="no-slots">${cfg.noSlots}</p>`;
+      save();
+    }
+
+    function whenLabel() {
+      const day = currentDays().find((d) => d.iso === state.day);
+      return day && state.slot
+        ? `${B.dateLabel(day, lang)} · ${B.timeLabel(state.slot, lang)}`
+        : '—';
+    }
+    const barberLabel = () =>
+      state.barber === B.ANY ? cfg.anyBarber : (cfg.barbers[state.barber] ?? '—');
+
+    function renderSummary() {
+      const s = svc();
+      const set = (k: string, v: string) => {
+        const el = form.querySelector(`[data-sum="${k}"]`);
+        if (el) el.textContent = v;
+      };
+      set('service', s ? `${s.name} · ${B.fill(cfg.minutes, { n: s.duration })}` : '—');
+      set('barber', barberLabel());
+      set('when', whenLabel());
+      set('price', s ? `R$ ${s.price}` : '—');
+    }
+
+    function setError(step: number, msg: string) {
+      const el = form.querySelector(`[data-err="${step}"]`);
+      if (el) el.textContent = msg;
+    }
+    function fieldError(input: HTMLInputElement, msg: string) {
+      const el = document.getElementById(`${input.id}-err`);
+      if (el) el.textContent = msg;
+      input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    }
+
+    /** Valida um passo; mostra o erro e devolve true se ok. */
+    function valid(step: number): boolean {
+      if (step === 1) {
+        setError(1, state.service ? '' : cfg.errors.service);
+        return !!state.service;
+      }
+      if (step === 2) {
+        setError(2, state.barber ? '' : cfg.errors.barber);
+        return !!state.barber;
+      }
+      if (step === 3) {
+        setError(3, state.slot ? '' : cfg.errors.slot);
+        return !!state.slot;
+      }
+      const okName = B.nameValid(state.name);
+      const okPhone = B.phoneValid(state.phone);
+      fieldError(nameIn, okName ? '' : cfg.errors.name);
+      fieldError(phoneIn, okPhone ? '' : cfg.errors.phone);
+      if (!okName) nameIn.focus();
+      else if (!okPhone) phoneIn.focus();
+      return okName && okPhone;
+    }
+
+    function goTo(target: number, { focus = true, force = false } = {}) {
+      // Avançar exige os passos anteriores válidos; voltar é livre.
+      if (!force && target > state.step) {
+        for (let s = state.step; s < target; s++) {
+          if (!valid(s)) {
+            target = s;
+            break;
+          }
+        }
+      }
+      state.step = target;
+      steps.forEach((fs) => (fs.hidden = Number(fs.dataset.step) !== target));
+      form.querySelectorAll<HTMLButtonElement>('[data-goto]').forEach((b) => {
+        const n = Number(b.dataset.goto);
+        if (n === target) b.setAttribute('aria-current', 'step');
+        else b.removeAttribute('aria-current');
+        b.dataset.done = n < target ? 'true' : 'false';
+      });
+      live.textContent = `${B.fill(cfg.progress, { n: target })} · ${cfg.steps[target - 1]}`;
+      back.hidden = target === 1;
+      next.hidden = target === 4;
+      confirm.hidden = target !== 4;
+      if (target === 3) renderDays();
+      if (target === 4) renderSummary();
+      save();
+      if (focus) {
+        steps[target - 1].querySelector<HTMLElement>('legend')?.focus({ preventScroll: true });
+        const top = form.getBoundingClientRect().top;
+        if (top < 0 || top > window.innerHeight * 0.6) {
+          form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+
+    // ---------- Eventos ----------
+    form.addEventListener('change', (e) => {
+      const el = e.target as HTMLInputElement;
+      if (el.type !== 'radio') return;
+      const advance = byPointer;
+      if (el.name === 'service') {
+        state.service = el.value;
+        setError(1, '');
+        if (advance) goTo(2);
+      } else if (el.name === 'barber') {
+        state.barber = el.value;
+        setError(2, '');
+        if (advance) goTo(3);
+      } else if (el.name === 'day') {
+        state.day = el.value;
+        renderSlots();
+      } else if (el.name === 'slot') {
+        state.slot = el.value;
+        setError(3, '');
+        if (advance) goTo(4);
+      }
+      save();
+    });
+
+    nameIn.addEventListener('input', () => {
+      state.name = nameIn.value;
+      if (B.nameValid(state.name)) fieldError(nameIn, '');
+      save();
+    });
+    phoneIn.addEventListener('input', () => {
+      phoneIn.value = B.maskPhone(phoneIn.value);
+      state.phone = phoneIn.value;
+      if (B.phoneValid(state.phone)) fieldError(phoneIn, '');
+      save();
+    });
+
+    next.addEventListener('click', () => goTo(state.step + 1));
+    back.addEventListener('click', () => goTo(state.step - 1));
+    form
+      .querySelectorAll<HTMLButtonElement>('[data-goto]')
+      .forEach((b) => b.addEventListener('click', () => goTo(Number(b.dataset.goto))));
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (state.step < 4) goTo(state.step + 1);
+      else confirm.click();
+    });
+
+    // Confirmar: é um link de verdade (target=_blank), então não cai em bloqueador de pop-up.
+    confirm.addEventListener('click', (e) => {
+      if (!(valid(1) && valid(2) && valid(3) && valid(4))) {
+        e.preventDefault();
+        return;
+      }
+      const s = svc()!;
+      const day = currentDays().find((d) => d.iso === state.day)!;
+      const text = B.fill(cfg.message, {
+        service: s.name,
+        duration: s.duration,
+        barber: barberLabel(),
+        date: B.dateLabel(day, lang),
+        time: B.timeLabel(state.slot, lang),
+        name: state.name.trim(),
+      });
+      const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
+      confirm.href = url; // lido pelo navegador depois deste handler
+      write(DONE_KEY, {
+        lang,
+        service: s.name,
+        duration: s.duration,
+        price: s.price,
+        barber: barberLabel(),
+        day: state.day,
+        dateLabel: B.dateLabel(day, lang),
+        time: state.slot,
+        timeLabel: B.timeLabel(state.slot, lang),
+        name: state.name.trim(),
+        waUrl: url,
+      });
+      write(KEY, null);
+      live.textContent = cfg.opening;
+      setTimeout(() => location.assign(cfg.thanksUrl), 900);
+    });
+
+    // "Agendar este" (serviços) e "Agendar com X" (equipe) pré-selecionam o fluxo.
+    document.addEventListener('click', (e) => {
+      const a = (e.target as Element).closest<HTMLElement>(
+        '[data-book-service],[data-book-barber]',
+      );
+      if (!a) return;
+      const kb = e.detail === 0; // ativado por teclado
+      if (a.dataset.bookService) {
+        state.service = a.dataset.bookService;
+        check('service', state.service);
+        goTo(state.barber ? 3 : 2, { focus: kb, force: true });
+      } else if (a.dataset.bookBarber) {
+        state.barber = a.dataset.bookBarber;
+        check('barber', state.barber);
+        goTo(state.service ? 3 : 1, { focus: kb, force: true });
+      }
+    });
+
+    // Restaura a sessão (ex.: voltou do WhatsApp ou recarregou a página).
+    check('service', state.service);
+    check('barber', state.barber);
+    nameIn.value = state.name;
+    phoneIn.value = state.phone;
+    goTo(Math.min(Math.max(state.step, 1), 4), { focus: false, force: true });
+  }
+</script>
 
 <style>
   .narrow {
@@ -46,7 +570,7 @@ const c = copy.booking;
   }
   .panel {
     --rivet: rgb(192 138 62 / 0.55);
-    padding: var(--space-6) var(--space-5);
+    padding: var(--space-6) var(--space-4) var(--space-5);
     border: 1px solid var(--brass);
     border-radius: var(--radius);
     background-color: var(--ink);
@@ -60,10 +584,317 @@ const c = copy.booking;
     display: grid;
     gap: var(--space-3);
   }
+
+  /* ---------- Formulário ---------- */
+  .booking {
+    display: grid;
+    gap: var(--space-4);
+    scroll-margin-top: 7rem;
+  }
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+    display: grid;
+    gap: var(--space-4);
+  }
+  legend {
+    float: left; /* deixa o gap do grid valer abaixo da legenda */
+    width: 100%;
+    margin-bottom: var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.05;
+  }
+  legend:focus {
+    outline: none;
+  }
+  legend:focus-visible {
+    outline: 3px solid var(--cta);
+  }
+  .sub {
+    gap: var(--space-2);
+  }
+  .sub-legend {
+    float: none;
+    margin-bottom: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--brass);
+  }
+
+  /* Stepper */
+  .stepper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-1);
+    padding: 0;
+    list-style: none;
+  }
+  .stepper button {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    width: 100%;
+    min-height: var(--tap);
+    padding: var(--space-2) 0 0;
+    border: 0;
+    border-top: 3px solid var(--line-strong);
+    background: none;
+    color: var(--steel);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .stepper .num {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    font-size: 0.75rem;
+  }
+  .stepper [data-done='true'] {
+    border-top-color: var(--brass);
+    color: var(--foam);
+  }
+  .stepper [aria-current='step'] {
+    border-top-color: var(--cta);
+    color: var(--cta);
+  }
+  .stepper [aria-current='step'] .num {
+    background: var(--cta);
+    color: var(--ink);
+    border-color: var(--cta);
+  }
+  .progress {
+    font-size: var(--fs-small);
+    color: var(--steel);
+  }
+
+  /* Cartões de opção (rádio) */
+  .options {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .opt,
+  .booking :global(.chip),
+  .booking :global(.slot) {
+    position: relative;
+    cursor: pointer;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: rgb(19 40 61 / 0.6);
+    transition:
+      border-color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
+  }
+  .opt input,
+  .booking :global(.chip input),
+  .booking :global(.slot input) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 60px;
+    padding: var(--space-3) var(--space-4);
+  }
+  .opt-main {
+    display: grid;
+    flex: 1;
+  }
+  .opt-title {
+    font-weight: 600;
+  }
+  .opt-sub {
+    font-size: var(--fs-small);
+    color: var(--steel);
+  }
+  .opt-price {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--cta);
+  }
+  .opt :global(.opt-icon) {
+    color: var(--tide);
+  }
+  .opt:hover,
+  .booking :global(.chip:hover),
+  .booking :global(.slot:hover) {
+    border-color: var(--brass);
+  }
+  .opt:has(input:checked),
+  .booking :global(.chip:has(input:checked)),
+  .booking :global(.slot:has(input:checked)) {
+    border-color: var(--cta);
+    background: rgb(224 160 74 / 0.12);
+    box-shadow: inset 0 0 0 1px var(--cta);
+  }
+  .opt:has(input:focus-visible),
+  .booking :global(.chip:has(input:focus-visible)),
+  .booking :global(.slot:has(input:focus-visible)) {
+    outline: 3px solid var(--cta);
+    outline-offset: 2px;
+  }
+
+  /* Dias e horários */
+  .days {
+    display: flex;
+    gap: var(--space-2);
+    overflow-x: auto;
+    padding: 4px 4px var(--space-2);
+    margin-inline: -4px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--brass) transparent;
+  }
+  .booking :global(.chip) {
+    flex: 0 0 auto;
+    display: grid;
+    justify-items: center;
+    min-width: 72px;
+    padding: var(--space-2) var(--space-3);
+    scroll-snap-align: start;
+  }
+  .booking :global(.chip-top) {
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+  .booking :global(.chip-bottom) {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+  .slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: var(--space-2);
+  }
+  .booking :global(.slot) {
+    display: grid;
+    place-items: center;
+    min-height: var(--tap);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .booking :global(.no-slots) {
+    grid-column: 1 / -1;
+    color: var(--steel);
+  }
+
+  /* Campos */
+  .field {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .field label {
+    font-weight: 600;
+  }
+  .field input {
+    min-height: 52px;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--navy);
+    color: var(--foam);
+    font-size: 1.0625rem; /* ≥16px: evita zoom automático no iOS */
+  }
+  .field input::placeholder {
+    color: #7d8893;
+  }
+  .field input:focus-visible {
+    border-color: var(--cta);
+  }
+  .field input[aria-invalid='true'] {
+    border-color: #e8805e;
+  }
+  .hint {
+    font-size: var(--fs-small);
+    color: var(--steel);
+  }
+  .err {
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: #f0a58a; /* ferrugem clara: 7.6:1 sobre ink */
+  }
+  .err:empty {
+    display: none;
+  }
+
+  /* Resumo */
+  .summary {
+    padding: var(--space-4);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+  }
+  .summary dl {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .summary dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .summary dt {
+    color: var(--steel);
+    font-size: var(--fs-small);
+  }
+  .summary dd {
+    margin: 0;
+    text-align: right;
+    font-weight: 600;
+  }
+  .summary .total {
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--line);
+  }
+  .summary .total dd {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--cta);
+  }
+
+  /* Navegação */
+  .nav {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+  .nav #bk-next,
+  .nav #bk-confirm {
+    flex: 1;
+  }
+
   @media (min-width: 480px) {
     .actions {
       display: flex;
       flex-wrap: wrap;
+    }
+    .panel {
+      padding: var(--space-7) var(--space-6) var(--space-6);
+    }
+  }
+  @media (min-width: 768px) {
+    .options {
+      grid-template-columns: 1fr 1fr;
     }
   }
 </style>

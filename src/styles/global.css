@@ -213,6 +213,7 @@ a {
   transform: translateX(100%);
 }
 .btn-ghost {
+  background: transparent;
   border-color: var(--line-strong);
   color: var(--fg);
 }
@@ -377,4 +378,9 @@ main {
 .btn-lg {
   min-height: 56px;
   font-size: 1.0625rem;
+}
+
+/* O atributo hidden sempre vence o display definido por componentes. */
+[hidden] {
+  display: none !important;
 }

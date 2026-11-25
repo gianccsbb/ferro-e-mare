@@ -78,11 +78,13 @@
 | `noSlots` | Esse dia lotou. Tente outro dia ou outro barbeiro. | This day is fully booked. Try another day or barber. |
 | `nameLabel` | Seu nome | Your name |
 | `phoneLabel` | Celular (WhatsApp) | Mobile (WhatsApp) |
-| `phonePlaceholder` | (81) 9 9999-9999 | (81) 9 9999-9999 |
-| `phoneHint` | Só pra confirmar o horário. Nada de spam. | Only to confirm your booking. No spam. |
+| `phonePlaceholder` | (81) 9 9999-9999 | +1 555 123 4567 |
+| `phoneHint` | Só pra confirmar o horário. Nada de spam. Número de fora do Brasil? Comece com +. | Only to confirm your booking. No spam. Outside Brazil? Start with + and your country code. |
 | `errors.name` | Diga como podemos te chamar. | Tell us what to call you. |
-| `errors.phone` | Confira o celular: DDD + 9 dígitos. | Check the number: area code + 9 digits. |
+| `errors.phone` | Confira o celular: DDD + 9 dígitos, ou comece com + se for de fora. | Check the number: start with + and your country code, or use a Brazilian mobile with area code. |
 | `errors.slot` | Escolha um horário. | Pick a time. |
+| `errors.service` | Escolha um serviço. | Pick a service. |
+| `errors.barber` | Escolha um barbeiro (ou qualquer um). | Pick a barber (or anyone). |
 | `back` | Voltar | Back |
 | `next` | Continuar | Continue |
 | `confirm` | Confirmar no WhatsApp | Confirm on WhatsApp |
@@ -90,6 +92,11 @@
 | `noJs` | O agendamento rápido precisa de JavaScript. Sem problema: chame a gente direto. | Quick booking needs JavaScript. No problem: just message us directly. |
 | `whatsappMessage` | Olá! Quero agendar na Ferro & Maré:<br>• Serviço: {service} ({duration} min)<br>• Barbeiro: {barber}<br>• Dia: {date} às {time}<br>• Nome: {name} | Hi! I'd like to book at Ferro & Maré:<br>• Service: {service} ({duration} min)<br>• Barber: {barber}<br>• Day: {date} at {time}<br>• Name: {name} |
 | `whatsappGeneric` | Olá! Quero agendar um horário na Ferro & Maré. | Hi! I'd like to book a time at Ferro & Maré. |
+| `stepsNav` | Etapas do agendamento | Booking steps |
+| `dayLegend` | Dia | Day |
+| `timeLegend` | Horário | Time |
+| `total` | Total | Total |
+| `opening` | Abrindo o WhatsApp… | Opening WhatsApp… |
 
 ## 5. Equipe
 
@@ -239,3 +246,5 @@ Dias: Qua, Qui, Sex, Sáb
 | `whatsappAgain` | O WhatsApp não abriu? Tocar aqui | WhatsApp didn't open? Tap here |
 | `empty` | Não encontramos um agendamento nesta sessão. | We couldn't find a booking in this session. |
 | `calendarTitle` | {service} · Ferro & Maré | {service} · Ferro & Maré |
+| `googleCalendar` | Google Agenda | Google Calendar |
+| `calendarDescription` | Agendamento de demonstração (projeto conceitual de portfólio). | Demo booking (portfolio concept project). |

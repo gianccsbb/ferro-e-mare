@@ -188,11 +188,11 @@
     },
     "phonePlaceholder": {
       "pt": "(81) 9 9999-9999",
-      "en": "(81) 9 9999-9999"
+      "en": "+1 555 123 4567"
     },
     "phoneHint": {
-      "pt": "Só pra confirmar o horário. Nada de spam.",
-      "en": "Only to confirm your booking. No spam."
+      "pt": "Só pra confirmar o horário. Nada de spam. Número de fora do Brasil? Comece com +.",
+      "en": "Only to confirm your booking. No spam. Outside Brazil? Start with + and your country code."
     },
     "errors": {
       "name": {
@@ -200,12 +200,20 @@
         "en": "Tell us what to call you."
       },
       "phone": {
-        "pt": "Confira o celular: DDD + 9 dígitos.",
-        "en": "Check the number: area code + 9 digits."
+        "pt": "Confira o celular: DDD + 9 dígitos, ou comece com + se for de fora.",
+        "en": "Check the number: start with + and your country code, or use a Brazilian mobile with area code."
       },
       "slot": {
         "pt": "Escolha um horário.",
         "en": "Pick a time."
+      },
+      "service": {
+        "pt": "Escolha um serviço.",
+        "en": "Pick a service."
+      },
+      "barber": {
+        "pt": "Escolha um barbeiro (ou qualquer um).",
+        "en": "Pick a barber (or anyone)."
       }
     },
     "back": {
@@ -235,6 +243,26 @@
     "whatsappGeneric": {
       "pt": "Olá! Quero agendar um horário na Ferro & Maré.",
       "en": "Hi! I'd like to book a time at Ferro & Maré."
+    },
+    "stepsNav": {
+      "pt": "Etapas do agendamento",
+      "en": "Booking steps"
+    },
+    "dayLegend": {
+      "pt": "Dia",
+      "en": "Day"
+    },
+    "timeLegend": {
+      "pt": "Horário",
+      "en": "Time"
+    },
+    "total": {
+      "pt": "Total",
+      "en": "Total"
+    },
+    "opening": {
+      "pt": "Abrindo o WhatsApp…",
+      "en": "Opening WhatsApp…"
     }
   },
   "team": {
@@ -511,6 +539,14 @@
     "calendarTitle": {
       "pt": "{service} · Ferro & Maré",
       "en": "{service} · Ferro & Maré"
+    },
+    "googleCalendar": {
+      "pt": "Google Agenda",
+      "en": "Google Calendar"
+    },
+    "calendarDescription": {
+      "pt": "Agendamento de demonstração (projeto conceitual de portfólio).",
+      "en": "Demo booking (portfolio concept project)."
     }
   }
 }
