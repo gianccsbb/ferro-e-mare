@@ -1,0 +1,52 @@
+---
+// Dados estruturados (handout §8): HairSalon com endereço fictício, horário e telefone demo.
+// Sem aggregateRating — não existem avaliações reais.
+import type { Lang } from '../i18n/ui';
+import { business, hours, copy } from '../lib/content';
+import { phoneNumber } from '../lib/contact';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const DAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+// Agrupa dias com o mesmo horário: Ter–Sex 09–20, Sáb 08–18.
+const groups = new Map<string, string[]>();
+for (const [d, h] of Object.entries(hours.week)) {
+  if (!h) continue;
+  const key = `${h[0]}-${h[1]}`;
+  groups.set(key, [...(groups.get(key) ?? []), DAY[Number(d)]]);
+}
+const a = business.address;
+const home = new URL(lang === 'pt' ? '/' : '/en/', Astro.site);
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'HairSalon',
+  '@id': `${new URL('/', Astro.site)}#barbearia`,
+  name: business.name,
+  description: copy.seo.home.description[lang],
+  url: home.href,
+  image: new URL(lang === 'pt' ? '/og.jpg' : '/og-en.jpg', Astro.site).href,
+  telephone: `+${phoneNumber}`,
+  priceRange: business.priceRange,
+  paymentAccepted: business.payment.join(', '),
+  currenciesAccepted: 'BRL',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: a.street,
+    addressLocality: a.city,
+    addressRegion: a.region,
+    postalCode: a.postalCode,
+    addressCountry: a.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: business.geo.lat, longitude: business.geo.lng },
+  openingHoursSpecification: [...groups].map(([key, days]) => {
+    const [opens, closes] = key.split('-');
+    return { '@type': 'OpeningHoursSpecification', dayOfWeek: days, opens, closes };
+  }),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(data)} />

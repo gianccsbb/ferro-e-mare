@@ -12,6 +12,7 @@
 | `home.description` | Barbearia no Recife Antigo: corte, barba na toalha quente e café passado. Agende seu horário em 30 segundos pelo WhatsApp. | Barbershop in Old Recife: haircuts, hot-towel shaves and fresh coffee. Book your time in 30 seconds on WhatsApp. |
 | `thanks.title` | Horário pedido \| Ferro & Maré | Time requested \| Ferro & Maré |
 | `thanks.description` | Seu pedido de horário foi enviado pelo WhatsApp. | Your booking request was sent on WhatsApp. |
+| `ogAlt` | Ferro & Maré Barbearia — seu horário em 30 segundos | Ferro & Maré Barbershop — book your chair in 30 seconds |
 
 ## 1. Header
 

@@ -160,3 +160,25 @@ DOM e ocupa 2 colunas, para a grade fechar sem buracos e a ordem do Tab seguir a
 - Legendas (alt) reescritas para descrever o que cada foto mostra de fato.
 - Autores e links em `src/assets/gallery/CREDITS.md` (vão também para o /case).
 - Peso: pior caso 167 KB para as 9 (AVIF), e só carregam perto da tela.
+
+## D-024 — SEO de um negócio fictício (Fase 7)
+
+- JSON-LD `HairSalon` na home (PT/EN), sem `aggregateRating`; horários agrupados
+  (Ter–Sex 09–20, Sáb 08–18). Telefone = número demo (o mesmo já visível no site).
+- `noindex, follow` em todas as páginas do negócio; `robots.txt` libera o rastreio
+  (o robô precisa ler o noindex). Sitemap lista só `/case/` e `/en/case/`.
+- `/case` segue noindex enquanto for esqueleto; vira `index` na Fase 8.
+
+## D-025 — Cartão de compartilhamento gerado por script
+
+- `tools/og/og.html` (molde) + `npm run og`: Firefox headless fotografa em 1200×630 e o
+  libvips salva JPG (~85 KB). Reaproveita a ilustração do hero do build. Uma versão PT e uma EN.
+- Selo "Projeto conceitual" no próprio cartão: honestidade já na prévia do WhatsApp.
+
+## D-026 — Cloudflare Pages: `_headers` e 404
+
+- Cache de 1 ano para `/_astro/*` (nomes com hash), 30 dias para fontes.
+- `nosniff`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`.
+  CSP ficou de fora por enquanto: o Astro embute scripts pequenos inline.
+- 404 bilíngue no estilo do site. Âncoras do menu viram `/#secao` fora da home.
+- Favicon próprio (âncora de latão) + apple-touch-icon 180 px.

@@ -15,6 +15,7 @@ import Location from './Location.astro';
 import FAQ from './FAQ.astro';
 import Footer from './Footer.astro';
 import MobileActionBar from './MobileActionBar.astro';
+import SchemaHairSalon from './SchemaHairSalon.astro';
 import { copy, translator } from '../lib/content';
 
 interface Props {
@@ -25,6 +26,7 @@ const t = translator(lang);
 ---
 
 <Base title={t(copy.seo.home.title)} description={t(copy.seo.home.description)}>
+  <SchemaHairSalon lang={lang} slot="head" />
   <Header lang={lang} slot="header" />
   <Hero lang={lang} />
   <Ticker lang={lang} />

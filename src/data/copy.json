@@ -19,6 +19,10 @@
         "pt": "Seu pedido de horário foi enviado pelo WhatsApp.",
         "en": "Your booking request was sent on WhatsApp."
       }
+    },
+    "ogAlt": {
+      "pt": "Ferro & Maré Barbearia — seu horário em 30 segundos",
+      "en": "Ferro & Maré Barbershop — book your chair in 30 seconds"
     }
   },
   "header": {
@@ -563,6 +567,24 @@
     "calendarDescription": {
       "pt": "Agendamento de demonstração (projeto conceitual de portfólio).",
       "en": "Demo booking (portfolio concept project)."
+    }
+  },
+  "notFound": {
+    "title": {
+      "pt": "Essa cadeira está vazia.",
+      "en": "This chair is empty."
+    },
+    "body": {
+      "pt": "A página que você procurou não existe ou mudou de lugar.",
+      "en": "The page you're looking for doesn't exist or has moved."
+    },
+    "home": {
+      "pt": "Voltar ao início",
+      "en": "Back to home"
+    },
+    "seoTitle": {
+      "pt": "Página não encontrada · Ferro & Maré",
+      "en": "Page not found · Ferro & Maré"
     }
   }
 }

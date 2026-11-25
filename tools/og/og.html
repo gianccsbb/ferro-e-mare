@@ -1,0 +1,127 @@
+<!doctype html>
+<!-- Molde da imagem de compartilhamento (1200×630). Gerado por tools/og/build-og.sh. -->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Big Shoulders Display';
+        src: url('../../public/fonts/big-shoulders-display.woff2') format('woff2');
+        font-weight: 100 900;
+      }
+      @font-face {
+        font-family: 'Instrument Sans';
+        src: url('../../public/fonts/instrument-sans.woff2') format('woff2');
+        font-weight: 400 700;
+      }
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 40px;
+        padding: 64px 72px;
+        background:
+          radial-gradient(circle at 80% 30%, rgb(224 160 74 / 0.22), transparent 55%),
+          linear-gradient(160deg, #13283d, #0f1720 70%);
+        color: #f4efe6;
+        font-family: 'Instrument Sans', sans-serif;
+      }
+      body::before {
+        content: '';
+        position: absolute;
+        inset: 20px;
+        border: 1.5px solid rgb(192 138 62 / 0.6);
+        border-radius: 8px;
+        pointer-events: none;
+      }
+      .rivet {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #c08a3e;
+        opacity: 0.7;
+      }
+      .copy {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 22px;
+      }
+      .eyebrow {
+        color: #e0a04a;
+        font-weight: 600;
+        font-size: 22px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      h1 {
+        font-family: 'Big Shoulders Display', sans-serif;
+        font-weight: 800;
+        font-size: 128px;
+        line-height: 0.95;
+        text-transform: uppercase;
+      }
+      h1 .amp {
+        color: #e0a04a;
+      }
+      .tag {
+        font-family: 'Big Shoulders Display', sans-serif;
+        font-weight: 800;
+        font-size: 46px;
+        line-height: 1.05;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, #f0c27a, #e0a04a 50%, #c08a3e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .meta {
+        white-space: nowrap;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        color: #9aa4ae;
+        font-size: 22px;
+      }
+      .pill {
+        padding: 6px 14px;
+        border: 1px solid rgb(154 164 174 / 0.5);
+        border-radius: 999px;
+        font-size: 18px;
+      }
+      .art {
+        display: grid;
+        place-items: end center;
+      }
+      .art svg {
+        width: 100%;
+        height: auto;
+        max-height: 520px;
+      }
+    </style>
+  </head>
+  <body>
+    <i class="rivet" style="top: 30px; left: 30px"></i
+    ><i class="rivet" style="top: 30px; right: 30px"></i>
+    <i class="rivet" style="bottom: 30px; left: 30px"></i
+    ><i class="rivet" style="bottom: 30px; right: 30px"></i>
+    <div class="copy">
+      <p class="eyebrow">{{eyebrow}}</p>
+      <h1>Ferro <span class="amp">&amp;</span><br />Maré</h1>
+      <p class="tag">{{tag}}</p>
+      <p class="meta"><span>{{meta}}</span><span class="pill">{{concept}}</span></p>
+    </div>
+    <div class="art">{{art}}</div>
+  </body>
+</html>

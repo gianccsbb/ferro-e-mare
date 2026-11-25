@@ -12,7 +12,8 @@
     "astro": "astro",
     "format": "prettier --write .",
     "check": "astro check",
-    "copy:md": "node tools/copy-to-md.mjs"
+    "copy:md": "node tools/copy-to-md.mjs",
+    "og": "bash tools/og/build-og.sh"
   },
   "dependencies": {
     "astro": "^7.4.13"

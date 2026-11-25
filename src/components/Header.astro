@@ -11,6 +11,8 @@ const { lang } = Astro.props;
 const t = translator(lang);
 const c = copy.header;
 const home = lang === 'pt' ? '/' : '/en/';
+// Fora da home (obrigado, 404, case), as âncoras precisam levar de volta a ela.
+const anchor = (id: string) => (Astro.url.pathname === home ? `#${id}` : `${home}#${id}`);
 const otherLang: Lang = lang === 'pt' ? 'en' : 'pt';
 const otherPath = alternatePath(Astro.url.pathname, otherLang);
 
@@ -55,16 +57,16 @@ const statusStrings = {
     <nav class="nav" aria-label={lang === 'pt' ? 'Principal' : 'Main'}>
       <ul role="list">
         <li>
-          <a href="#servicos">{t(c.nav.services)}</a>
+          <a href={anchor('servicos')}>{t(c.nav.services)}</a>
         </li>
         <li>
-          <a href="#equipe">{t(c.nav.team)}</a>
+          <a href={anchor('equipe')}>{t(c.nav.team)}</a>
         </li>
         <li>
-          <a href="#clube">{t(c.nav.club)}</a>
+          <a href={anchor('clube')}>{t(c.nav.club)}</a>
         </li>
         <li>
-          <a href="#como-chegar">{t(c.nav.location)}</a>
+          <a href={anchor('como-chegar')}>{t(c.nav.location)}</a>
         </li>
       </ul>
     </nav>
@@ -80,7 +82,7 @@ const statusStrings = {
       <span>{otherLang.toUpperCase()}</span>
     </a>
 
-    <a class="btn btn-primary btn-sm" href="#agendar">
+    <a class="btn btn-primary btn-sm" href={anchor('agendar')}>
       {t(c.cta)}
     </a>
   </div>
