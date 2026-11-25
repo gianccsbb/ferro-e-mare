@@ -4,6 +4,7 @@ import type { Lang } from '../i18n/ui';
 import Base from '../layouts/Base.astro';
 import Header from './Header.astro';
 import Hero from './Hero.astro';
+import Ticker from './Ticker.astro';
 import Services from './Services.astro';
 import Booking from './Booking.astro';
 import Team from './Team.astro';
@@ -26,6 +27,7 @@ const t = translator(lang);
 <Base title={t(copy.seo.home.title)} description={t(copy.seo.home.description)}>
   <Header lang={lang} slot="header" />
   <Hero lang={lang} />
+  <Ticker lang={lang} />
   <Services lang={lang} />
   <Booking lang={lang} />
   <Team lang={lang} />

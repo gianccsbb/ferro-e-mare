@@ -1,0 +1,220 @@
+---
+// Ilustração do hero: arco de casarão do Recife Antigo, porto ao fundo,
+// cadeira de barbeiro em traço de latão sob luminária pendente.
+// SVG inline (~5 KB), sem requisição extra: é o LCP mais leve possível.
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+---
+
+<svg
+  class="hero-art"
+  viewBox="0 0 480 600"
+  role="img"
+  aria-label={label}
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <linearGradient id="ha-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b3550"></stop>
+      <stop offset="0.65" stop-color="#13283d"></stop>
+      <stop offset="1" stop-color="#0f1720"></stop>
+    </linearGradient>
+    <radialGradient id="ha-glow" cx="0.5" cy="0.28" r="0.55">
+      <stop offset="0" stop-color="#e0a04a" stop-opacity="0.55"></stop>
+      <stop offset="0.45" stop-color="#c08a3e" stop-opacity="0.16"></stop>
+      <stop offset="1" stop-color="#c08a3e" stop-opacity="0"></stop>
+    </radialGradient>
+    <linearGradient id="ha-cone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4c77d" stop-opacity="0.38"></stop>
+      <stop offset="1" stop-color="#f4c77d" stop-opacity="0"></stop>
+    </linearGradient>
+    <linearGradient id="ha-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0c27a"></stop>
+      <stop offset="0.5" stop-color="#c08a3e"></stop>
+      <stop offset="1" stop-color="#8a5a1c"></stop>
+    </linearGradient>
+    <linearGradient id="ha-leather" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0c1620"></stop>
+      <stop offset="0.5" stop-color="#1d3a55"></stop>
+      <stop offset="1" stop-color="#0c1620"></stop>
+    </linearGradient>
+    <clipPath id="ha-arch">
+      <path d="M60 600V230a180 180 0 0 1 360 0v370z"></path>
+    </clipPath>
+    <pattern id="ha-rail" width="28" height="56" patternUnits="userSpaceOnUse">
+      <path
+        d="M14 0v56M0 28c7-10 21-10 28 0M0 28c7 10 21 10 28 0"
+        fill="none"
+        stroke="#c08a3e"
+        stroke-width="1.6"
+        stroke-opacity="0.55"
+      ></path>
+    </pattern>
+  </defs>
+
+  <!-- Arco (janela de casarão) -->
+  <g clip-path="url(#ha-arch)">
+    <rect width="480" height="600" fill="url(#ha-sky)"></rect>
+    <rect width="480" height="600" fill="url(#ha-glow)"></rect>
+
+    <!-- Porto: guindastes em silhueta -->
+    <g fill="none" stroke="#5e8a9a" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round">
+      <path d="M360 470V250M352 470V250M352 250h8M352 290l8 20M360 290l-8 20M352 330l8 20M360 330l-8 20M352 370l8 20M360 370l-8 20"></path>
+      <path d="M356 252L170 268M356 252l60 6M356 252v-26M356 226L200 266M356 226l58 30"></path>
+      <path d="M196 268v52" stroke-dasharray="3 4"></path>
+      <rect x="186" y="320" width="20" height="10" rx="1"></rect>
+      <path
+        d="M110 470V330M104 470V330M104 330h6M104 330L40 345M110 330l38 8M110 330v-18L44 344"
+        stroke-opacity="0.35"
+      ></path>
+    </g>
+
+    <!-- Água -->
+    <g fill="none" stroke="#5e8a9a" stroke-linecap="round">
+      <path
+        d="M40 478c20-6 40 6 60 0s40-6 60 0 40 6 60 0 40-6 60 0 40 6 60 0 40-6 60 0"
+        stroke-opacity="0.6"
+        stroke-width="2"
+      ></path>
+      <path
+        d="M70 494c20-5 40 5 60 0s40-5 60 0 40 5 60 0 40-5 60 0 40 5 60 0"
+        stroke-opacity="0.35"
+        stroke-width="1.6"
+      ></path>
+      <path
+        d="M40 510c20-4 40 4 60 0s40-4 60 0 40 4 60 0 40-4 60 0 40 4 60 0 40-4 60 0"
+        stroke-opacity="0.2"
+        stroke-width="1.4"
+      ></path>
+    </g>
+
+    <!-- Piso -->
+    <rect x="0" y="522" width="480" height="78" fill="#0f1720"></rect>
+    <path d="M60 522h360" stroke="#c08a3e" stroke-opacity="0.5" stroke-width="1.5"></path>
+    <ellipse cx="240" cy="560" rx="150" ry="22" fill="#e0a04a" fill-opacity="0.08"></ellipse>
+
+    <!-- Cone de luz da luminária -->
+    <path d="M222 120L120 560h240L258 120z" fill="url(#ha-cone)"></path>
+  </g>
+
+  <!-- Moldura do arco em ferro + latão -->
+  <path
+    d="M60 600V230a180 180 0 0 1 360 0v370"
+    fill="none"
+    stroke="url(#ha-brass)"
+    stroke-width="3"
+  ></path>
+  <path
+    d="M46 600V230a194 194 0 0 1 388 0v370"
+    fill="none"
+    stroke="#5e8a9a"
+    stroke-opacity="0.35"
+    stroke-width="1.2"
+  ></path>
+  <!-- Grade de sacada (ferro fundido) na base do arco -->
+  <g clip-path="url(#ha-arch)">
+    <rect x="60" y="448" width="360" height="56" fill="url(#ha-rail)"></rect>
+    <path d="M60 448h360M60 504h360" stroke="#c08a3e" stroke-opacity="0.6" stroke-width="2"></path>
+  </g>
+
+  <!-- Luminária pendente -->
+  <g>
+    <path d="M240 40v70" stroke="#9aa4ae" stroke-width="1.5"></path>
+    <path d="M222 110h36l14 22h-64z" fill="url(#ha-brass)"></path>
+    <ellipse cx="240" cy="133" rx="10" ry="3" fill="#fff3d6"></ellipse>
+  </g>
+
+  <!-- Cadeira de barbeiro -->
+  <g stroke="url(#ha-brass)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Encosto de cabeça -->
+    <rect x="212" y="214" width="56" height="26" rx="12" fill="url(#ha-leather)"></rect>
+    <path d="M232 240v16M248 240v16" fill="none"></path>
+    <!-- Encosto -->
+    <rect x="194" y="256" width="92" height="140" rx="16" fill="url(#ha-leather)"></rect>
+    <path d="M206 276v100M274 276v100" stroke-opacity="0.35" fill="none"></path>
+    <path
+      d="M222 268v120M240 268v120M258 268v120"
+      stroke-opacity="0.18"
+      stroke-width="1.5"
+      fill="none"
+    ></path>
+    <!-- Braços -->
+    <rect x="156" y="364" width="50" height="16" rx="8" fill="url(#ha-leather)"></rect>
+    <rect x="274" y="364" width="50" height="16" rx="8" fill="url(#ha-leather)"></rect>
+    <path d="M170 380v24M310 380v24" fill="none"></path>
+    <!-- Assento -->
+    <rect x="166" y="396" width="148" height="30" rx="12" fill="url(#ha-leather)"></rect>
+    <!-- Caixa hidráulica e coluna -->
+    <path d="M206 426h68l-8 22h-52z" fill="#13283d"></path>
+    <rect x="228" y="448" width="24" height="84" rx="3" fill="#13283d"></rect>
+    <path d="M234 456v68" stroke-opacity="0.5" stroke-width="1.5" fill="none"></path>
+    <!-- Apoio de pés -->
+    <path d="M222 470l-30 46h96l-30-46" fill="none" stroke-opacity="0.6"></path>
+    <rect x="186" y="512" width="108" height="10" rx="4" fill="#13283d"></rect>
+    <!-- Base -->
+    <ellipse cx="240" cy="540" rx="74" ry="12" fill="#13283d"></ellipse>
+    <!-- Alavanca -->
+    <path d="M286 412l26 30" fill="none"></path>
+    <circle cx="314" cy="444" r="5" fill="url(#ha-brass)"></circle>
+  </g>
+
+  <!-- Brilhos no latão -->
+  <g fill="#fff3d6">
+    <circle cx="226" cy="220" r="2"></circle>
+    <circle cx="202" cy="262" r="1.6"></circle>
+    <circle cx="172" cy="367" r="1.6"></circle>
+  </g>
+
+  <!-- Placa de rua esmaltada (Recife) -->
+  <g transform="translate(300 36) rotate(4)">
+    <rect width="168" height="58" rx="8" fill="#1d4f8c"></rect>
+    <rect
+      x="5"
+      y="5"
+      width="158"
+      height="48"
+      rx="5"
+      fill="none"
+      stroke="#f4efe6"
+      stroke-width="2"
+    ></rect>
+    <circle cx="12" cy="29" r="2.2" fill="#c9d3dc"></circle>
+    <circle cx="156" cy="29" r="2.2" fill="#c9d3dc"></circle>
+    <text
+      x="84"
+      y="26"
+      text-anchor="middle"
+      font-family="Instrument Sans, sans-serif"
+      font-size="10"
+      font-weight="600"
+      letter-spacing="1.6"
+      fill="#f4efe6"
+    >
+      RUA DO
+    </text>
+    <text
+      x="84"
+      y="45"
+      text-anchor="middle"
+      font-family="Big Shoulders Display, sans-serif"
+      font-size="20"
+      font-weight="800"
+      letter-spacing="1"
+      fill="#f4efe6"
+    >
+      EXEMPLO
+    </text>
+  </g>
+</svg>
+
+<style>
+  .hero-art {
+    width: 100%;
+    height: auto;
+    max-width: 30rem;
+    margin-inline: auto;
+    filter: drop-shadow(0 30px 60px rgb(0 0 0 / 0.45));
+  }
+</style>

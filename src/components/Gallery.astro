@@ -1,7 +1,9 @@
 ---
-// Fase 3: grade com placeholders. Fotos na Fase 4; lightbox acessível na Fase 6.
+// Fotos reais entram aqui (src/assets/gallery/g1…g9). Enquanto não chegam,
+// mostramos placas provisórias. Lightbox acessível na Fase 6.
 import type { Lang } from '../i18n/ui';
 import { copy, gallery, translator } from '../lib/content';
+import Icon from './Icon.astro';
 
 interface Props {
   lang: Lang;
@@ -18,10 +20,11 @@ const c = copy.gallery;
       <h2 id="galeria-title">{t(c.title)}</h2>
     </div>
     <ul class="grid" role="list">
-      {gallery.map((g) => (
-        <li>
-          <div class="ph" style="--ratio: 1 / 1" role="img" aria-label={t(g.alt)}>
-            {t(g.alt)}
+      {gallery.map((g, i) => (
+        <li class:list={['tile', { big: i === 0 }]}>
+          <div class="ph-photo" role="img" aria-label={t(g.alt)}>
+            <Icon name="scissors" size={i === 0 ? 40 : 24} />
+            <span>{t(g.alt)}</span>
           </div>
         </li>
       ))}
@@ -37,13 +40,42 @@ const c = copy.gallery;
     padding: 0;
     list-style: none;
   }
-  .grid .ph {
+  .tile {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+  .big {
+    grid-column: span 2;
+    aspect-ratio: 2 / 1.4;
+  }
+  .ph-photo {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: var(--space-2);
+    height: 100%;
+    padding: var(--space-3);
+    background:
+      radial-gradient(circle at 30% 20%, rgb(224 160 74 / 0.25), transparent 60%),
+      linear-gradient(160deg, #1d3a55, var(--ink));
+    color: var(--brass);
+    text-align: center;
+  }
+  .ph-photo span {
+    color: var(--steel);
     font-size: 0.75rem;
+    line-height: 1.35;
   }
   @media (min-width: 768px) {
     .grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: var(--space-3);
+    }
+    .big {
+      grid-column: span 2;
+      grid-row: span 2;
+      aspect-ratio: auto;
     }
   }
 </style>

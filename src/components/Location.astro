@@ -4,6 +4,7 @@ import { copy, business, hours, translator } from '../lib/content';
 import { telLink, formatPhone } from '../lib/contact';
 import { fmtTime } from '../lib/hours';
 import Icon from './Icon.astro';
+import MapArt from './art/MapArt.astro';
 
 interface Props {
   lang: Lang;
@@ -73,10 +74,11 @@ const order = [1, 2, 3, 4, 5, 6, 0];
       </div>
     </div>
 
-    <!-- Fase 6: facade do mapa (imagem estática → iframe só ao clicar) -->
-    <div class="ph map" style="--ratio: 4 / 3">
-      <p>{t(c.mapNote)}</p>
-    </div>
+    <!-- Fase 6: tocar no mapa carrega o iframe real (facade) -->
+    <figure class="map plate">
+      <MapArt />
+      <figcaption>{t(c.mapNote)}</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -137,6 +139,22 @@ const order = [1, 2, 3, 4, 5, 6, 0];
       display: flex;
       flex-wrap: wrap;
     }
+  }
+  .map {
+    --rivet: rgb(192 138 62 / 0.6);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--brass);
+    border-radius: var(--radius);
+    background-color: #102236;
+    box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.7);
+  }
+  .map figcaption {
+    padding: var(--space-3) var(--space-4);
+    background: rgb(15 23 32 / 0.85);
+    border-top: 1px solid var(--line);
+    color: var(--steel);
+    font-size: var(--fs-small);
   }
   @media (min-width: 1024px) {
     .grid {

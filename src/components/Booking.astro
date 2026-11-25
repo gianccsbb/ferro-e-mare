@@ -22,7 +22,7 @@ const c = copy.booking;
       <p class="muted">{t(c.intro)}</p>
     </div>
 
-    <div id="booking-root" class="card panel">
+    <div id="booking-root" class="panel plate">
       <div class="fallback">
         <p>{t(c.noJs)}</p>
         <div class="actions">
@@ -45,7 +45,12 @@ const c = copy.booking;
     max-width: 44rem;
   }
   .panel {
-    background: var(--ink);
+    --rivet: rgb(192 138 62 / 0.55);
+    padding: var(--space-6) var(--space-5);
+    border: 1px solid var(--brass);
+    border-radius: var(--radius);
+    background-color: var(--ink);
+    box-shadow: 0 40px 80px -40px rgb(0 0 0 / 0.8);
   }
   .fallback {
     display: grid;

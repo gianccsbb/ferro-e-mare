@@ -12,7 +12,7 @@ const c = copy.faq;
 ---
 
 <section id="duvidas" class="section surface-foam" aria-labelledby="duvidas-title">
-  <div class="container narrow">
+  <div class="container layout">
     <div class="section-head">
       <p class="eyebrow">{t(c.eyebrow)}</p>
       <h2 id="duvidas-title">{t(c.title)}</h2>
@@ -32,14 +32,25 @@ const c = copy.faq;
 </section>
 
 <style>
-  .narrow {
-    max-width: 44rem;
+  .layout {
+    display: grid;
+    gap: var(--space-2);
+  }
+  @media (min-width: 1024px) {
+    .layout {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: var(--space-7);
+      align-items: start;
+    }
   }
   .list {
     border-top: 1px solid var(--line-strong);
   }
   details {
     border-bottom: 1px solid var(--line-strong);
+  }
+  summary:hover {
+    color: var(--accent);
   }
   summary {
     display: flex;

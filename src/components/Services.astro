@@ -1,6 +1,7 @@
 ---
 import type { Lang } from '../i18n/ui';
 import { copy, services, translator, fmt, brl } from '../lib/content';
+import Icon from './Icon.astro';
 
 interface Props {
   lang: Lang;
@@ -8,6 +9,8 @@ interface Props {
 const { lang } = Astro.props;
 const t = translator(lang);
 const c = copy.services;
+// "Mais pedido" primeiro, ocupando 2 colunas (ordem no DOM = ordem visual).
+const sorted = [...services].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
 ---
 
 <section id="servicos" class="section surface-foam" aria-labelledby="servicos-title">
@@ -18,27 +21,31 @@ const c = copy.services;
     </div>
 
     <ul class="list" role="list">
-      {services.map((s) => (
-        <li class:list={['card', 'service', { featured: s.featured }]}>
+      {sorted.map((s) => (
+        <li class:list={['service', 'plate', { featured: s.featured, 'surface-ink': s.featured }]}>
           {s.badge && <p class="badge">{t(s.badge)}</p>}
-          <div class="row">
-            <h3>{t(s.name)}</h3>
-            <p class="price">{brl(s.price)}</p>
-          </div>
-          <p class="meta">{fmt(t(c.minutes), { n: s.duration })}</p>
+          <h3>{t(s.name)}</h3>
+          <p class="meta">
+            <Icon name="clock" size={14} />
+            {fmt(t(c.minutes), { n: s.duration })}
+          </p>
           <p class="desc">{t(s.desc)}</p>
-          <a
-            class="btn btn-ghost btn-sm"
-            href="#agendar"
-            data-book-service={s.id}
-            aria-label={`${t(c.bookThis)}: ${t(s.name)}`}
-          >
-            {t(c.bookThis)}
-          </a>
+          <div class="foot">
+            <p class="price">{brl(s.price)}</p>
+            <a
+              class:list={['btn', 'btn-sm', s.featured ? 'btn-primary' : 'btn-ghost']}
+              href="#agendar"
+              data-book-service={s.id}
+              aria-label={`${t(c.bookThis)}: ${t(s.name)}`}
+            >
+              {t(c.bookThis)}
+              <Icon name="arrow" size={16} />
+            </a>
+          </div>
         </li>
       ))}
     </ul>
-    <p class="note muted">{t(c.note)}</p>
+    <p class="note">{t(c.note)}</p>
   </div>
 </section>
 
@@ -50,59 +57,93 @@ const c = copy.services;
     list-style: none;
   }
   .service {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-2);
-    background: #fff9f0;
+    padding: var(--space-6) var(--space-5) var(--space-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background-color: #fff9f0;
+    transition:
+      transform var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+  .service:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -18px rgb(15 23 32 / 0.45);
   }
   .featured {
-    border-color: var(--brass-deep);
-    border-width: 2px;
+    --rivet: rgb(192 138 62 / 0.6);
+    background-color: var(--ink);
+    border-color: var(--brass);
+    box-shadow: inset 0 0 0 1px rgb(192 138 62 / 0.25);
+  }
+  .featured h3 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
   }
   .badge {
-    justify-self: start;
-    padding: 2px var(--space-2);
+    align-self: flex-start;
+    padding: 3px var(--space-2);
     border-radius: var(--radius-sm);
-    background: var(--ink);
-    color: var(--cta);
+    background: var(--cta);
+    color: var(--ink);
     font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-  .row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: var(--space-3);
-  }
-  .price {
-    font-family: var(--font-display);
-    font-size: 1.75rem;
-    font-weight: 800;
-    white-space: nowrap;
-  }
   .meta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
     font-size: var(--fs-small);
     color: var(--fg-muted);
   }
   .desc {
-    margin-bottom: var(--space-2);
+    flex: 1;
+    max-width: 44ch;
   }
-  .service .btn {
-    justify-self: start;
+  .foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px dashed var(--line-strong);
+  }
+  .price {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .featured .price {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    color: var(--cta);
   }
   .note {
     margin-top: var(--space-5);
     font-size: var(--fs-small);
+    color: var(--fg-muted);
   }
   @media (min-width: 768px) {
     .list {
       grid-template-columns: repeat(2, 1fr);
     }
+    .featured {
+      grid-column: span 2;
+    }
   }
   @media (min-width: 1024px) {
     .list {
       grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .service:hover {
+      transform: none;
     }
   }
 </style>

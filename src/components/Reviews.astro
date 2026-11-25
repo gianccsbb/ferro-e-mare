@@ -20,13 +20,16 @@ const c = copy.reviews;
     </div>
     <ul class="list" role="list">
       {reviews.map((r) => (
-        <li class="card review">
+        <li class="review plate">
           <figure>
             <p class="stars" role="img" aria-label={fmt(t(c.starsLabel), { n: r.stars })}>
               {Array.from({ length: r.stars }, () => (
                 <Icon name="star" size={16} fill />
               ))}
             </p>
+            <span class="qmark" aria-hidden="true">
+              “
+            </span>
             <blockquote>
               <p>“{t(r.text)}”</p>
             </blockquote>
@@ -57,11 +60,31 @@ const c = copy.reviews;
     list-style: none;
   }
   .review {
-    background: #fff9f0;
+    position: relative;
+    padding: var(--space-6) var(--space-5) var(--space-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background-color: #fff9f0;
+  }
+  .qmark {
+    position: absolute;
+    top: -0.1em;
+    right: var(--space-4);
+    font-family: var(--font-display);
+    font-size: 6rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--brass);
+    opacity: 0.35;
   }
   figure {
     display: grid;
     gap: var(--space-3);
+    height: 100%;
+    grid-template-rows: auto 1fr auto;
+  }
+  blockquote {
+    font-size: 1.0625rem;
   }
   .stars {
     display: flex;
@@ -69,6 +92,8 @@ const c = copy.reviews;
     color: var(--brass-deep);
   }
   figcaption {
+    padding-top: var(--space-3);
+    border-top: 1px dashed var(--line-strong);
     font-size: var(--fs-small);
     font-weight: 600;
     color: var(--fg-muted);
@@ -76,6 +101,11 @@ const c = copy.reviews;
   @media (min-width: 768px) {
     .list {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1200px) {
+    .list {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 </style>

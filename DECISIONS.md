@@ -82,3 +82,18 @@ O número fica fora do repo (`.env` ignorado), mas aparece no site publicado, co
 `trailingSlash: 'always'` mantém URLs canônicas consistentes (`/obrigado/`, `/en/thank-you/`).
 O selo "Aberto agora" é renderizado com o horário fixo como fallback (sem JS) e recalculado
 no navegador a cada minuto, no fuso `America/Recife`, independente do fuso do visitante.
+
+## D-012 — Imagens híbridas: ilustração SVG + fotos só na galeria
+
+2026-11-25. O hero (arco de casarão, cadeira, porto, placa de rua esmaltada), os retratos da equipe
+e o mapa são SVG inline próprios. Ficam leves, são autorais e não usam fotos de rosto ligadas
+a pessoas inventadas. Os retratos não têm rosto realista. Fotos reais (Unsplash/Pexels) entram
+só na galeria de cortes, onde o cliente quer ver resultado. Créditos em
+`src/assets/gallery/CREDITS.md` e, depois, em `/case`.
+
+## D-013 — Elementos de assinatura visual
+
+2026-11-25. Seções numeradas como placas (contador CSS), rebites nos cantos (`.plate`, 4 gradientes
+radiais, sem imagem), faixa letreiro (CSS, 48 s por volta, para com `prefers-reduced-motion`),
+cartão de sócio no Clube, nome gigante em contorno no rodapé. O card "Mais pedido" vem primeiro no
+DOM e ocupa 2 colunas, para a grade fechar sem buracos e a ordem do Tab seguir a ordem visual.

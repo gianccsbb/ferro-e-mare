@@ -11,112 +11,219 @@
       }
     },
     "thanks": {
-      "title": { "pt": "Horário pedido | Ferro & Maré", "en": "Time requested | Ferro & Maré" },
+      "title": {
+        "pt": "Horário pedido | Ferro & Maré",
+        "en": "Time requested | Ferro & Maré"
+      },
       "description": {
         "pt": "Seu pedido de horário foi enviado pelo WhatsApp.",
         "en": "Your booking request was sent on WhatsApp."
       }
     }
   },
-
   "header": {
     "nav": {
-      "services": { "pt": "Serviços", "en": "Services" },
-      "team": { "pt": "Equipe", "en": "Team" },
-      "club": { "pt": "Clube", "en": "Club" },
-      "location": { "pt": "Como chegar", "en": "Directions" }
+      "services": {
+        "pt": "Serviços",
+        "en": "Services"
+      },
+      "team": {
+        "pt": "Equipe",
+        "en": "Team"
+      },
+      "club": {
+        "pt": "Clube",
+        "en": "Club"
+      },
+      "location": {
+        "pt": "Como chegar",
+        "en": "Directions"
+      }
     },
-    "cta": { "pt": "Agendar", "en": "Book" },
+    "cta": {
+      "pt": "Agendar",
+      "en": "Book"
+    },
     "status": {
-      "openUntil": { "pt": "Aberto agora · Fecha às {time}", "en": "Open now · Closes at {time}" },
+      "openUntil": {
+        "pt": "Aberto agora · Fecha às {time}",
+        "en": "Open now · Closes at {time}"
+      },
       "opensToday": {
         "pt": "Fechado · Abre hoje às {time}",
         "en": "Closed · Opens today at {time}"
       },
-      "opensOn": { "pt": "Fechado · Abre {day} às {time}", "en": "Closed · Opens {day} at {time}" },
-      "fallback": { "pt": "Ter–Sex 9h–20h · Sáb 8h–18h", "en": "Tue–Fri 9am–8pm · Sat 8am–6pm" }
+      "opensOn": {
+        "pt": "Fechado · Abre {day} às {time}",
+        "en": "Closed · Opens {day} at {time}"
+      },
+      "fallback": {
+        "pt": "Ter–Sex 9h–20h · Sáb 8h–18h",
+        "en": "Tue–Fri 9am–8pm · Sat 8am–6pm"
+      }
     }
   },
-
   "hero": {
     "eyebrow": {
       "pt": "Barbearia clássica · Recife Antigo",
       "en": "Classic barbershop · Old Recife"
     },
-    "h1": { "pt": "Barbearia no Recife Antigo.", "en": "Barbershop in Old Recife." },
-    "h1Accent": { "pt": "Seu horário em 30 segundos.", "en": "Book in 30 seconds." },
-    "sub": {
-      "pt": "Corte, barba na toalha quente e café passado. Ter a Sáb.",
-      "en": "Haircuts, hot-towel shaves and fresh-brewed coffee. Tue to Sat."
+    "h1": {
+      "pt": "Barbearia no Recife Antigo.",
+      "en": "Barbershop in Old Recife."
     },
-    "ctaPrimary": { "pt": "Agendar horário", "en": "Book a time" },
-    "ctaSecondary": { "pt": "Chamar no WhatsApp", "en": "Message on WhatsApp" },
-    "proof": { "pt": "★ 4,9 · avaliações ilustrativas", "en": "★ 4.9 · illustrative reviews" },
+    "h1Accent": {
+      "pt": "Seu horário em 30 segundos.",
+      "en": "Book in 30 seconds."
+    },
+    "sub": {
+      "pt": "Corte, barba na toalha quente e café passado. Ter a Sáb.",
+      "en": "Haircuts, hot-towel shaves and fresh-brewed coffee. Tue to Sat."
+    },
+    "ctaPrimary": {
+      "pt": "Agendar horário",
+      "en": "Book a time"
+    },
+    "ctaSecondary": {
+      "pt": "Chamar no WhatsApp",
+      "en": "Message on WhatsApp"
+    },
+    "proof": {
+      "pt": "★ 4,9 · avaliações ilustrativas",
+      "en": "★ 4.9 · illustrative reviews"
+    },
     "perks": {
       "pt": ["Toalha quente", "Café passado na hora", "Horário pontual"],
       "en": ["Hot towel", "Fresh-brewed coffee", "On-time, every time"]
     },
     "imageAlt": {
-      "pt": "Cadeira de barbeiro e ferramentas de latão sob luz quente",
-      "en": "Barber chair and brass tools under warm light"
+      "pt": "Ilustração: cadeira de barbeiro sob uma luminária, num arco de casarão com os guindastes do porto ao fundo",
+      "en": "Illustration: a barber chair under a pendant lamp, framed by an old townhouse arch with harbour cranes behind"
     }
   },
-
   "services": {
-    "eyebrow": { "pt": "Serviços & preços", "en": "Services & prices" },
+    "eyebrow": {
+      "pt": "Serviços & preços",
+      "en": "Services & prices"
+    },
     "title": {
       "pt": "Preço na parede. Sem surpresa no caixa.",
       "en": "Prices on the wall. No surprises at the till."
     },
-    "minutes": { "pt": "{n} min", "en": "{n} min" },
-    "bookThis": { "pt": "Agendar este", "en": "Book this" },
+    "minutes": {
+      "pt": "{n} min",
+      "en": "{n} min"
+    },
+    "bookThis": {
+      "pt": "Agendar este",
+      "en": "Book this"
+    },
     "note": {
       "pt": "Pix, crédito, débito ou dinheiro.",
       "en": "Pix, credit, debit or cash. Prices in Brazilian reais (R$)."
     }
   },
-
   "booking": {
-    "eyebrow": { "pt": "Agendamento", "en": "Booking" },
-    "title": { "pt": "Escolha. Toque. Pronto.", "en": "Pick. Tap. Done." },
+    "eyebrow": {
+      "pt": "Agendamento",
+      "en": "Booking"
+    },
+    "title": {
+      "pt": "Escolha. Toque. Pronto.",
+      "en": "Pick. Tap. Done."
+    },
     "intro": {
       "pt": "Quatro passos e a confirmação chega no WhatsApp, com a mensagem já escrita.",
       "en": "Four steps, then you confirm on WhatsApp with the message already written."
     },
-    "progress": { "pt": "Passo {n} de 4", "en": "Step {n} of 4" },
-    "steps": {
-      "service": { "pt": "Serviço", "en": "Service" },
-      "barber": { "pt": "Barbeiro", "en": "Barber" },
-      "datetime": { "pt": "Dia e horário", "en": "Day & time" },
-      "details": { "pt": "Seus dados", "en": "Your details" }
+    "progress": {
+      "pt": "Passo {n} de 4",
+      "en": "Step {n} of 4"
     },
-    "anyBarber": { "pt": "Qualquer um", "en": "Anyone" },
-    "anyBarberHint": { "pt": "Mais rápido", "en": "Fastest" },
-    "today": { "pt": "Hoje", "en": "Today" },
-    "tomorrow": { "pt": "Amanhã", "en": "Tomorrow" },
+    "steps": {
+      "service": {
+        "pt": "Serviço",
+        "en": "Service"
+      },
+      "barber": {
+        "pt": "Barbeiro",
+        "en": "Barber"
+      },
+      "datetime": {
+        "pt": "Dia e horário",
+        "en": "Day & time"
+      },
+      "details": {
+        "pt": "Seus dados",
+        "en": "Your details"
+      }
+    },
+    "anyBarber": {
+      "pt": "Qualquer um",
+      "en": "Anyone"
+    },
+    "anyBarberHint": {
+      "pt": "Mais rápido",
+      "en": "Fastest"
+    },
+    "today": {
+      "pt": "Hoje",
+      "en": "Today"
+    },
+    "tomorrow": {
+      "pt": "Amanhã",
+      "en": "Tomorrow"
+    },
     "noSlots": {
       "pt": "Esse dia lotou. Tente outro dia ou outro barbeiro.",
       "en": "This day is fully booked. Try another day or barber."
     },
-    "nameLabel": { "pt": "Seu nome", "en": "Your name" },
-    "phoneLabel": { "pt": "Celular (WhatsApp)", "en": "Mobile (WhatsApp)" },
-    "phonePlaceholder": { "pt": "(81) 9 9999-9999", "en": "(81) 9 9999-9999" },
+    "nameLabel": {
+      "pt": "Seu nome",
+      "en": "Your name"
+    },
+    "phoneLabel": {
+      "pt": "Celular (WhatsApp)",
+      "en": "Mobile (WhatsApp)"
+    },
+    "phonePlaceholder": {
+      "pt": "(81) 9 9999-9999",
+      "en": "(81) 9 9999-9999"
+    },
     "phoneHint": {
       "pt": "Só pra confirmar o horário. Nada de spam.",
       "en": "Only to confirm your booking. No spam."
     },
     "errors": {
-      "name": { "pt": "Diga como podemos te chamar.", "en": "Tell us what to call you." },
+      "name": {
+        "pt": "Diga como podemos te chamar.",
+        "en": "Tell us what to call you."
+      },
       "phone": {
         "pt": "Confira o celular: DDD + 9 dígitos.",
         "en": "Check the number: area code + 9 digits."
       },
-      "slot": { "pt": "Escolha um horário.", "en": "Pick a time." }
+      "slot": {
+        "pt": "Escolha um horário.",
+        "en": "Pick a time."
+      }
     },
-    "back": { "pt": "Voltar", "en": "Back" },
-    "next": { "pt": "Continuar", "en": "Continue" },
-    "confirm": { "pt": "Confirmar no WhatsApp", "en": "Confirm on WhatsApp" },
-    "summary": { "pt": "Resumo", "en": "Summary" },
+    "back": {
+      "pt": "Voltar",
+      "en": "Back"
+    },
+    "next": {
+      "pt": "Continuar",
+      "en": "Continue"
+    },
+    "confirm": {
+      "pt": "Confirmar no WhatsApp",
+      "en": "Confirm on WhatsApp"
+    },
+    "summary": {
+      "pt": "Resumo",
+      "en": "Summary"
+    },
     "noJs": {
       "pt": "O agendamento rápido precisa de JavaScript. Sem problema: chame a gente direto.",
       "en": "Quick booking needs JavaScript. No problem: just message us directly."
@@ -130,33 +237,63 @@
       "en": "Hi! I'd like to book a time at Ferro & Maré."
     }
   },
-
   "team": {
-    "eyebrow": { "pt": "Equipe", "en": "The team" },
+    "eyebrow": {
+      "pt": "Equipe",
+      "en": "The team"
+    },
     "title": {
       "pt": "Três cadeiras. Três especialistas.",
       "en": "Three chairs. Three specialists."
     }
   },
-
   "gallery": {
-    "eyebrow": { "pt": "Galeria", "en": "Gallery" },
-    "title": { "pt": "O trabalho fala.", "en": "The work speaks." },
-    "open": { "pt": "Ampliar foto: {alt}", "en": "Enlarge photo: {alt}" },
-    "close": { "pt": "Fechar", "en": "Close" },
-    "prev": { "pt": "Foto anterior", "en": "Previous photo" },
-    "next": { "pt": "Próxima foto", "en": "Next photo" }
+    "eyebrow": {
+      "pt": "Galeria",
+      "en": "Gallery"
+    },
+    "title": {
+      "pt": "O trabalho fala.",
+      "en": "The work speaks."
+    },
+    "open": {
+      "pt": "Ampliar foto: {alt}",
+      "en": "Enlarge photo: {alt}"
+    },
+    "close": {
+      "pt": "Fechar",
+      "en": "Close"
+    },
+    "prev": {
+      "pt": "Foto anterior",
+      "en": "Previous photo"
+    },
+    "next": {
+      "pt": "Próxima foto",
+      "en": "Next photo"
+    }
   },
-
   "club": {
-    "eyebrow": { "pt": "Assinatura", "en": "Membership" },
-    "title": { "pt": "Clube Ferro & Maré", "en": "Ferro & Maré Club" },
+    "eyebrow": {
+      "pt": "Assinatura",
+      "en": "Membership"
+    },
+    "title": {
+      "pt": "Clube Ferro & Maré",
+      "en": "Ferro & Maré Club"
+    },
     "pitch": {
       "pt": "Pra quem não quer pensar em quando cortou da última vez.",
       "en": "For those who'd rather not remember when they last got a haircut."
     },
-    "price": { "pt": "R$ 89", "en": "R$ 89" },
-    "period": { "pt": "/mês", "en": "/month" },
+    "price": {
+      "pt": "R$ 89",
+      "en": "R$ 89"
+    },
+    "period": {
+      "pt": "/mês",
+      "en": "/month"
+    },
     "benefits": {
       "pt": [
         "2 cortes por mês",
@@ -171,77 +308,134 @@
         "Cancel anytime, no fees"
       ]
     },
-    "cta": { "pt": "Quero assinar", "en": "Join the Club" },
+    "cta": {
+      "pt": "Quero assinar",
+      "en": "Join the Club"
+    },
     "whatsappMessage": {
       "pt": "Olá! Quero assinar o Clube Ferro & Maré (R$ 89/mês). Como funciona?",
       "en": "Hi! I'd like to join the Ferro & Maré Club (R$ 89/month). How does it work?"
     }
   },
-
   "reviews": {
-    "eyebrow": { "pt": "Avaliações", "en": "Reviews" },
-    "title": { "pt": "Quem senta, volta.", "en": "Once you sit, you come back." },
+    "eyebrow": {
+      "pt": "Avaliações",
+      "en": "Reviews"
+    },
+    "title": {
+      "pt": "Quem senta, volta.",
+      "en": "Once you sit, you come back."
+    },
     "label": {
       "pt": "Avaliações ilustrativas: projeto conceitual.",
       "en": "Illustrative reviews: concept project."
     },
-    "starsLabel": { "pt": "{n} de 5 estrelas", "en": "{n} out of 5 stars" }
+    "starsLabel": {
+      "pt": "{n} de 5 estrelas",
+      "en": "{n} out of 5 stars"
+    }
   },
-
   "location": {
-    "eyebrow": { "pt": "Como chegar", "en": "Directions" },
-    "title": { "pt": "No coração do Recife Antigo.", "en": "Right in the heart of Old Recife." },
-    "addressLabel": { "pt": "Endereço", "en": "Address" },
-    "hoursLabel": { "pt": "Horário", "en": "Opening hours" },
-    "phoneLabel": { "pt": "Telefone", "en": "Phone" },
-    "closed": { "pt": "Fechado", "en": "Closed" },
+    "eyebrow": {
+      "pt": "Como chegar",
+      "en": "Directions"
+    },
+    "title": {
+      "pt": "No coração do Recife Antigo.",
+      "en": "Right in the heart of Old Recife."
+    },
+    "addressLabel": {
+      "pt": "Endereço",
+      "en": "Address"
+    },
+    "hoursLabel": {
+      "pt": "Horário",
+      "en": "Opening hours"
+    },
+    "phoneLabel": {
+      "pt": "Telefone",
+      "en": "Phone"
+    },
+    "closed": {
+      "pt": "Fechado",
+      "en": "Closed"
+    },
     "days": {
       "pt": ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
       "en": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     },
-    "openMaps": { "pt": "Abrir no Google Maps", "en": "Open in Google Maps" },
-    "loadMap": { "pt": "Carregar mapa interativo", "en": "Load interactive map" },
-    "call": { "pt": "Ligar agora", "en": "Call now" },
+    "openMaps": {
+      "pt": "Abrir no Google Maps",
+      "en": "Open in Google Maps"
+    },
+    "loadMap": {
+      "pt": "Carregar mapa interativo",
+      "en": "Load interactive map"
+    },
+    "call": {
+      "pt": "Ligar agora",
+      "en": "Call now"
+    },
     "mapNote": {
       "pt": "O mapa só carrega quando você toca, pra página abrir rápido.",
       "en": "The map only loads when you tap, so the page opens fast."
     }
   },
-
   "faq": {
-    "eyebrow": { "pt": "Dúvidas", "en": "FAQ" },
-    "title": { "pt": "Perguntas rápidas.", "en": "Quick questions." },
+    "eyebrow": {
+      "pt": "Dúvidas",
+      "en": "FAQ"
+    },
+    "title": {
+      "pt": "Perguntas rápidas.",
+      "en": "Quick questions."
+    },
     "items": [
       {
-        "q": { "pt": "Precisa agendar?", "en": "Do I need to book?" },
+        "q": {
+          "pt": "Precisa agendar?",
+          "en": "Do I need to book?"
+        },
         "a": {
           "pt": "Não é obrigatório, mas quem agenda não espera. Sem horário marcado, a gente encaixa assim que uma cadeira vagar.",
           "en": "It's not required, but people who book don't wait. Walk-ins get the next free chair."
         }
       },
       {
-        "q": { "pt": "Aceita Pix?", "en": "Do you take Pix or cards?" },
+        "q": {
+          "pt": "Aceita Pix?",
+          "en": "Do you take Pix or cards?"
+        },
         "a": {
           "pt": "Aceita. Pix, crédito, débito e dinheiro.",
           "en": "Yes. Pix (Brazil's instant payment), credit, debit and cash."
         }
       },
       {
-        "q": { "pt": "Tem estacionamento?", "en": "Is there parking?" },
+        "q": {
+          "pt": "Tem estacionamento?",
+          "en": "Is there parking?"
+        },
         "a": {
           "pt": "Não temos estacionamento próprio, mas há estacionamentos rotativos a poucos passos. Dá pra vir de bicicleta: tem onde prender.",
           "en": "We don't have our own lot, but there are paid car parks a short walk away. Coming by bike? There's a rack out front."
         }
       },
       {
-        "q": { "pt": "Atende criança?", "en": "Do you cut kids' hair?" },
+        "q": {
+          "pt": "Atende criança?",
+          "en": "Do you cut kids' hair?"
+        },
         "a": {
           "pt": "Atende, sim. O Caio é especialista em corte infantil e tem a paciência que o momento pede.",
           "en": "We do. Caio specializes in kids' cuts and has all the patience it takes."
         }
       },
       {
-        "q": { "pt": "E se eu me atrasar?", "en": "What if I'm running late?" },
+        "q": {
+          "pt": "E se eu me atrasar?",
+          "en": "What if I'm running late?"
+        },
         "a": {
           "pt": "Avise pelo WhatsApp. Até 10 minutos a gente segura; depois disso, remarcamos sem custo.",
           "en": "Message us on WhatsApp. We'll hold your chair for 10 minutes; after that, we'll reschedule at no cost."
@@ -249,7 +443,6 @@
       }
     ]
   },
-
   "footer": {
     "tagline": {
       "pt": "Barbearia clássica com alma portuária.",
@@ -268,23 +461,45 @@
       "en": "Ferro & Maré is a fictional brand."
     }
   },
-
   "mobileBar": {
-    "whatsapp": { "pt": "WhatsApp", "en": "WhatsApp" },
-    "call": { "pt": "Ligar", "en": "Call" },
-    "book": { "pt": "Agendar", "en": "Book" }
+    "whatsapp": {
+      "pt": "WhatsApp",
+      "en": "WhatsApp"
+    },
+    "call": {
+      "pt": "Ligar",
+      "en": "Call"
+    },
+    "book": {
+      "pt": "Agendar",
+      "en": "Book"
+    }
   },
-
   "thanks": {
-    "eyebrow": { "pt": "Pedido enviado", "en": "Request sent" },
-    "title": { "pt": "Combinado. Te esperamos.", "en": "Done. See you soon." },
+    "eyebrow": {
+      "pt": "Pedido enviado",
+      "en": "Request sent"
+    },
+    "title": {
+      "pt": "Combinado. Te esperamos.",
+      "en": "Done. See you soon."
+    },
     "body": {
       "pt": "Seu pedido foi pro WhatsApp. Assim que a gente responder, o horário está garantido.",
       "en": "Your request went to WhatsApp. Once we reply, your time is locked in."
     },
-    "summary": { "pt": "Seu agendamento", "en": "Your booking" },
-    "addToCalendar": { "pt": "Adicionar ao calendário", "en": "Add to calendar" },
-    "back": { "pt": "Voltar ao site", "en": "Back to the site" },
+    "summary": {
+      "pt": "Seu agendamento",
+      "en": "Your booking"
+    },
+    "addToCalendar": {
+      "pt": "Adicionar ao calendário",
+      "en": "Add to calendar"
+    },
+    "back": {
+      "pt": "Voltar ao site",
+      "en": "Back to the site"
+    },
     "whatsappAgain": {
       "pt": "O WhatsApp não abriu? Tocar aqui",
       "en": "WhatsApp didn't open? Tap here"
@@ -293,6 +508,9 @@
       "pt": "Não encontramos um agendamento nesta sessão.",
       "en": "We couldn't find a booking in this session."
     },
-    "calendarTitle": { "pt": "{service} · Ferro & Maré", "en": "{service} · Ferro & Maré" }
+    "calendarTitle": {
+      "pt": "{service} · Ferro & Maré",
+      "en": "{service} · Ferro & Maré"
+    }
   }
 }

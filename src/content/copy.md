@@ -34,12 +34,12 @@
 | `eyebrow` | Barbearia clássica · Recife Antigo | Classic barbershop · Old Recife |
 | `h1` | Barbearia no Recife Antigo. | Barbershop in Old Recife. |
 | `h1Accent` | Seu horário em 30 segundos. | Book in 30 seconds. |
-| `sub` | Corte, barba na toalha quente e café passado. Ter a Sáb. | Haircuts, hot-towel shaves and fresh-brewed coffee. Tue to Sat. |
+| `sub` | Corte, barba na toalha quente e café passado. Ter a Sáb. | Haircuts, hot-towel shaves and fresh-brewed coffee. Tue to Sat. |
 | `ctaPrimary` | Agendar horário | Book a time |
 | `ctaSecondary` | Chamar no WhatsApp | Message on WhatsApp |
 | `proof` | ★ 4,9 · avaliações ilustrativas | ★ 4.9 · illustrative reviews |
 | `perks` | • Toalha quente<br>• Café passado na hora<br>• Horário pontual | • Hot towel<br>• Fresh-brewed coffee<br>• On-time, every time |
-| `imageAlt` | Cadeira de barbeiro e ferramentas de latão sob luz quente | Barber chair and brass tools under warm light |
+| `imageAlt` | Ilustração: cadeira de barbeiro sob uma luminária, num arco de casarão com os guindastes do porto ao fundo | Illustration: a barber chair under a pendant lamp, framed by an old townhouse arch with harbour cranes behind |
 
 ## 3. Serviços & preços
 

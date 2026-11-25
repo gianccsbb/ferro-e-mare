@@ -1,6 +1,8 @@
 ---
 import type { Lang } from '../i18n/ui';
 import { copy, team, translator } from '../lib/content';
+import Portrait from './art/Portrait.astro';
+import Icon from './Icon.astro';
 
 interface Props {
   lang: Lang;
@@ -8,27 +10,33 @@ interface Props {
 const { lang } = Astro.props;
 const t = translator(lang);
 const c = copy.team;
+const variants = { jonas: 'fade', bie: 'beard', caio: 'curly' } as const;
 ---
 
-<section id="equipe" class="section surface-ink" aria-labelledby="equipe-title">
+<section id="equipe" class="section surface-ink texture-brushed" aria-labelledby="equipe-title">
   <div class="container">
     <div class="section-head">
       <p class="eyebrow">{t(c.eyebrow)}</p>
       <h2 id="equipe-title">{t(c.title)}</h2>
     </div>
     <ul class="list" role="list">
-      {team.map((m) => (
+      {team.map((m, i) => (
         <li class="member">
-          {/* Fase 4: retrato/ilustração do barbeiro */}
-          <div class="ph" style="--ratio: 1 / 1" aria-hidden="true">
-            {m.name}
+          <div class="frame">
+            <Portrait
+              variant={variants[m.id as keyof typeof variants]}
+              number={String(i + 1).padStart(2, '0')}
+            />
           </div>
-          <h3>{m.name}</h3>
-          <p class="specialty">{t(m.specialty)}</p>
-          <p class="bio muted">{t(m.bio)}</p>
-          <a class="btn btn-ghost btn-sm" href="#agendar" data-book-barber={m.id}>
-            {t(m.cta)}
-          </a>
+          <div class="body">
+            <h3>{m.name}</h3>
+            <p class="specialty">{t(m.specialty)}</p>
+            <p class="bio">{t(m.bio)}</p>
+            <a class="btn btn-ghost btn-sm" href="#agendar" data-book-barber={m.id}>
+              {t(m.cta)}
+              <Icon name="arrow" size={16} />
+            </a>
+          </div>
         </li>
       ))}
     </ul>
@@ -44,23 +52,50 @@ const c = copy.team;
   }
   .member {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-4);
   }
-  .member .ph {
-    margin-bottom: var(--space-2);
+  .frame {
+    max-width: 18rem;
+    transition: transform var(--dur) var(--ease);
+  }
+  .member:hover .frame {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+  .body {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+  }
+  h3 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
   }
   .specialty {
     color: var(--brass);
     font-weight: 600;
   }
-  .member .btn {
-    justify-self: start;
-    margin-top: var(--space-2);
+  .bio {
+    color: var(--steel);
+    max-width: 34ch;
+    margin-bottom: var(--space-2);
+  }
+  @media (max-width: 767px) {
+    .member {
+      grid-template-columns: 8.5rem 1fr;
+      align-items: center;
+    }
   }
   @media (min-width: 768px) {
     .list {
       grid-template-columns: repeat(3, 1fr);
       gap: var(--space-5);
+    }
+    .frame {
+      max-width: 15rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .member:hover .frame {
+      transform: none;
     }
   }
 </style>

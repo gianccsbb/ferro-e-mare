@@ -12,79 +12,151 @@ const t = translator(lang);
 const c = copy.club;
 ---
 
-<section id="clube" class="section surface-navy" aria-labelledby="clube-title">
+<section id="clube" class="section surface-navy texture-noise" aria-labelledby="clube-title">
   <div class="container">
-    <article class="card plan">
-      <div class="head">
+    <article class="member-card plate">
+      <span class="monogram" aria-hidden="true">
+        F&amp;M
+      </span>
+      <div class="left">
         <p class="eyebrow">{t(c.eyebrow)}</p>
         <h2 id="clube-title">{t(c.title)}</h2>
         <p class="pitch">{t(c.pitch)}</p>
+        <p class="price">
+          <span class="amount">{t(c.price)}</span>
+          <span class="period">{t(c.period)}</span>
+        </p>
       </div>
-      <p class="price">
-        <span class="amount">{t(c.price)}</span>
-        <span class="period">{t(c.period)}</span>
-      </p>
-      <ul class="benefits" role="list">
-        {t(c.benefits).map((b) => (
-          <li>
-            <Icon name="check" size={18} />
-            {b}
-          </li>
-        ))}
-      </ul>
-      <a class="btn btn-primary btn-block" href={waLink(t(c.whatsappMessage))} rel="noopener">
-        {t(c.cta)}
-        <Icon name="arrow" />
-      </a>
+      <div class="right">
+        <ul class="benefits" role="list">
+          {t(c.benefits).map((b) => (
+            <li>
+              <span class="tick">
+                <Icon name="check" size={14} />
+              </span>
+              {b}
+            </li>
+          ))}
+        </ul>
+        <a
+          class="btn btn-primary btn-lg btn-block"
+          href={waLink(t(c.whatsappMessage))}
+          rel="noopener"
+        >
+          {t(c.cta)}
+          <Icon name="arrow" />
+        </a>
+      </div>
     </article>
   </div>
 </section>
 
 <style>
-  .plan {
+  .member-card {
+    --rivet: rgb(192 138 62 / 0.7);
+    position: relative;
+    overflow: hidden;
     display: grid;
-    gap: var(--space-5);
-    max-width: 34rem;
+    gap: var(--space-6);
+    max-width: 60rem;
     margin-inline: auto;
-    padding: var(--space-6) var(--space-5);
-    background: var(--ink);
-    border-color: var(--brass);
+    padding: var(--space-7) var(--space-5);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background-color: var(--ink);
+    background-origin: border-box;
+    box-shadow:
+      0 0 0 1px rgb(192 138 62 / 0.5),
+      0 40px 80px -40px rgb(0 0 0 / 0.8),
+      inset 0 1px 0 rgb(255 255 255 / 0.06);
   }
-  .head {
+  /* Brilho metálico que atravessa o cartão */
+  .member-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      transparent 30%,
+      rgb(240 194 122 / 0.08) 45%,
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+  .monogram {
+    position: absolute;
+    right: -0.05em;
+    bottom: -0.2em;
+    font-family: var(--font-display);
+    font-size: clamp(8rem, 30vw, 16rem);
+    font-weight: 800;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(192 138 62 / 0.18);
+    pointer-events: none;
+    user-select: none;
+  }
+  .left,
+  .right {
+    position: relative;
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-3);
+    align-content: start;
+  }
+  .left .eyebrow {
+    color: var(--brass);
   }
   .pitch {
     color: var(--steel);
+    max-width: 30ch;
   }
   .price {
     display: flex;
     align-items: baseline;
     gap: var(--space-1);
+    margin-top: var(--space-2);
   }
   .amount {
     font-family: var(--font-display);
-    font-size: clamp(3rem, 10vw, 4.5rem);
+    font-size: clamp(3.5rem, 12vw, 5.5rem);
     font-weight: 800;
-    line-height: 1;
-    color: var(--cta);
+    line-height: 0.9;
+    background: linear-gradient(100deg, #f0c27a, var(--cta) 50%, var(--brass));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .period {
     color: var(--steel);
+    font-size: 1.125rem;
   }
   .benefits {
     display: grid;
     gap: var(--space-3);
+    margin-bottom: var(--space-3);
     padding: 0;
     list-style: none;
   }
   .benefits li {
     display: flex;
     gap: var(--space-3);
-    align-items: flex-start;
+    align-items: center;
   }
-  .benefits :global(.icon) {
-    color: var(--brass);
-    margin-top: 3px;
+  .tick {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgb(192 138 62 / 0.15);
+    color: var(--cta);
+    flex: none;
+  }
+  @media (min-width: 768px) {
+    .member-card {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: var(--space-7);
+    }
   }
 </style>

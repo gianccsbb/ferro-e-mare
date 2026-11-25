@@ -1,8 +1,9 @@
 ---
 import type { Lang } from '../i18n/ui';
-import { copy, translator, fmt } from '../lib/content';
+import { copy, translator } from '../lib/content';
 import { waLink } from '../lib/contact';
 import Icon from './Icon.astro';
+import HeroArt from './art/HeroArt.astro';
 
 interface Props {
   lang: Lang;
@@ -12,7 +13,8 @@ const t = translator(lang);
 const c = copy.hero;
 ---
 
-<section class="hero surface-ink" aria-labelledby="hero-title">
+<section class="hero surface-ink texture-noise" aria-labelledby="hero-title">
+  <div class="glow" aria-hidden="true"></div>
   <div class="container grid">
     <div class="copy">
       <p class="eyebrow">{t(c.eyebrow)}</p>
@@ -22,39 +24,55 @@ const c = copy.hero;
       </h1>
       <p class="sub">{t(c.sub)}</p>
       <div class="ctas">
-        <a class="btn btn-primary" href="#agendar">
+        <a class="btn btn-primary btn-lg" href="#agendar">
           <Icon name="calendar" />
           {t(c.ctaPrimary)}
         </a>
-        <a class="btn btn-ghost" href={waLink(t(copy.booking.whatsappGeneric))} rel="noopener">
+        <a
+          class="btn btn-ghost btn-lg"
+          href={waLink(t(copy.booking.whatsappGeneric))}
+          rel="noopener"
+        >
           <Icon name="chat" />
           {t(c.ctaSecondary)}
         </a>
       </div>
-      <p class="proof">{t(c.proof)}</p>
-      <ul class="perks" role="list">
-        {t(c.perks).map((p) => (
-          <li>
-            <Icon name="check" size={16} />
-            {p}
-          </li>
-        ))}
-      </ul>
+      <div class="meta">
+        <p class="proof">{t(c.proof)}</p>
+        <ul class="perks" role="list">
+          {t(c.perks).map((p) => (
+            <li>
+              <Icon name="check" size={16} />
+              {p}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
     <div class="media">
-      <!-- Fase 4: foto do hero (≤ 200 KB, fetchpriority="high") -->
-      <div class="ph" style="--ratio: 4 / 5" role="img" aria-label={t(c.imageAlt)}>
-        {fmt('[{a}]', { a: t(c.imageAlt) })}
-      </div>
+      <HeroArt label={t(c.imageAlt)} />
     </div>
   </div>
 </section>
 
 <style>
   .hero {
-    padding-block: var(--space-6) var(--space-8);
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--space-6) var(--space-7);
+  }
+  .glow {
+    position: absolute;
+    inset: -20% -10% auto auto;
+    width: 70vw;
+    height: 70vw;
+    max-width: 900px;
+    max-height: 900px;
+    background: radial-gradient(circle, rgb(224 160 74 / 0.18), transparent 60%);
+    pointer-events: none;
   }
   .grid {
+    position: relative;
     display: grid;
     gap: var(--space-7);
   }
@@ -63,19 +81,27 @@ const c = copy.hero;
   }
   .accent {
     display: block;
-    color: var(--cta);
+    background: linear-gradient(100deg, #f0c27a 0%, var(--cta) 45%, var(--brass) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .sub {
     color: var(--steel);
     max-width: 36ch;
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
   }
   .ctas {
     display: grid;
     gap: var(--space-3);
     margin-top: var(--space-5);
   }
+  .meta {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
   .proof {
-    margin-top: var(--space-4);
     font-size: var(--fs-small);
     color: var(--steel);
   }
@@ -83,7 +109,7 @@ const c = copy.hero;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-4);
-    margin-top: var(--space-4);
+    margin-top: var(--space-3);
     padding: 0;
     list-style: none;
     font-size: var(--fs-small);
@@ -96,16 +122,30 @@ const c = copy.hero;
   .perks :global(.icon) {
     color: var(--brass);
   }
+  .media {
+    max-width: 22rem;
+    width: 100%;
+    margin-inline: auto;
+  }
   @media (min-width: 480px) {
     .ctas {
       display: flex;
       flex-wrap: wrap;
     }
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     .grid {
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.15fr 0.85fr;
       align-items: center;
+      gap: var(--space-6);
+    }
+    .media {
+      max-width: none;
+    }
+  }
+  @media (min-width: 1024px) {
+    .hero {
+      padding-block: var(--space-7) var(--space-8);
     }
   }
 </style>

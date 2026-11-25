@@ -16,6 +16,9 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer surface-ink">
+  <p class="giant" aria-hidden="true">
+    Ferro &amp; Maré
+  </p>
   <div class="container grid">
     <div>
       <p class="brand">
@@ -51,7 +54,24 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
+  .giant {
+    margin-bottom: var(--space-6);
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 17vw, 15rem);
+    font-weight: 800;
+    line-height: 0.85;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(192 138 62 / 0.45);
+    background: linear-gradient(180deg, rgb(192 138 62 / 0.14), transparent 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    user-select: none;
+  }
   .site-footer {
+    overflow: hidden;
     padding-block: var(--space-7) var(--space-6);
     border-top: 1px solid var(--line);
     font-size: var(--fs-small);

@@ -1,0 +1,24 @@
+---
+// Faixa letreiro decorativa entre o hero e os serviços.
+// aria-hidden: o conteúdo já aparece na página; leitores de tela não precisam repetir.
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const words =
+  lang === 'pt'
+    ? ['Corte', 'Barba na toalha quente', 'Café passado', 'Horário pontual', 'Recife Antigo']
+    : ['Haircuts', 'Hot-towel shaves', 'Fresh coffee', 'On time', 'Old Recife'];
+// Duplicado para o loop contínuo (translateX -50%).
+const items = [...words, ...words, ...words, ...words];
+---
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    {items.map((w) => (
+      <span>{w} ✦</span>
+    ))}
+  </div>
+</div>
