@@ -1,0 +1,189 @@
+---
+// Checkpoint da Fase 1: amostra de tipografia + cores. Será removida na Fase 3.
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const copy = {
+  pt: {
+    eyebrow: 'Fase 1 · Setup',
+    h1: 'Barbearia no Recife Antigo.',
+    h1b: 'Seu horário em 30 segundos.',
+    sub: 'Corte, barba na toalha quente e café passado. Ter a Sáb.',
+    cta: 'Agendar horário',
+    cta2: 'Chamar no WhatsApp',
+    palette: 'Paleta',
+    light: 'Seção clara',
+    lightText:
+      'Nas seções claras, latão, aço e maré usam variações mais escuras para manter contraste AA.',
+    type: 'Tipografia',
+  },
+  en: {
+    eyebrow: 'Phase 1 · Setup',
+    h1: 'Barbershop in Old Recife.',
+    h1b: 'Book in 30 seconds.',
+    sub: 'Haircut, hot-towel shave and fresh-brewed coffee. Tue to Sat.',
+    cta: 'Book a time',
+    cta2: 'Message on WhatsApp',
+    palette: 'Palette',
+    light: 'Light section',
+    lightText:
+      'On light sections, brass, steel and tide switch to deeper variants to keep AA contrast.',
+    type: 'Typography',
+  },
+}[lang];
+
+const swatches = [
+  ['ink', '#0F1720'],
+  ['navy', '#13283D'],
+  ['tide', '#5E8A9A'],
+  ['brass', '#C08A3E'],
+  ['rust', '#A4492B'],
+  ['foam', '#F4EFE6'],
+  ['steel', '#9AA4AE'],
+  ['cta', '#E0A04A'],
+];
+---
+
+<section class="surface-ink hero section">
+  <div class="container">
+    <p class="eyebrow">{copy.eyebrow}</p>
+    <h1>
+      {copy.h1}
+      <br />
+      <span class="accent">{copy.h1b}</span>
+    </h1>
+    <p class="sub muted">{copy.sub}</p>
+    <div class="ctas">
+      <a class="btn btn-primary" href="#">
+        {copy.cta}
+      </a>
+      <a class="btn btn-ghost" href="#">
+        {copy.cta2}
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="surface-navy section">
+  <div class="container">
+    <h2>{copy.palette}</h2>
+    <ul class="swatches" role="list">
+      {swatches.map(([name, hex]) => (
+        <li>
+          <span class="chip" style={`background:var(--${name})`} />
+          <code>--{name}</code>
+          <span class="muted">{hex}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="surface-foam section">
+  <div class="container">
+    <p class="eyebrow">{copy.light}</p>
+    <h2>{copy.type}</h2>
+    <p class="display big">Big Shoulders Display 800</p>
+    <p class="body-sample">
+      Instrument Sans — 400 · <strong>600</strong>
+    </p>
+    <p class="muted">{copy.lightText}</p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 80dvh;
+    display: grid;
+    align-items: center;
+    /* textura sutil de ruído via SVG inline (sem imagem pesada) */
+    background-image:
+      radial-gradient(ellipse at 80% 0%, rgb(192 138 62 / 0.16), transparent 55%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+  }
+  .hero h1 {
+    margin-block: var(--space-4) var(--space-5);
+    max-width: 14ch;
+  }
+  .accent {
+    color: var(--cta);
+  }
+  .sub {
+    max-width: 40ch;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  .btn {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding-inline: var(--space-6);
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-decoration: none;
+    isolation: isolate;
+  }
+  .btn-primary {
+    background: var(--cta);
+    color: var(--ink);
+  }
+  /* micro-interação de assinatura: faixa diagonal de latão desliza */
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      115deg,
+      transparent 35%,
+      rgb(255 255 255 / 0.45) 45%,
+      transparent 55%
+    );
+    transform: translateX(-100%);
+    transition: transform 700ms var(--ease);
+  }
+  .btn-primary:hover::after,
+  .btn-primary:focus-visible::after {
+    transform: translateX(100%);
+  }
+  .btn-ghost {
+    border: 1px solid var(--line-strong);
+  }
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+  .swatches li {
+    display: grid;
+    gap: var(--space-1);
+    font-size: var(--fs-small);
+  }
+  .chip {
+    height: 4.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line-strong);
+  }
+  .big {
+    font-size: clamp(2rem, 6vw, 4rem);
+    margin-block: var(--space-5) var(--space-3);
+  }
+  .body-sample {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-3);
+  }
+</style>
