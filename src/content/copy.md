@@ -141,15 +141,15 @@ Dias: Qua, Qui, Sex, Sáb
 
 | # | Alt PT | Alt EN |
 |---|---|---|
-| 1 | Degradê baixo com risca lateral, visto de perfil | Low fade with a side part, seen in profile |
-| 2 | Barba cheia aparada e contornada na navalha | Full beard trimmed and lined up with a razor |
-| 3 | Barbeiro aplicando toalha quente no rosto de um cliente | Barber placing a hot towel on a client's face |
-| 4 | Corte social curto com acabamento na tesoura | Short classic cut finished with scissors |
-| 5 | Bancada com navalha, pincel e frascos de latão | Counter with a straight razor, brush and brass bottles |
-| 6 | Degradê alto com textura no topo | High fade with a textured top |
-| 7 | Cadeira de barbeiro clássica sob luz quente | Classic barber chair under warm light |
-| 8 | Corte infantil moderno, visto de trás | Modern kids' haircut, seen from behind |
-| 9 | Acabamento do pezinho feito com navalha | Neckline cleaned up with a straight razor |
+| 1 | Risca lateral marcada com degradê, finalizada na tesoura e no pente | Hard side part with a fade, finished with scissors and comb |
+| 2 | Degradê alto com topo texturizado, acabamento na navalha | High fade with a textured top, razor finish |
+| 3 | Cliente reclinado enquanto o barbeiro apara a barba na tesoura | Client reclined while the barber trims his beard with scissors |
+| 4 | Cadeira de barbeiro clássica em couro caramelo | Classic barber chair in tan leather |
+| 5 | Degradê na máquina, feito por um barbeiro tatuado | Clipper fade by a tattooed barber |
+| 6 | Pincéis de barbear e navalhas enfileirados na bancada | Shaving brushes and razors lined up on the counter |
+| 7 | Salão com parede de tijolo e luminárias de luz quente | Shop floor with brick walls and warm pendant lights |
+| 8 | Corte infantil com risca lateral | Kids' cut with a side part |
+| 9 | Acabamento na navalha na costeleta, visto por trás | Razor finish on the sideburn, seen from behind |
 
 ## 7. Clube Ferro & Maré
 

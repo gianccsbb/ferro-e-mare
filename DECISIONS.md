@@ -151,3 +151,12 @@ DOM e ocupa 2 colunas, para a grade fechar sem buracos e a ordem do Tab seguir a
 
 - Não há Chrome nesta máquina (Lighthouse precisa dele). Medimos com PageSpeed Insights
   na URL pública (Fase 7), que é também o número que vai para o /case.
+
+## D-023 — Fotos da galeria: 9 do Unsplash (licença livre), legendas fiéis
+
+- Escolhidas olhando cada imagem (não pelo título): luz quente, sem máscaras/época marcada,
+  sem cores fora da paleta. Unsplash+ (pago) descartado — por isso não há foto de toalha quente;
+  no lugar entrou o salão com tijolo e luminárias.
+- Legendas (alt) reescritas para descrever o que cada foto mostra de fato.
+- Autores e links em `src/assets/gallery/CREDITS.md` (vão também para o /case).
+- Peso: pior caso 167 KB para as 9 (AVIF), e só carregam perto da tela.

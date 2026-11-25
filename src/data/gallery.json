@@ -2,61 +2,64 @@
   {
     "id": "g1",
     "alt": {
-      "pt": "Degradê baixo com risca lateral, visto de perfil",
-      "en": "Low fade with a side part, seen in profile"
+      "pt": "Risca lateral marcada com degradê, finalizada na tesoura e no pente",
+      "en": "Hard side part with a fade, finished with scissors and comb"
     }
   },
   {
     "id": "g2",
     "alt": {
-      "pt": "Barba cheia aparada e contornada na navalha",
-      "en": "Full beard trimmed and lined up with a razor"
+      "pt": "Degradê alto com topo texturizado, acabamento na navalha",
+      "en": "High fade with a textured top, razor finish"
     }
   },
   {
     "id": "g3",
     "alt": {
-      "pt": "Barbeiro aplicando toalha quente no rosto de um cliente",
-      "en": "Barber placing a hot towel on a client's face"
+      "pt": "Cliente reclinado enquanto o barbeiro apara a barba na tesoura",
+      "en": "Client reclined while the barber trims his beard with scissors"
     }
   },
   {
     "id": "g4",
     "alt": {
-      "pt": "Corte social curto com acabamento na tesoura",
-      "en": "Short classic cut finished with scissors"
+      "pt": "Cadeira de barbeiro clássica em couro caramelo",
+      "en": "Classic barber chair in tan leather"
     }
   },
   {
     "id": "g5",
     "alt": {
-      "pt": "Bancada com navalha, pincel e frascos de latão",
-      "en": "Counter with a straight razor, brush and brass bottles"
+      "pt": "Degradê na máquina, feito por um barbeiro tatuado",
+      "en": "Clipper fade by a tattooed barber"
     }
   },
   {
     "id": "g6",
-    "alt": { "pt": "Degradê alto com textura no topo", "en": "High fade with a textured top" }
+    "alt": {
+      "pt": "Pincéis de barbear e navalhas enfileirados na bancada",
+      "en": "Shaving brushes and razors lined up on the counter"
+    }
   },
   {
     "id": "g7",
     "alt": {
-      "pt": "Cadeira de barbeiro clássica sob luz quente",
-      "en": "Classic barber chair under warm light"
+      "pt": "Salão com parede de tijolo e luminárias de luz quente",
+      "en": "Shop floor with brick walls and warm pendant lights"
     }
   },
   {
     "id": "g8",
     "alt": {
-      "pt": "Corte infantil moderno, visto de trás",
-      "en": "Modern kids' haircut, seen from behind"
+      "pt": "Corte infantil com risca lateral",
+      "en": "Kids' cut with a side part"
     }
   },
   {
     "id": "g9",
     "alt": {
-      "pt": "Acabamento do pezinho feito com navalha",
-      "en": "Neckline cleaned up with a straight razor"
+      "pt": "Acabamento na navalha na costeleta, visto por trás",
+      "en": "Razor finish on the sideburn, seen from behind"
     }
   }
 ]
