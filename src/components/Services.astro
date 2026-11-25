@@ -1,0 +1,108 @@
+---
+import type { Lang } from '../i18n/ui';
+import { copy, services, translator, fmt, brl } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = copy.services;
+---
+
+<section id="servicos" class="section surface-foam" aria-labelledby="servicos-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">{t(c.eyebrow)}</p>
+      <h2 id="servicos-title">{t(c.title)}</h2>
+    </div>
+
+    <ul class="list" role="list">
+      {services.map((s) => (
+        <li class:list={['card', 'service', { featured: s.featured }]}>
+          {s.badge && <p class="badge">{t(s.badge)}</p>}
+          <div class="row">
+            <h3>{t(s.name)}</h3>
+            <p class="price">{brl(s.price)}</p>
+          </div>
+          <p class="meta">{fmt(t(c.minutes), { n: s.duration })}</p>
+          <p class="desc">{t(s.desc)}</p>
+          <a
+            class="btn btn-ghost btn-sm"
+            href="#agendar"
+            data-book-service={s.id}
+            aria-label={`${t(c.bookThis)}: ${t(s.name)}`}
+          >
+            {t(c.bookThis)}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="note muted">{t(c.note)}</p>
+  </div>
+</section>
+
+<style>
+  .list {
+    display: grid;
+    gap: var(--space-4);
+    padding: 0;
+    list-style: none;
+  }
+  .service {
+    display: grid;
+    gap: var(--space-2);
+    background: #fff9f0;
+  }
+  .featured {
+    border-color: var(--brass-deep);
+    border-width: 2px;
+  }
+  .badge {
+    justify-self: start;
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    background: var(--ink);
+    color: var(--cta);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+  .price {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .meta {
+    font-size: var(--fs-small);
+    color: var(--fg-muted);
+  }
+  .desc {
+    margin-bottom: var(--space-2);
+  }
+  .service .btn {
+    justify-self: start;
+  }
+  .note {
+    margin-top: var(--space-5);
+    font-size: var(--fs-small);
+  }
+  @media (min-width: 768px) {
+    .list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

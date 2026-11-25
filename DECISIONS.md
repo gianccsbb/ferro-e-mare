@@ -68,3 +68,17 @@ fechamento e sem cruzar blocos ocupados.
 - Barbeiros só com primeiro nome/apelido (Jonas, Bié, Caio), para reduzir a chance de coincidir com pessoa real.
 - Clube: benefícios extras ("prioridade no sábado", "cancele quando quiser") reforçam a ideia de recorrência.
 - Os textos de `/case` ficam para a Fase 8 porque dependem de números medidos.
+
+## D-010 — Contatos via `astro:env`, WhatsApp e "Ligar" no número do estúdio
+
+2026-11-25. `PUBLIC_WHATSAPP_DEMO` e `PUBLIC_PHONE_DEMO` são declarados no `env.schema` do
+Astro: se faltarem, o build falha em vez de publicar links quebrados. Os dois apontam para o
+número do estúdio, então o prospect que testa o fluxo, ou que liga, cai na conversa do estúdio.
+O número fica fora do repo (`.env` ignorado), mas aparece no site publicado, como é preciso.
+
+## D-011 — Estrutura de componentes e rotas
+
+2026-11-25. `Home.astro` e `Thanks.astro` recebem `lang` e servem às rotas PT e EN.
+`trailingSlash: 'always'` mantém URLs canônicas consistentes (`/obrigado/`, `/en/thank-you/`).
+O selo "Aberto agora" é renderizado com o horário fixo como fallback (sem JS) e recalculado
+no navegador a cada minuto, no fuso `America/Recife`, independente do fuso do visitante.

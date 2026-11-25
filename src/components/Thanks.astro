@@ -1,0 +1,69 @@
+---
+// /obrigado e /en/thank-you. Fase 3: esqueleto. O resumo e o .ics vêm na Fase 5
+// (lidos do sessionStorage gravado pelo fluxo de agendamento).
+import type { Lang } from '../i18n/ui';
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import Icon from './Icon.astro';
+import { copy, translator } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = copy.thanks;
+const home = lang === 'pt' ? '/' : '/en/';
+---
+
+<Base title={t(copy.seo.thanks.title)} description={t(copy.seo.thanks.description)}>
+  <Header lang={lang} slot="header" />
+  <section class="section surface-ink" aria-labelledby="thanks-title">
+    <div class="container narrow">
+      <p class="eyebrow">{t(c.eyebrow)}</p>
+      <h1 id="thanks-title">{t(c.title)}</h1>
+      <p class="lead">{t(c.body)}</p>
+
+      <div id="thanks-summary" class="card summary">
+        <h2 class="h-small">{t(c.summary)}</h2>
+        <p class="muted">{t(c.empty)}</p>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-ghost" href={home}>
+          <Icon name="chevronLeft" />
+          {t(c.back)}
+        </a>
+      </div>
+    </div>
+  </section>
+  <Footer lang={lang} slot="footer" />
+</Base>
+
+<style>
+  .narrow {
+    max-width: 40rem;
+    min-height: 60dvh;
+  }
+  h1 {
+    margin-block: var(--space-3) var(--space-4);
+  }
+  .lead {
+    color: var(--steel);
+  }
+  .summary {
+    margin-top: var(--space-6);
+    background: var(--navy);
+  }
+  .h-small {
+    font-size: var(--fs-h3);
+    margin-bottom: var(--space-3);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+</style>

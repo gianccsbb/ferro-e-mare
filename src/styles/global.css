@@ -158,3 +158,105 @@ a {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- Botões ---------- */
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 52px;
+  padding-inline: var(--space-6);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+.btn-sm {
+  min-height: var(--tap);
+  padding-inline: var(--space-4);
+  font-size: var(--fs-small);
+}
+.btn-block {
+  width: 100%;
+}
+.btn-primary {
+  background: var(--cta);
+  color: var(--ink);
+}
+/* Assinatura: faixa diagonal de latão desliza no hover/foco (aceno ao poste de barbeiro). */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgb(255 255 255 / 0.45) 45%,
+    transparent 55%
+  );
+  transform: translateX(-100%);
+  transition: transform 700ms var(--ease);
+}
+.btn-primary:hover::after,
+.btn-primary:focus-visible::after {
+  transform: translateX(100%);
+}
+.btn-ghost {
+  border-color: var(--line-strong);
+  color: var(--fg);
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+}
+.surface-foam .btn-primary {
+  background: var(--ink);
+  color: var(--foam);
+}
+
+/* ---------- Cabeçalho de seção ---------- */
+.section-head {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  max-width: 40rem;
+}
+
+/* ---------- Ícones ---------- */
+.icon {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+
+/* ---------- Cartão ---------- */
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--space-5);
+}
+
+/* ---------- Placeholder de imagem (provisório até a Fase 4) ---------- */
+.ph {
+  display: grid;
+  place-items: center;
+  aspect-ratio: var(--ratio, 4 / 5);
+  border-radius: var(--radius);
+  background:
+    repeating-linear-gradient(135deg, rgb(94 138 154 / 0.12) 0 2px, transparent 2px 12px),
+    var(--navy);
+  color: var(--steel);
+  font-size: var(--fs-small);
+  text-align: center;
+  padding: var(--space-3);
+}

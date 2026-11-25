@@ -1,0 +1,147 @@
+---
+import type { Lang } from '../i18n/ui';
+import { copy, business, hours, translator } from '../lib/content';
+import { telLink, formatPhone } from '../lib/contact';
+import { fmtTime } from '../lib/hours';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = copy.location;
+const a = business.address;
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.mapsQuery)}`;
+const days = t(c.days);
+// Semana começando na segunda (como o cliente lê um horário).
+const order = [1, 2, 3, 4, 5, 6, 0];
+---
+
+<section id="como-chegar" class="section surface-ink" aria-labelledby="como-chegar-title">
+  <div class="container grid">
+    <div class="info">
+      <div class="section-head">
+        <p class="eyebrow">{t(c.eyebrow)}</p>
+        <h2 id="como-chegar-title">{t(c.title)}</h2>
+      </div>
+
+      <h3 class="label">
+        <Icon name="pin" size={18} /> {t(c.addressLabel)}
+      </h3>
+      <address>
+        {a.street}
+        <br />
+        {a.neighborhood} · {a.city}/{a.region}
+      </address>
+
+      <h3 class="label">
+        <Icon name="clock" size={18} /> {t(c.hoursLabel)}
+      </h3>
+      <table class="hours">
+        <tbody>
+          {order.map((d) => {
+            const h = hours.week[String(d)];
+            return (
+              <tr>
+                <th scope="row">{days[d]}</th>
+                <td>{h ? `${fmtTime(h[0], lang)} – ${fmtTime(h[1], lang)}` : t(c.closed)}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      <h3 class="label">
+        <Icon name="phone" size={18} /> {t(c.phoneLabel)}
+      </h3>
+      <p>
+        <a class="phone" href={telLink}>
+          {formatPhone()}
+        </a>
+      </p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href={mapsUrl} target="_blank" rel="noopener">
+          <Icon name="pin" />
+          {t(c.openMaps)}
+        </a>
+        <a class="btn btn-ghost" href={telLink}>
+          <Icon name="phone" />
+          {t(c.call)}
+        </a>
+      </div>
+    </div>
+
+    <!-- Fase 6: facade do mapa (imagem estática → iframe só ao clicar) -->
+    <div class="ph map" style="--ratio: 4 / 3">
+      <p>{t(c.mapNote)}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: var(--space-7);
+  }
+  .label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  address {
+    font-style: normal;
+  }
+  .hours {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 22rem;
+  }
+  .hours th,
+  .hours td {
+    padding: var(--space-1) 0;
+    text-align: left;
+    font-weight: 400;
+    border-bottom: 1px solid var(--line);
+  }
+  .hours td {
+    text-align: right;
+    color: var(--steel);
+  }
+  /* Telefone grande e clicável (persona "Seu Carlos"). */
+  .phone {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .actions {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  @media (min-width: 480px) {
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+  }
+</style>

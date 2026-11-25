@@ -1,0 +1,39 @@
+---
+// Página principal, compartilhada por / (pt) e /en/ (en).
+import type { Lang } from '../i18n/ui';
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Services from './Services.astro';
+import Booking from './Booking.astro';
+import Team from './Team.astro';
+import Gallery from './Gallery.astro';
+import Club from './Club.astro';
+import Reviews from './Reviews.astro';
+import Location from './Location.astro';
+import FAQ from './FAQ.astro';
+import Footer from './Footer.astro';
+import MobileActionBar from './MobileActionBar.astro';
+import { copy, translator } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+---
+
+<Base title={t(copy.seo.home.title)} description={t(copy.seo.home.description)}>
+  <Header lang={lang} slot="header" />
+  <Hero lang={lang} />
+  <Services lang={lang} />
+  <Booking lang={lang} />
+  <Team lang={lang} />
+  <Gallery lang={lang} />
+  <Club lang={lang} />
+  <Reviews lang={lang} />
+  <Location lang={lang} />
+  <FAQ lang={lang} />
+  <Footer lang={lang} slot="footer" />
+  <MobileActionBar lang={lang} slot="footer" />
+</Base>

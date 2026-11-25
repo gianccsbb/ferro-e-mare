@@ -1,0 +1,99 @@
+---
+import type { Lang } from '../i18n/ui';
+import { copy, business, translator } from '../lib/content';
+import { telLink, formatPhone } from '../lib/contact';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = copy.footer;
+const a = business.address;
+const caseUrl = lang === 'pt' ? '/case/' : '/en/case/';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer surface-ink">
+  <div class="container grid">
+    <div>
+      <p class="brand">
+        Ferro <span>&amp;</span> Maré
+      </p>
+      <p class="muted">{t(c.tagline)}</p>
+    </div>
+    <!-- NAP: igual ao schema.org (Fase 7) -->
+    <div class="nap">
+      <p>
+        <strong>{business.name}</strong>
+      </p>
+      <p>
+        {a.street} — {a.neighborhood}, {a.city}/{a.region}
+      </p>
+      <p>
+        <a href={telLink}>{formatPhone()}</a>
+      </p>
+      <p>
+        <a class="social" href={business.social.instagram} rel="noopener">
+          <Icon name="instagram" size={18} />
+          {business.social.instagramHandle}
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="container legal">
+    <p class="notice">{t(c.notice)}</p>
+    <p>
+      <a href={caseUrl}>{t(c.credit)}</a> · © {year} · {t(c.rights)}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: var(--space-7) var(--space-6);
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-small);
+  }
+  .grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .brand span {
+    color: var(--brass);
+  }
+  .nap {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .nap a,
+  .legal a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap);
+  }
+  .legal {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--line);
+    color: var(--steel);
+  }
+  .notice {
+    color: var(--foam);
+  }
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

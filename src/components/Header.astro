@@ -1,0 +1,236 @@
+---
+import type { Lang } from '../i18n/ui';
+import { htmlLang, alternatePath } from '../i18n/ui';
+import { copy, translator, hours } from '../lib/content';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = copy.header;
+const home = lang === 'pt' ? '/' : '/en/';
+const otherLang: Lang = lang === 'pt' ? 'en' : 'pt';
+const otherPath = alternatePath(Astro.url.pathname, otherLang);
+
+// Strings para o script do selo (calculado no navegador, no fuso de Recife).
+const statusStrings = {
+  openUntil: t(c.status.openUntil),
+  opensToday: t(c.status.opensToday),
+  opensOn: t(c.status.opensOn),
+  days: t(copy.location.days),
+};
+---
+
+<header class="site-header">
+  <div class="bar container">
+    <a
+      class="logo"
+      href={home}
+      aria-label={lang === 'pt' ? 'Ferro & Maré — início' : 'Ferro & Maré — home'}
+    >
+      <svg class="mark" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
+        <circle
+          cx="16"
+          cy="16"
+          r="14.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        ></circle>
+        <path
+          d="M16 6v20M10 11h12M9 20c2 4 5 6 7 6s5-2 7-6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+        ></path>
+      </svg>
+      <span class="wordmark">
+        Ferro <span class="amp">&amp;</span> Maré
+      </span>
+    </a>
+
+    <nav class="nav" aria-label={lang === 'pt' ? 'Principal' : 'Main'}>
+      <ul role="list">
+        <li>
+          <a href="#servicos">{t(c.nav.services)}</a>
+        </li>
+        <li>
+          <a href="#equipe">{t(c.nav.team)}</a>
+        </li>
+        <li>
+          <a href="#clube">{t(c.nav.club)}</a>
+        </li>
+        <li>
+          <a href="#como-chegar">{t(c.nav.location)}</a>
+        </li>
+      </ul>
+    </nav>
+
+    <a
+      class="lang"
+      href={otherPath}
+      hreflang={htmlLang[otherLang]}
+      lang={htmlLang[otherLang]}
+      aria-label={lang === 'pt' ? 'View the site in English' : 'Ver o site em português'}
+    >
+      <Icon name="globe" size={16} />
+      <span>{otherLang.toUpperCase()}</span>
+    </a>
+
+    <a class="btn btn-primary btn-sm" href="#agendar">
+      {t(c.cta)}
+    </a>
+  </div>
+
+  <p
+    class="status container"
+    id="open-status"
+    data-week={JSON.stringify(hours.week)}
+    data-tz={hours.timezone}
+    data-lang={lang}
+    data-strings={JSON.stringify(statusStrings)}
+  >
+    <span class="dot" aria-hidden="true"></span>
+    <span class="status-text">{t(c.status.fallback)}</span>
+  </p>
+</header>
+
+<script>
+  import { nowIn, openStatus, fmtTime, type Week } from '../lib/hours';
+  import type { Lang } from '../i18n/ui';
+
+  const el = document.getElementById('open-status');
+  if (el) {
+    const week = JSON.parse(el.dataset.week ?? '{}') as Week;
+    const tz = el.dataset.tz ?? 'America/Recife';
+    const lang = (el.dataset.lang ?? 'pt') as Lang;
+    const s = JSON.parse(el.dataset.strings ?? '{}') as Record<string, string> & {
+      days: string[];
+    };
+    const text = el.querySelector('.status-text');
+
+    const render = () => {
+      const st = openStatus(week, nowIn(tz));
+      let out: string;
+      if (st.state === 'open') out = s.openUntil.replace('{time}', fmtTime(st.closes, lang));
+      else if (st.state === 'opensToday')
+        out = s.opensToday.replace('{time}', fmtTime(st.opens, lang));
+      else {
+        const day = lang === 'pt' ? s.days[st.day].toLowerCase() : s.days[st.day];
+        out = s.opensOn.replace('{day}', day).replace('{time}', fmtTime(st.opens, lang));
+      }
+      if (text) text.textContent = out;
+      el.dataset.state = st.state === 'open' ? 'open' : 'closed';
+    };
+    render();
+    setInterval(render, 60_000); // vira sozinho na hora de abrir/fechar
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgb(15 23 32 / 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 60px;
+  }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap);
+    margin-right: auto;
+    text-decoration: none;
+    color: var(--foam);
+  }
+  .mark {
+    color: var(--brass);
+    flex: none;
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.375rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .amp {
+    color: var(--brass);
+  }
+  .nav {
+    display: none;
+  }
+  .nav ul {
+    display: flex;
+    gap: var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+  .nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    color: var(--steel);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .nav a:hover {
+    color: var(--foam);
+  }
+  .lang {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    min-width: var(--tap);
+    min-height: var(--tap);
+    color: var(--steel);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .lang:hover {
+    color: var(--foam);
+  }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-bottom: var(--space-2);
+    color: var(--steel);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--steel);
+    flex: none;
+  }
+  .status[data-state='open'] .dot {
+    background: #4cc38a;
+    box-shadow: 0 0 0 3px rgb(76 195 138 / 0.2);
+  }
+  .status[data-state='closed'] .dot {
+    background: var(--rust);
+  }
+  @media (min-width: 1024px) {
+    .nav {
+      display: block;
+    }
+  }
+</style>

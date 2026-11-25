@@ -1,0 +1,68 @@
+---
+import type { Lang } from '../i18n/ui';
+import { copy, translator } from '../lib/content';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = copy.faq;
+---
+
+<section id="duvidas" class="section surface-foam" aria-labelledby="duvidas-title">
+  <div class="container narrow">
+    <div class="section-head">
+      <p class="eyebrow">{t(c.eyebrow)}</p>
+      <h2 id="duvidas-title">{t(c.title)}</h2>
+    </div>
+    <div class="list">
+      {c.items.map((item) => (
+        <details>
+          <summary>
+            <span>{t(item.q)}</span>
+            <Icon name="chevronDown" class="chev" />
+          </summary>
+          <p>{t(item.a)}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .narrow {
+    max-width: 44rem;
+  }
+  .list {
+    border-top: 1px solid var(--line-strong);
+  }
+  details {
+    border-bottom: 1px solid var(--line-strong);
+  }
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 56px;
+    padding-block: var(--space-3);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary :global(.chev) {
+    transition: transform var(--dur) var(--ease);
+  }
+  details[open] summary :global(.chev) {
+    transform: rotate(180deg);
+  }
+  details p {
+    padding-bottom: var(--space-4);
+    color: var(--fg-muted);
+  }
+</style>

@@ -1,0 +1,111 @@
+---
+import type { Lang } from '../i18n/ui';
+import { copy, translator, fmt } from '../lib/content';
+import { waLink } from '../lib/contact';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = copy.hero;
+---
+
+<section class="hero surface-ink" aria-labelledby="hero-title">
+  <div class="container grid">
+    <div class="copy">
+      <p class="eyebrow">{t(c.eyebrow)}</p>
+      <h1 id="hero-title">
+        {t(c.h1)}
+        <span class="accent">{t(c.h1Accent)}</span>
+      </h1>
+      <p class="sub">{t(c.sub)}</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="#agendar">
+          <Icon name="calendar" />
+          {t(c.ctaPrimary)}
+        </a>
+        <a class="btn btn-ghost" href={waLink(t(copy.booking.whatsappGeneric))} rel="noopener">
+          <Icon name="chat" />
+          {t(c.ctaSecondary)}
+        </a>
+      </div>
+      <p class="proof">{t(c.proof)}</p>
+      <ul class="perks" role="list">
+        {t(c.perks).map((p) => (
+          <li>
+            <Icon name="check" size={16} />
+            {p}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="media">
+      <!-- Fase 4: foto do hero (≤ 200 KB, fetchpriority="high") -->
+      <div class="ph" style="--ratio: 4 / 5" role="img" aria-label={t(c.imageAlt)}>
+        {fmt('[{a}]', { a: t(c.imageAlt) })}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-8);
+  }
+  .grid {
+    display: grid;
+    gap: var(--space-7);
+  }
+  h1 {
+    margin-block: var(--space-3) var(--space-4);
+  }
+  .accent {
+    display: block;
+    color: var(--cta);
+  }
+  .sub {
+    color: var(--steel);
+    max-width: 36ch;
+  }
+  .ctas {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .proof {
+    margin-top: var(--space-4);
+    font-size: var(--fs-small);
+    color: var(--steel);
+  }
+  .perks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-4);
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-small);
+  }
+  .perks li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .perks :global(.icon) {
+    color: var(--brass);
+  }
+  @media (min-width: 480px) {
+    .ctas {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+    }
+  }
+</style>

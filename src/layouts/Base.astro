@@ -12,8 +12,6 @@ interface Props {
 const { title, description, index = false } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const otherLang = lang === 'pt' ? 'en' : 'pt';
-const otherPath = alternatePath(Astro.url.pathname, otherLang);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ptAlt = new URL(alternatePath(Astro.url.pathname, 'pt'), Astro.site);
 const enAlt = new URL(alternatePath(Astro.url.pathname, 'en'), Astro.site);
@@ -54,49 +52,22 @@ const enAlt = new URL(alternatePath(Astro.url.pathname, 'en'), Astro.site);
     <a class="skip-link" href="#conteudo">
       {t('skip.content')}
     </a>
-    <a
-      class="lang-switch"
-      href={otherPath}
-      hreflang={htmlLang[otherLang]}
-      lang={htmlLang[otherLang]}
-      aria-label={t('lang.switch.label')}
-    >
-      {t('lang.switch')}
-    </a>
+    <slot name="header" />
     <main id="conteudo" tabindex="-1">
       <slot />
     </main>
-    <p class="concept-notice">{t('notice.concept')}</p>
+    <slot name="footer" />
   </body>
 </html>
 
 <style>
-  /* Provisório (Fase 1): o seletor de idioma vai para o Header na Fase 3. */
-  .lang-switch {
-    position: fixed;
-    top: var(--space-4);
-    right: var(--space-4);
-    z-index: 50;
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--tap);
-    padding-inline: var(--space-4);
-    border: 1px solid var(--line-strong);
-    border-radius: var(--radius);
-    background: rgb(15 23 32 / 0.7);
-    font-size: var(--fs-small);
-    font-weight: 600;
-    text-decoration: none;
-  }
   main:focus {
     outline: none;
   }
-  .concept-notice {
-    padding: var(--space-4) var(--gutter);
-    background: var(--ink);
-    color: var(--steel);
-    font-size: var(--fs-small);
-    text-align: center;
-    border-top: 1px solid var(--line);
+  /* Espaço para a barra de ação fixa no mobile não cobrir o rodapé. */
+  @media (max-width: 767px) {
+    body {
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
   }
 </style>

@@ -1,0 +1,66 @@
+---
+import type { Lang } from '../i18n/ui';
+import { copy, team, translator } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = copy.team;
+---
+
+<section id="equipe" class="section surface-ink" aria-labelledby="equipe-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">{t(c.eyebrow)}</p>
+      <h2 id="equipe-title">{t(c.title)}</h2>
+    </div>
+    <ul class="list" role="list">
+      {team.map((m) => (
+        <li class="member">
+          {/* Fase 4: retrato/ilustração do barbeiro */}
+          <div class="ph" style="--ratio: 1 / 1" aria-hidden="true">
+            {m.name}
+          </div>
+          <h3>{m.name}</h3>
+          <p class="specialty">{t(m.specialty)}</p>
+          <p class="bio muted">{t(m.bio)}</p>
+          <a class="btn btn-ghost btn-sm" href="#agendar" data-book-barber={m.id}>
+            {t(m.cta)}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .list {
+    display: grid;
+    gap: var(--space-7);
+    padding: 0;
+    list-style: none;
+  }
+  .member {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .member .ph {
+    margin-bottom: var(--space-2);
+  }
+  .specialty {
+    color: var(--brass);
+    font-weight: 600;
+  }
+  .member .btn {
+    justify-self: start;
+    margin-top: var(--space-2);
+  }
+  @media (min-width: 768px) {
+    .list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+  }
+</style>

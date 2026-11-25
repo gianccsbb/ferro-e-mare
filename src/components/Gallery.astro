@@ -1,0 +1,49 @@
+---
+// Fase 3: grade com placeholders. Fotos na Fase 4; lightbox acessível na Fase 6.
+import type { Lang } from '../i18n/ui';
+import { copy, gallery, translator } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = copy.gallery;
+---
+
+<section id="galeria" class="section surface-foam" aria-labelledby="galeria-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">{t(c.eyebrow)}</p>
+      <h2 id="galeria-title">{t(c.title)}</h2>
+    </div>
+    <ul class="grid" role="list">
+      {gallery.map((g) => (
+        <li>
+          <div class="ph" style="--ratio: 1 / 1" role="img" aria-label={t(g.alt)}>
+            {t(g.alt)}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+    padding: 0;
+    list-style: none;
+  }
+  .grid .ph {
+    font-size: 0.75rem;
+  }
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+    }
+  }
+</style>

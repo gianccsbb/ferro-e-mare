@@ -1,0 +1,81 @@
+---
+// Barra fixa só em telas < 768px. Some quando o agendamento está visível,
+// para não cobrir os campos (handout §4).
+import type { Lang } from '../i18n/ui';
+import { copy, translator } from '../lib/content';
+import { waLink, telLink } from '../lib/contact';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = copy.mobileBar;
+---
+
+<nav class="mobile-bar" aria-label={lang === 'pt' ? 'Ações rápidas' : 'Quick actions'}>
+  <a href={waLink(t(copy.booking.whatsappGeneric))} rel="noopener">
+    <Icon name="chat" />
+    <span>{t(c.whatsapp)}</span>
+  </a>
+  <a href={telLink}>
+    <Icon name="phone" />
+    <span>{t(c.call)}</span>
+  </a>
+  <a class="primary" href="#agendar">
+    <Icon name="calendar" />
+    <span>{t(c.book)}</span>
+  </a>
+</nav>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('.mobile-bar');
+  const booking = document.getElementById('agendar');
+  if (bar && booking && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => bar.classList.toggle('is-hidden', entry.isIntersecting), {
+      threshold: 0.15,
+    }).observe(booking);
+  }
+</script>
+
+<style>
+  .mobile-bar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 45;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.3fr;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom));
+    background: rgb(15 23 32 / 0.95);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--line);
+    transition: transform var(--dur) var(--ease);
+  }
+  .mobile-bar.is-hidden {
+    transform: translateY(110%);
+  }
+  .mobile-bar a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 52px;
+    border-radius: var(--radius);
+    color: var(--foam);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .mobile-bar .primary {
+    background: var(--cta);
+    color: var(--ink);
+  }
+  @media (min-width: 768px) {
+    .mobile-bar {
+      display: none;
+    }
+  }
+</style>

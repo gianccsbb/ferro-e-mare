@@ -11,17 +11,9 @@ export const htmlLang: Record<Lang, string> = { pt: 'pt-BR', en: 'en' };
 export const ui = {
   pt: {
     'skip.content': 'Pular para o conteúdo',
-    'lang.switch': 'English',
-    'lang.switch.label': 'Ver o site em inglês',
-    'notice.concept':
-      'Projeto conceitual de portfólio — negócio, endereço e avaliações são fictícios.',
   },
   en: {
     'skip.content': 'Skip to content',
-    'lang.switch': 'Português',
-    'lang.switch.label': 'View the site in Portuguese',
-    'notice.concept':
-      'Portfolio concept project — the business, address and reviews are fictional.',
   },
 } as const satisfies Record<Lang, Record<string, string>>;
 
