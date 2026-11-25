@@ -362,8 +362,8 @@ main {
   opacity: 0;
   transform: translateY(8px);
   transition:
-    opacity 600ms var(--ease),
-    transform 600ms var(--ease);
+    opacity 600ms var(--ease) var(--reveal-delay, 0ms),
+    transform 600ms var(--ease) var(--reveal-delay, 0ms);
 }
 .js .reveal.is-in {
   opacity: 1;

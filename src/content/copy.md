@@ -137,6 +137,7 @@ Dias: Qua, Qui, Sex, Sáb
 | `close` | Fechar | Close |
 | `prev` | Foto anterior | Previous photo |
 | `next` | Próxima foto | Next photo |
+| `counter` | {n} de {total} | {n} of {total} |
 
 | # | Alt PT | Alt EN |
 |---|---|---|
@@ -198,6 +199,7 @@ Dias: Qua, Qui, Sex, Sáb
 | `loadMap` | Carregar mapa interativo | Load interactive map |
 | `call` | Ligar agora | Call now |
 | `mapNote` | O mapa só carrega quando você toca, pra página abrir rápido. | The map only loads when you tap, so the page opens fast. |
+| `mapTitle` | Mapa interativo do Recife Antigo | Interactive map of Old Recife |
 
 ## 10. FAQ
 
@@ -215,6 +217,8 @@ Dias: Qua, Qui, Sex, Sáb
 | `items[4].a` | Atende, sim. O Caio é especialista em corte infantil e tem a paciência que o momento pede. | We do. Caio specializes in kids' cuts and has all the patience it takes. |
 | `items[5].q` | E se eu me atrasar? | What if I'm running late? |
 | `items[5].a` | Avise pelo WhatsApp. Até 10 minutos a gente segura; depois disso, remarcamos sem custo. | Message us on WhatsApp. We'll hold your chair for 10 minutes; after that, we'll reschedule at no cost. |
+| `more` | Ainda ficou alguma dúvida? | Still have a question? |
+| `ask` | Pergunte no WhatsApp | Ask us on WhatsApp |
 
 ## 11. Footer
 

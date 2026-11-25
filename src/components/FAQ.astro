@@ -1,6 +1,7 @@
 ---
 import type { Lang } from '../i18n/ui';
 import { copy, translator } from '../lib/content';
+import { waLink } from '../lib/contact';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -18,15 +19,29 @@ const c = copy.faq;
       <h2 id="duvidas-title">{t(c.title)}</h2>
     </div>
     <div class="list">
-      {c.items.map((item) => (
-        <details>
+      {c.items.map((item, i) => (
+        <details class="faq-item">
           <summary>
-            <span>{t(item.q)}</span>
+            <span class="qn" aria-hidden="true">
+              Q.{String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="q">{t(item.q)}</span>
             <Icon name="chevronDown" class="chev" />
           </summary>
           <p>{t(item.a)}</p>
         </details>
       ))}
+      <p class="more reveal-item">
+        <span>{t(c.more)}</span>
+        <a
+          class="btn btn-ghost btn-sm"
+          href={waLink(t(copy.booking.whatsappGeneric))}
+          rel="noopener"
+        >
+          <Icon name="chat" size={18} />
+          {t(c.ask)}
+        </a>
+      </p>
     </div>
   </div>
 </section>
@@ -54,7 +69,6 @@ const c = copy.faq;
   }
   summary {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: var(--space-4);
     min-height: 56px;
@@ -72,8 +86,58 @@ const c = copy.faq;
   details[open] summary :global(.chev) {
     transform: rotate(180deg);
   }
+  .qn {
+    flex: none;
+    min-width: 2.25rem;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--brass-deep);
+  }
+  .q {
+    flex: 1;
+  }
+  summary :global(.chev) {
+    flex: none;
+  }
   details p {
-    padding-bottom: var(--space-4);
+    padding: 0 0 var(--space-4) calc(2.25rem + var(--space-4));
     color: var(--fg-muted);
+  }
+  /* Abertura suave onde o navegador suporta (Chrome 131+); nos outros, abre direto. */
+  @supports (interpolate-size: allow-keywords) {
+    details {
+      interpolate-size: allow-keywords;
+    }
+    details::details-content {
+      block-size: 0;
+      overflow: hidden;
+      transition:
+        block-size var(--dur) var(--ease),
+        content-visibility var(--dur) allow-discrete;
+    }
+    details[open]::details-content {
+      block-size: auto;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      details::details-content {
+        transition: none;
+      }
+    }
+  }
+  .more {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+    font-weight: 600;
+  }
+  @media (max-width: 479px) {
+    details p {
+      padding-left: 0;
+    }
   }
 </style>

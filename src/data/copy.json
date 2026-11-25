@@ -299,6 +299,10 @@
     "next": {
       "pt": "Próxima foto",
       "en": "Next photo"
+    },
+    "counter": {
+      "pt": "{n} de {total}",
+      "en": "{n} of {total}"
     }
   },
   "club": {
@@ -407,6 +411,10 @@
     "mapNote": {
       "pt": "O mapa só carrega quando você toca, pra página abrir rápido.",
       "en": "The map only loads when you tap, so the page opens fast."
+    },
+    "mapTitle": {
+      "pt": "Mapa interativo do Recife Antigo",
+      "en": "Interactive map of Old Recife"
     }
   },
   "faq": {
@@ -469,7 +477,15 @@
           "en": "Message us on WhatsApp. We'll hold your chair for 10 minutes; after that, we'll reschedule at no cost."
         }
       }
-    ]
+    ],
+    "more": {
+      "pt": "Ainda ficou alguma dúvida?",
+      "en": "Still have a question?"
+    },
+    "ask": {
+      "pt": "Pergunte no WhatsApp",
+      "en": "Ask us on WhatsApp"
+    }
   },
   "footer": {
     "tagline": {

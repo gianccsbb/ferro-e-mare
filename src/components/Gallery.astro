@@ -1,8 +1,11 @@
 ---
-// Fotos reais entram aqui (src/assets/gallery/g1…g9). Enquanto não chegam,
-// mostramos placas provisórias. Lightbox acessível na Fase 6.
+// Galeria + lightbox acessível (<dialog> nativo).
+// Fotos reais: coloque g1.jpg … g9.jpg em src/assets/gallery/ (e os créditos em
+// CREDITS.md). O Astro gera AVIF/WebP em vários tamanhos; o mesmo tratamento
+// (quente + grão) é aplicado por CSS em todas. Sem foto, aparece a placa provisória.
+import { Picture, getImage } from 'astro:assets';
 import type { Lang } from '../i18n/ui';
-import { copy, gallery, translator } from '../lib/content';
+import { copy, gallery, translator, fmt } from '../lib/content';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -11,6 +14,22 @@ interface Props {
 const { lang } = Astro.props;
 const t = translator(lang);
 const c = copy.gallery;
+
+const files = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/gallery/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+);
+const photoFor = (id: string) =>
+  Object.entries(files).find(([path]) => path.includes(`/${id}.`))?.[1].default;
+
+const items = await Promise.all(
+  gallery.map(async (g) => {
+    const img = photoFor(g.id);
+    const full = img ? await getImage({ src: img, width: 1600, format: 'webp' }) : null;
+    return { id: g.id, alt: t(g.alt), img, full: full?.src ?? '' };
+  }),
+);
+const total = items.length;
 ---
 
 <section id="galeria" class="section surface-foam" aria-labelledby="galeria-title">
@@ -20,17 +39,137 @@ const c = copy.gallery;
       <h2 id="galeria-title">{t(c.title)}</h2>
     </div>
     <ul class="grid" role="list">
-      {gallery.map((g, i) => (
+      {items.map((it, i) => (
         <li class:list={['tile', { big: i === 0 }]}>
-          <div class="ph-photo" role="img" aria-label={t(g.alt)}>
-            <Icon name="scissors" size={i === 0 ? 40 : 24} />
-            <span>{t(g.alt)}</span>
-          </div>
+          <button
+            type="button"
+            class="tile-btn"
+            data-index={i}
+            data-full={it.full}
+            data-alt={it.alt}
+            aria-haspopup="dialog"
+            aria-label={fmt(t(c.open), { alt: it.alt })}
+          >
+            {it.img ? (
+              <Picture
+                src={it.img}
+                alt=""
+                formats={['avif', 'webp']}
+                widths={i === 0 ? [480, 800, 1200] : [320, 480, 640]}
+                sizes={
+                  i === 0 ? '(min-width: 768px) 36rem, 100vw' : '(min-width: 768px) 18rem, 50vw'
+                }
+                loading="lazy"
+                decoding="async"
+                class="photo"
+              />
+            ) : (
+              <span class="ph-photo">
+                <Icon name="scissors" size={i === 0 ? 40 : 24} />
+                <span>{it.alt}</span>
+              </span>
+            )}
+            <span class="grain" aria-hidden="true" />
+          </button>
         </li>
       ))}
     </ul>
   </div>
+
+  <dialog id="lightbox" class="lightbox surface-ink" aria-labelledby="lb-caption">
+    <div class="lb-inner">
+      <button type="button" class="lb-btn lb-close" aria-label={t(c.close)}>
+        <Icon name="close" />
+      </button>
+      <figure>
+        <div class="lb-media"></div>
+        <figcaption>
+          <span id="lb-caption"></span>
+          <span class="lb-count" data-template={t(c.counter)} data-total={total}></span>
+        </figcaption>
+      </figure>
+      <button type="button" class="lb-btn lb-prev" aria-label={t(c.prev)}>
+        <Icon name="chevronLeft" />
+      </button>
+      <button type="button" class="lb-btn lb-next" aria-label={t(c.next)}>
+        <Icon name="chevronRight" />
+      </button>
+    </div>
+  </dialog>
 </section>
+
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement | null;
+  const tiles = [...document.querySelectorAll<HTMLButtonElement>('.tile-btn')];
+
+  if (dialog && tiles.length && typeof dialog.showModal === 'function') {
+    const media = dialog.querySelector<HTMLElement>('.lb-media')!;
+    const caption = dialog.querySelector<HTMLElement>('#lb-caption')!;
+    const count = dialog.querySelector<HTMLElement>('.lb-count')!;
+    let current = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = (i: number) => {
+      current = (i + tiles.length) % tiles.length;
+      const tile = tiles[current];
+      const full = tile.dataset.full;
+      if (full) {
+        const img = Object.assign(document.createElement('img'), {
+          src: full,
+          alt: tile.dataset.alt ?? '',
+          decoding: 'async',
+        });
+        media.replaceChildren(img);
+      } else {
+        // Placa provisória: reaproveita o conteúdo da miniatura.
+        const ph = tile.querySelector('.ph-photo')?.cloneNode(true) as HTMLElement | undefined;
+        if (ph) {
+          ph.setAttribute('role', 'img');
+          ph.setAttribute('aria-label', tile.dataset.alt ?? '');
+          media.replaceChildren(ph);
+        }
+      }
+      caption.textContent = tile.dataset.alt ?? '';
+      count.textContent = (count.dataset.template ?? '')
+        .replace('{n}', String(current + 1))
+        .replace('{total}', count.dataset.total ?? '');
+    };
+
+    tiles.forEach((tile, i) =>
+      tile.addEventListener('click', () => {
+        opener = tile;
+        show(i);
+        dialog.showModal();
+        document.documentElement.style.overflow = 'hidden';
+      }),
+    );
+    dialog.querySelector('.lb-close')!.addEventListener('click', () => dialog.close());
+    dialog.querySelector('.lb-prev')!.addEventListener('click', () => show(current - 1));
+    dialog.querySelector('.lb-next')!.addEventListener('click', () => show(current + 1));
+    // Clique fora da foto (no fundo) fecha.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    });
+    // Deslizar o dedo no celular.
+    let x0: number | null = null;
+    dialog.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+    dialog.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+      x0 = null;
+    });
+    // Esc é nativo do <dialog>; ao fechar, o foco volta para a miniatura.
+    dialog.addEventListener('close', () => {
+      document.documentElement.style.overflow = '';
+      opener?.focus();
+    });
+  }
+</script>
 
 <style>
   .grid {
@@ -48,6 +187,45 @@ const c = copy.gallery;
   .big {
     grid-column: span 2;
     aspect-ratio: 2 / 1.4;
+  }
+  .tile-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: var(--ink);
+    cursor: zoom-in;
+  }
+  .tile-btn:focus-visible {
+    outline: 3px solid var(--brass-deep);
+    outline-offset: 3px;
+  }
+  /* Tratamento único para as fotos parecerem um ensaio: quente, contraste, grão. */
+  .tile-btn :global(.photo),
+  .tile-btn :global(picture) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .tile-btn :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(0.18) saturate(0.88) contrast(1.08) brightness(0.96);
+    transition: transform 700ms var(--ease);
+  }
+  .tile-btn:hover :global(img) {
+    transform: scale(1.04);
+  }
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.14'/%3E%3C/svg%3E");
+    box-shadow: inset 0 0 60px rgb(15 23 32 / 0.45);
+    mix-blend-mode: overlay;
   }
   .ph-photo {
     display: grid;
@@ -67,6 +245,110 @@ const c = copy.gallery;
     font-size: 0.75rem;
     line-height: 1.35;
   }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(10 15 21 / 0.96);
+    color: var(--foam);
+  }
+  .lightbox::backdrop {
+    background: rgb(10 15 21 / 0.7);
+  }
+  .lightbox[open] {
+    animation: lb-in 260ms var(--ease);
+  }
+  @keyframes lb-in {
+    from {
+      opacity: 0;
+    }
+  }
+  .lb-inner {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 100%;
+    padding: var(--space-7) var(--space-3) var(--space-6);
+  }
+  figure {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: center;
+    width: 100%;
+    max-width: 60rem;
+    margin: 0;
+  }
+  .lb-media {
+    width: 100%;
+    display: grid;
+    place-items: center;
+  }
+  .lb-media :global(img) {
+    max-width: 100%;
+    max-height: 72dvh;
+    border-radius: var(--radius);
+    filter: sepia(0.18) saturate(0.88) contrast(1.08) brightness(0.96);
+  }
+  .lb-media :global(.ph-photo) {
+    width: min(100%, 36rem);
+    aspect-ratio: 4 / 3;
+    height: auto;
+    border: 1px solid var(--brass);
+    border-radius: var(--radius);
+  }
+  .lb-media :global(.ph-photo span) {
+    font-size: var(--fs-small);
+  }
+  figcaption {
+    display: grid;
+    gap: var(--space-1);
+    text-align: center;
+  }
+  .lb-count {
+    font-size: var(--fs-small);
+    color: var(--steel);
+    font-variant-numeric: tabular-nums;
+  }
+  .lb-btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: rgb(19 40 61 / 0.85);
+    color: var(--foam);
+    cursor: pointer;
+  }
+  .lb-btn:hover {
+    border-color: var(--cta);
+    color: var(--cta);
+  }
+  .lb-btn:focus-visible {
+    outline: 3px solid var(--cta);
+    outline-offset: 2px;
+  }
+  .lb-close {
+    top: var(--space-3);
+    right: var(--space-3);
+  }
+  .lb-prev,
+  .lb-next {
+    bottom: var(--space-4);
+  }
+  .lb-prev {
+    left: calc(50% - 60px);
+  }
+  .lb-next {
+    right: calc(50% - 60px);
+  }
   @media (min-width: 768px) {
     .grid {
       grid-template-columns: repeat(4, 1fr);
@@ -76,6 +358,26 @@ const c = copy.gallery;
       grid-column: span 2;
       grid-row: span 2;
       aspect-ratio: auto;
+    }
+    .lb-prev,
+    .lb-next {
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%);
+    }
+    .lb-prev {
+      left: var(--space-5);
+    }
+    .lb-next {
+      right: var(--space-5);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox[open] {
+      animation: none;
+    }
+    .tile-btn:hover :global(img) {
+      transform: none;
     }
   }
 </style>

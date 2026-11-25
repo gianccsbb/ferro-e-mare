@@ -123,3 +123,31 @@ DOM e ocupa 2 colunas, para a grade fechar sem buracos e a ordem do Tab seguir a
 - `.ics` (com alarme 1 h antes) via Blob, sem servidor. Link do Google Agenda ao lado
   (mais prático no Android). "O WhatsApp não abriu?" reabre a mesma mensagem.
 - Recife é UTC−3 fixo (sem horário de verão desde 2019): conversão direta.
+
+## D-018 — Movimento só abaixo da dobra (Fase 6)
+
+- Revelação ao rolar (opacidade + 8 px de translate, só transform → CLS 0) aplicada apenas
+  ao que está abaixo da tela no carregamento: nada visível pisca e o LCP não espera.
+- Sem JS ou com `prefers-reduced-motion`, a classe nunca é aplicada: tudo aparece direto.
+
+## D-019 — Mapa: facade que é um link
+
+- A ilustração é o "mapa estático"; o botão é um `<a>` para o Google Maps (funciona sem JS).
+  Com JS, o clique troca a ilustração pelo iframe. Nenhuma requisição ao Google antes disso.
+
+## D-020 — Galeria: `<dialog>` nativo + fotos via astro:assets
+
+- Lightbox com `<dialog>`: Esc e foco preso nativos; setas, deslizar e clique no fundo.
+  Ao fechar, o foco volta à miniatura.
+- Fotos reais entram como `src/assets/gallery/gN.jpg`: AVIF/WebP em 3 larguras, lazy.
+  Tratamento uniforme por CSS (sépia leve, contraste, vinheta e grão) para parecer um ensaio.
+  Sem foto, continua a placa provisória.
+
+## D-021 — FAQ: abertura suave progressiva
+
+- `::details-content` + `interpolate-size` (Chrome 131+); nos demais abre sem animação.
+
+## D-022 — Lighthouse medido após o deploy
+
+- Não há Chrome nesta máquina (Lighthouse precisa dele). Medimos com PageSpeed Insights
+  na URL pública (Fase 7), que é também o número que vai para o /case.
