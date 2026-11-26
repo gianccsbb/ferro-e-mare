@@ -1,0 +1,1021 @@
+---
+// Estudo de caso (/case e /en/case): a única página indexável (handout §8–9).
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Lang } from '../i18n/ui';
+import { alternatePath } from '../i18n/ui';
+import Base from '../layouts/Base.astro';
+import Icon from './Icon.astro';
+import caseJson from '../data/case.json';
+import { copy, gallery, translator } from '../lib/content';
+import { waLink } from '../lib/contact';
+import { fill } from '../lib/booking';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translator(lang);
+const c = caseJson;
+const home = lang === 'pt' ? '/' : '/en/';
+const otherLang: Lang = lang === 'pt' ? 'en' : 'pt';
+const otherPath = alternatePath(Astro.url.pathname, otherLang);
+const repo = 'https://github.com/gianccsbb/ferro-e-mare';
+const github = 'https://github.com/gianccsbb';
+
+// Prints do celular (gerados por tools/shots/shots.sh).
+const shots = import.meta.glob<{ default: ImageMetadata }>('../assets/case/*.png', {
+  eager: true,
+});
+const shot = (name: string) => shots[`../assets/case/${lang}-${name}.png`].default;
+const flow = ['1-service', '2-barber', '3-time', '4-details', '5-thanks'];
+
+// Exemplo fixo da mensagem que o site gera (mesmo modelo do agendamento).
+const sample = fill(t(copy.booking.whatsappMessage), {
+  service: lang === 'pt' ? 'Corte + barba' : 'Haircut + beard',
+  duration: 70,
+  barber: 'Bié',
+  date: lang === 'pt' ? 'Sex, 12/12' : 'Fri, Dec 12',
+  time: lang === 'pt' ? '15:30' : '3:30 PM',
+  name: 'Rafael',
+});
+
+// Paleta com contraste calculado (WCAG 2.x) contra o texto usado sobre ela.
+const lum = (hex: string) => {
+  const [r, g, b] = [1, 3, 5].map((i) => {
+    const v = parseInt(hex.slice(i, i + 2), 16) / 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const ratio = (a: string, b: string) => {
+  const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m);
+  return (x + 0.05) / (y + 0.05);
+};
+const FOAM = '#F4EFE6';
+const INK = '#0F1720';
+const palette = [
+  { hex: '#0F1720', name: { pt: 'Tinta', en: 'Ink' } },
+  { hex: '#13283D', name: { pt: 'Marinho', en: 'Navy' } },
+  { hex: '#5E8A9A', name: { pt: 'Maré', en: 'Tide' } },
+  { hex: '#C08A3E', name: { pt: 'Latão', en: 'Brass' } },
+  { hex: '#E0A04A', name: { pt: 'CTA', en: 'CTA' } },
+  { hex: '#A4492B', name: { pt: 'Ferrugem', en: 'Rust' } },
+  { hex: '#F4EFE6', name: { pt: 'Espuma', en: 'Foam' } },
+].map((p) => {
+  const onFoam = ratio(p.hex, FOAM);
+  const onInk = ratio(p.hex, INK);
+  const fg = onFoam >= onInk ? FOAM : INK;
+  return { ...p, fg, ratio: Math.max(onFoam, onInk) };
+});
+const fmtNum = (n: number, digits = 1) =>
+  n.toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US', {
+    minimumFractionDigits: n % 1 ? digits : 0,
+    maximumFractionDigits: digits,
+  });
+
+const dateFmt = (iso: string) =>
+  new Date(`${iso}T12:00:00Z`).toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+const m = c.metrics as Record<string, number | string>;
+const numbers = c.numbers.items.map((it) => {
+  const v = m[it.key] as number;
+  return { ...it, value: it.key === 'libs' ? '0' : fmtNum(v), unit: it.key === 'libs' ? '' : 'KB' };
+});
+
+type Scores = { performance: number; accessibility: number; bestPractices: number; seo: number };
+const lh = c.lighthouse as null | { measuredAt: string; mobile: Scores };
+const lhKeys = ['performance', 'accessibility', 'bestPractices', 'seo'] as const;
+---
+
+<Base title={t(c.seo.title)} description={t(c.seo.description)} index>
+  <header class="case-bar" slot="header">
+    <div class="container bar-inner">
+      <a class="brand" href={home}>
+        Ferro <span>&amp;</span> Maré
+        <small>{t(c.bar.label)}</small>
+      </a>
+      <nav class="bar-actions">
+        <a class="lang" href={otherPath} hreflang={otherLang} lang={otherLang}>
+          <Icon name="globe" />
+          <span>{otherLang.toUpperCase()}</span>
+        </a>
+        <a class="btn btn-primary btn-sm" href={home}>
+          {t(c.bar.site)}
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="case-hero surface-ink texture-noise">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">{t(c.hero.eyebrow)}</p>
+        <h1 class="display">{t(c.hero.title)}</h1>
+        <p class="lede">{t(c.hero.lede)}</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href={`${home}#agendar`}>
+            <Icon name="calendar" />
+            {t(c.hero.try)}
+          </a>
+          <a class="btn btn-ghost" href={repo} rel="noopener">
+            {t(c.hero.repo)}
+          </a>
+        </div>
+        <dl class="facts">
+          {c.hero.facts.map((f) => (
+            <div>
+              <dt>{t(f.k)}</dt>
+              <dd>{t(f.v)}</dd>
+            </div>
+          ))}
+        </dl>
+        <p class="notice">{t(c.hero.notice)}</p>
+      </div>
+      <figure class="phone hero-phone">
+        <Picture
+          src={shot('0-hero')}
+          formats={['avif', 'webp']}
+          widths={[260, 390]}
+          sizes="(min-width: 900px) 18rem, 70vw"
+          alt=""
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- 01 Desafio -->
+  <section class="section surface-foam">
+    <div class="container two-col">
+      <div class="section-head">
+        <p class="eyebrow">{t(c.challenge.eyebrow)}</p>
+        <h2 class="display">{t(c.challenge.title)}</h2>
+      </div>
+      <div class="prose">
+        {t(c.challenge.body).map((p) => (
+          <p>{p}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Solução -->
+  <section class="section surface-navy">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">{t(c.solution.eyebrow)}</p>
+        <h2 class="display">{t(c.solution.title)}</h2>
+      </div>
+      <ol class="points">
+        {t(c.solution.points).map((p) => (
+          <li class="reveal-item">{p}</li>
+        ))}
+      </ol>
+
+      <p class="strip-label" id="strip-label">
+        {t(c.solution.stripLabel)}
+      </p>
+      <ol class="strip" aria-labelledby="strip-label" tabindex="0">
+        {flow.map((name, i) => (
+          <li>
+            <figure class="phone">
+              <Picture
+                src={shot(name)}
+                formats={['avif', 'webp']}
+                widths={[220, 390]}
+                sizes="(min-width: 1100px) 12.5rem, 60vw"
+                alt={`${i + 1}. ${t(c.solution.steps)[i]}`}
+              />
+            </figure>
+            <p class="step-cap" aria-hidden="true">
+              <span>{i + 1}</span>
+              {t(c.solution.steps)[i]}
+            </p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="wa">
+        <p class="eyebrow">{t(c.solution.messageLabel)}</p>
+        <div class="wa-chat">
+          <p class="wa-bubble">
+            {sample}
+            <span class="wa-time">15:02 ✓✓</span>
+          </p>
+        </div>
+        <p class="muted small">{t(c.solution.messageNote)}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Design -->
+  <section class="section surface-foam">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">{t(c.design.eyebrow)}</p>
+        <h2 class="display">{t(c.design.title)}</h2>
+      </div>
+
+      <div class="design-grid">
+        <div class="card-block plate">
+          <h3>{t(c.design.palette.title)}</h3>
+          <p>{t(c.design.palette.body)}</p>
+          <ul class="swatches">
+            {palette.map((p) => (
+              <li style={`--sw:${p.hex};--sw-fg:${p.fg}`}>
+                <span class="sw-name">{t(p.name)}</span>
+                <span class="sw-meta">
+                  {p.hex} · {fmtNum(p.ratio)}:1
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="card-block plate">
+          <h3>{t(c.design.type.title)}</h3>
+          <p>{t(c.design.type.body)}</p>
+          <div class="specimen surface-ink">
+            <p class="spec-display">{t(c.design.type.sample)}</p>
+            <p class="spec-meta">Big Shoulders Display · 800</p>
+            <p class="spec-body">{t(c.design.type.body2)}</p>
+            <p class="spec-meta">Instrument Sans · 400 / 600</p>
+          </div>
+        </div>
+      </div>
+
+      <ul class="choices">
+        {c.design.choices.map((ch) => (
+          <li class="reveal-item">
+            <h3>{t(ch.title)}</h3>
+            <p>{t(ch.body)}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 04 Números -->
+  <section class="section surface-ink texture-brushed">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">{t(c.numbers.eyebrow)}</p>
+        <h2 class="display">{t(c.numbers.title)}</h2>
+        <p class="muted">{t(c.numbers.lede)}</p>
+      </div>
+
+      {lh && (
+        <div class="lh">
+          <h3>{t(c.numbers.lighthouse.title)}</h3>
+          <ul class="gauges">
+            {lhKeys.map((k) => (
+              <li style={`--score:${lh.mobile[k]}`}>
+                <span class="gauge" aria-hidden="true">
+                  {lh.mobile[k]}
+                </span>
+                <span class="gauge-label">
+                  <span class="sr-only">{lh.mobile[k]} · </span>
+                  {t(c.numbers.lighthouse.labels[k])}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p class="muted small">
+            {fill(t(c.numbers.lighthouse.source), { date: dateFmt(lh.measuredAt) })}
+          </p>
+        </div>
+      )}
+
+      <ul class="stats">
+        {numbers.map((n) => (
+          <li class="plate reveal-item">
+            <p class="stat-value">
+              {n.value}
+              {n.unit && <small>{n.unit}</small>}
+            </p>
+            <p class="stat-label">{t(n.label)}</p>
+            <p class="stat-detail">{t(n.detail)}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="muted small method">
+        {fill(t(c.numbers.method), { date: dateFmt(String(m.measuredAt)) })}
+      </p>
+
+      <div class="a11y">
+        <h3>{t(c.numbers.a11y.title)}</h3>
+        <ul>
+          {t(c.numbers.a11y.items).map((it) => (
+            <li>
+              <Icon name="check" />
+              {it}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Dono -->
+  <section class="section surface-foam">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">{t(c.owner.eyebrow)}</p>
+        <h2 class="display">{t(c.owner.title)}</h2>
+      </div>
+      <ul class="owner">
+        {c.owner.items.map((o, i) => (
+          <li class="reveal-item">
+            <span class="owner-n" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3>{t(o.title)}</h3>
+            <p>{t(o.body)}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section surface-navy cta-section">
+    <div class="container cta plate">
+      <h2 class="display">{t(c.cta.title)}</h2>
+      <p>{t(c.cta.body)}</p>
+      <div class="cta-actions">
+        <a class="btn btn-primary btn-lg" href={waLink(t(c.cta.message))} rel="noopener">
+          <Icon name="chat" />
+          {t(c.cta.button)}
+        </a>
+        <a class="btn btn-ghost" href={github} rel="noopener">
+          {t(c.cta.github)}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 Créditos -->
+  <section class="section surface-ink credits">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">{t(c.credits.eyebrow)}</p>
+      </div>
+      <p class="author">{t(c.credits.author)}</p>
+      <div class="credit-grid">
+        <div>
+          <h3>{t(c.credits.photos)}</h3>
+          <ul>
+            {gallery.map((g) => (
+              <li>
+                <a href={g.source} rel="noopener">
+                  {g.author}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="muted small">{t(c.credits.illustrations)}</p>
+        </div>
+        <div>
+          <h3>{t(c.credits.fonts)}</h3>
+          <ul>
+            <li>
+              <a href="https://fonts.google.com/specimen/Big+Shoulders+Display" rel="noopener">
+                Big Shoulders Display
+              </a>{' '}
+              · Patric King
+            </li>
+            <li>
+              <a href="https://github.com/Instrument/instrument-sans" rel="noopener">
+                Instrument Sans
+              </a>{' '}
+              · The Instrument Sans Project Authors
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>{t(c.credits.tools)}</h3>
+          <ul>
+            <li>Astro · TypeScript · CSS</li>
+            <li>Cloudflare Workers</li>
+            <li>Claude Code</li>
+            <li>Firefox (headless) · libvips</li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted small back">
+        <a href={home}>← {t(c.bar.site)}</a> ·{' '}
+        <a href={repo} rel="noopener">
+          GitHub
+        </a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------- Barra superior ---------- */
+  .case-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgb(15 23 32 / 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    color: var(--foam);
+  }
+  .bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: 64px;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.375rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--foam);
+    text-decoration: none;
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .brand span {
+    color: var(--brass);
+  }
+  .brand small {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.12em;
+    color: var(--steel);
+  }
+  .bar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .bar-actions .btn {
+    white-space: nowrap;
+  }
+  .lang {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--tap);
+    padding-inline: var(--space-2);
+    color: var(--foam);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: var(--fs-small);
+  }
+
+  /* ---------- Comuns ---------- */
+  .eyebrow .num {
+    display: inline-block;
+    margin-right: var(--space-3);
+    padding: 0.1em 0.5em;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+  }
+  .small {
+    font-size: var(--fs-small);
+  }
+  h2.display {
+    font-size: var(--fs-h2);
+  }
+
+  /* ---------- Hero ---------- */
+  .case-hero {
+    background-color: var(--bg);
+    color: var(--fg);
+    padding-block: var(--space-7) var(--space-8);
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+  .hero-copy h1 {
+    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+    margin-block: var(--space-3) var(--space-5);
+    max-width: 14ch;
+    text-wrap: balance;
+  }
+  .lede {
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+    color: var(--fg-muted);
+    max-width: 38rem;
+  }
+  .hero-ctas,
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4) var(--space-5);
+    margin: var(--space-7) 0 0;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--line);
+    max-width: 36rem;
+  }
+  .facts dt {
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass);
+    font-weight: 600;
+  }
+  .facts dd {
+    margin: var(--space-1) 0 0;
+  }
+  .notice {
+    margin-top: var(--space-5);
+    padding: var(--space-3) var(--space-4);
+    border-left: 3px solid var(--rust);
+    background: rgb(164 73 43 / 0.12);
+    font-size: var(--fs-small);
+    color: var(--foam);
+    max-width: 36rem;
+  }
+  .hero-phone {
+    justify-self: center;
+    width: min(18rem, 72vw);
+    transform: rotate(2.5deg);
+  }
+  @media (min-width: 900px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    }
+  }
+
+  /* ---------- Moldura de celular ---------- */
+  .phone {
+    position: relative;
+    margin: 0;
+    padding: 10px;
+    border-radius: 34px;
+    background: linear-gradient(160deg, #2a3746, #0a1017 60%);
+    box-shadow:
+      0 0 0 1px rgb(192 138 62 / 0.35),
+      0 30px 60px -20px rgb(0 0 0 / 0.7);
+  }
+  .phone::before {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    width: 30%;
+    height: 6px;
+    translate: -50% 0;
+    border-radius: 6px;
+    background: #05090d;
+    z-index: 1;
+  }
+  .phone :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 25px;
+  }
+
+  /* ---------- Desafio ---------- */
+  .surface-foam,
+  .surface-navy,
+  .surface-ink {
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+  .two-col {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .two-col .section-head {
+    margin-bottom: 0;
+  }
+  .prose p {
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+    max-width: 36rem;
+  }
+  .prose p + p {
+    margin-top: var(--space-4);
+  }
+  @media (min-width: 900px) {
+    .two-col {
+      grid-template-columns: 1.1fr 1fr;
+      gap: var(--space-8);
+      align-items: end;
+    }
+  }
+
+  /* ---------- Solução ---------- */
+  .points {
+    list-style: none;
+    margin: 0 0 var(--space-7);
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
+    counter-reset: pt;
+    max-width: 52rem;
+  }
+  .points li {
+    counter-increment: pt;
+    position: relative;
+    padding-left: 3.25rem;
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
+    line-height: 1.45;
+  }
+  .points li::before {
+    content: counter(pt);
+    position: absolute;
+    left: 0;
+    top: -0.1em;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--brass);
+    border-radius: 50%;
+    color: var(--brass);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.125rem;
+  }
+  .strip-label {
+    font-size: var(--fs-small);
+    color: var(--fg-muted);
+    margin-bottom: var(--space-4);
+  }
+  .strip {
+    list-style: none;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: var(--space-2) var(--gutter) var(--space-5);
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(60vw, 14rem);
+    gap: var(--space-5);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--brass) transparent;
+  }
+  .strip li {
+    scroll-snap-align: center;
+  }
+  .step-cap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    font-weight: 600;
+  }
+  .step-cap span {
+    display: inline-grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--cta);
+    color: var(--ink);
+    font-size: 0.75rem;
+  }
+  @media (min-width: 1100px) {
+    .strip {
+      margin-inline: 0;
+      padding-inline: 0;
+      grid-auto-flow: row;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      overflow: visible;
+    }
+    .strip li:nth-child(even) {
+      translate: 0 var(--space-6);
+    }
+  }
+  .wa {
+    margin-top: var(--space-8);
+    max-width: 30rem;
+  }
+  .wa-chat {
+    margin-block: var(--space-3);
+    padding: var(--space-5) var(--space-4);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.04) 1px, transparent 0) 0 0 / 14px 14px,
+      #0b141a;
+  }
+  .wa-bubble {
+    position: relative;
+    margin: 0 0 0 auto;
+    max-width: 92%;
+    padding: var(--space-3) var(--space-4) var(--space-5);
+    border-radius: 10px 0 10px 10px;
+    background: #005c4b;
+    color: #e9edef;
+    white-space: pre-line;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .wa-time {
+    position: absolute;
+    right: var(--space-3);
+    bottom: var(--space-1);
+    font-size: 0.6875rem;
+    color: rgb(233 237 239 / 0.7);
+  }
+
+  /* ---------- Design ---------- */
+  .design-grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+  @media (min-width: 900px) {
+    .design-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .card-block {
+    padding: var(--space-6);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background-color: #fbf8f2;
+  }
+  .card-block > p {
+    margin-block: var(--space-2) var(--space-5);
+    color: var(--fg-muted);
+  }
+  .swatches {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+    gap: var(--space-2);
+  }
+  .swatches li {
+    display: grid;
+    align-content: end;
+    min-height: 6rem;
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    background: var(--sw);
+    color: var(--sw-fg);
+    box-shadow: inset 0 0 0 1px rgb(19 40 61 / 0.15);
+  }
+  .sw-name {
+    font-weight: 600;
+  }
+  .sw-meta {
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.9;
+  }
+  .specimen {
+    padding: var(--space-5);
+    border-radius: var(--radius-sm);
+  }
+  .spec-display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: var(--lh-tight);
+    color: var(--brass);
+  }
+  .spec-body {
+    font-size: 1.125rem;
+    margin-top: var(--space-5);
+  }
+  .spec-meta {
+    margin-top: var(--space-2);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .choices {
+    list-style: none;
+    margin: var(--space-7) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-6) var(--space-7);
+  }
+  @media (min-width: 768px) {
+    .choices {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .choices li {
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--accent);
+  }
+  .choices h3,
+  .owner h3,
+  .card-block h3,
+  .credits h3,
+  .a11y h3,
+  .lh h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+  }
+  .choices p {
+    margin-top: var(--space-2);
+    color: var(--fg-muted);
+  }
+
+  /* ---------- Números ---------- */
+  .stats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--space-4);
+  }
+  .stats li {
+    padding: var(--space-6) var(--space-5) var(--space-5);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background-color: var(--navy);
+  }
+  .stat-value {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3rem, 7vw, 4.25rem);
+    line-height: 1;
+    color: var(--cta);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-value small {
+    font-size: 0.4em;
+    margin-left: 0.15em;
+    color: var(--brass);
+  }
+  .stat-label {
+    margin-top: var(--space-2);
+    font-weight: 600;
+  }
+  .stat-detail {
+    font-size: var(--fs-small);
+    color: var(--steel);
+  }
+  .method {
+    margin-top: var(--space-4);
+  }
+  .lh {
+    margin-bottom: var(--space-7);
+  }
+  .gauges {
+    list-style: none;
+    margin: var(--space-4) 0 var(--space-3);
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+  }
+  .gauges li {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-2);
+  }
+  .gauge {
+    display: grid;
+    place-items: center;
+    width: 6rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(closest-side, var(--ink) 82%, transparent 83%),
+      conic-gradient(#3ecf8e calc(var(--score) * 1%), rgb(62 207 142 / 0.15) 0);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 2rem;
+    color: #3ecf8e;
+  }
+  .gauge-label {
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+  .a11y {
+    margin-top: var(--space-7);
+  }
+  .a11y ul {
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+  @media (min-width: 768px) {
+    .a11y ul {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .a11y li {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+  .a11y li :global(.icon) {
+    flex: none;
+    color: var(--brass);
+    margin-top: 0.2em;
+  }
+
+  /* ---------- Dono ---------- */
+  .owner {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-6) var(--space-5);
+  }
+  .owner-n {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--accent);
+    margin-bottom: var(--space-2);
+  }
+  .owner p {
+    margin-top: var(--space-2);
+    color: var(--fg-muted);
+  }
+
+  /* ---------- CTA ---------- */
+  .cta {
+    padding: var(--space-8) var(--space-6);
+    border: 1px solid var(--brass);
+    border-radius: var(--radius);
+    text-align: center;
+    display: grid;
+    justify-items: center;
+  }
+  .cta h2 {
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .cta > p {
+    margin-top: var(--space-4);
+    max-width: 34rem;
+    color: var(--fg-muted);
+  }
+  .cta-actions {
+    justify-content: center;
+  }
+
+  /* ---------- Créditos ---------- */
+  .credits .author {
+    max-width: 44rem;
+    margin-bottom: var(--space-6);
+  }
+  .credit-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .credit-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .credit-grid h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-3);
+  }
+  .credit-grid ul {
+    list-style: none;
+    margin: 0 0 var(--space-3);
+    padding: 0;
+    display: grid;
+    gap: var(--space-1);
+    font-size: var(--fs-small);
+  }
+  .credit-grid a,
+  .back a {
+    color: var(--foam);
+  }
+  .back {
+    margin-top: var(--space-7);
+  }
+</style>

@@ -1,0 +1,329 @@
+{
+  "seo": {
+    "title": {
+      "pt": "Estudo de caso: site de barbearia com agendamento | Ferro & Maré",
+      "en": "Case study: barbershop site with booking | Ferro & Maré"
+    },
+    "description": {
+      "pt": "Como um site leve, bilíngue e acessível leva o cliente da vitrine ao WhatsApp em 4 toques. Decisões de design e números medidos.",
+      "en": "How a light, bilingual, accessible site takes a customer from the shop window to WhatsApp in 4 taps. Design decisions and measured numbers."
+    }
+  },
+  "bar": {
+    "label": { "pt": "Estudo de caso", "en": "Case study" },
+    "site": { "pt": "Ver o site", "en": "View the site" }
+  },
+  "hero": {
+    "eyebrow": {
+      "pt": "Estudo de caso · Site de serviço local",
+      "en": "Case study · Local service website"
+    },
+    "title": {
+      "pt": "Do “tem horário?” ao horário marcado, em 4 toques.",
+      "en": "From “any openings?” to a booked chair, in 4 taps."
+    },
+    "lede": {
+      "pt": "Site para uma barbearia do Recife Antigo: o cliente vê serviço e preço, escolhe barbeiro e um horário livre, e confirma no WhatsApp com a mensagem já escrita.",
+      "en": "A website for a barbershop in Old Recife, Brazil: customers see services and prices, pick a barber and a free slot, and confirm on WhatsApp with the message already written."
+    },
+    "try": { "pt": "Testar o agendamento", "en": "Try the booking" },
+    "repo": { "pt": "Código no GitHub", "en": "Code on GitHub" },
+    "notice": {
+      "pt": "Projeto conceitual de portfólio: a Ferro & Maré, o endereço e as avaliações são fictícios. O agendamento funciona de verdade e cai no meu WhatsApp.",
+      "en": "Portfolio concept project: Ferro & Maré, its address and reviews are fictional. The booking works for real and lands in my WhatsApp."
+    },
+    "facts": [
+      {
+        "k": { "pt": "Tipo", "en": "Type" },
+        "v": { "pt": "Site de uma página + agendamento", "en": "One-page site + booking" }
+      },
+      {
+        "k": { "pt": "Idiomas", "en": "Languages" },
+        "v": { "pt": "Português e inglês", "en": "Portuguese and English" }
+      },
+      {
+        "k": { "pt": "Stack", "en": "Stack" },
+        "v": { "pt": "Astro · TypeScript · CSS", "en": "Astro · TypeScript · CSS" }
+      },
+      {
+        "k": { "pt": "Hospedagem", "en": "Hosting" },
+        "v": { "pt": "Cloudflare (grátis)", "en": "Cloudflare (free tier)" }
+      }
+    ]
+  },
+  "challenge": {
+    "n": "01",
+    "eyebrow": { "pt": "O desafio", "en": "The challenge" },
+    "title": {
+      "pt": "Barbearias perdem clientes que desistem antes de conseguir horário.",
+      "en": "Barbershops lose customers who give up before they get a time slot."
+    },
+    "body": {
+      "pt": [
+        "O roteiro é conhecido: a pessoa acha a barbearia no Instagram, não encontra preço, manda mensagem e fica esperando. Enquanto isso, marca em outro lugar.",
+        "A meta foi tirar a espera do caminho: do primeiro toque ao pedido de horário sem depender de ninguém responder, e sem obrigar o dono a adotar um aplicativo novo."
+      ],
+      "en": [
+        "The story is familiar: someone finds the shop on Instagram, can't see prices, sends a message and waits. Meanwhile, they book somewhere else.",
+        "The goal was to remove the wait: from first tap to booking request without anyone having to reply, and without forcing the owner onto a new app."
+      ]
+    }
+  },
+  "solution": {
+    "n": "02",
+    "eyebrow": { "pt": "A solução", "en": "The solution" },
+    "title": { "pt": "Três frases.", "en": "In three sentences." },
+    "points": {
+      "pt": [
+        "Preço e duração de cada serviço ficam na vitrine, sem “chama no direct”.",
+        "Em 4 passos o cliente escolhe serviço, barbeiro e um horário que está livre de verdade naquele dia.",
+        "A confirmação sai no WhatsApp com a mensagem pronta, e o horário vai para a agenda do celular."
+      ],
+      "en": [
+        "Every service shows its price and duration upfront, no “DM us for prices”.",
+        "In 4 steps the customer picks a service, a barber and a slot that is actually free that day.",
+        "Confirmation goes out on WhatsApp with the message pre-filled, and the slot goes into their phone's calendar."
+      ]
+    },
+    "steps": {
+      "pt": ["Serviço", "Barbeiro", "Dia e horário", "Seus dados", "Pedido enviado"],
+      "en": ["Service", "Barber", "Day & time", "Your details", "Request sent"]
+    },
+    "stripLabel": {
+      "pt": "O fluxo completo num celular de 390 px",
+      "en": "The full flow on a 390 px phone"
+    },
+    "messageLabel": {
+      "pt": "O que chega no WhatsApp da barbearia",
+      "en": "What lands in the shop's WhatsApp"
+    },
+    "messageNote": {
+      "pt": "Gerada pelo site, pronta para o barbeiro só responder “confirmado”.",
+      "en": "Written by the site, so the barber only has to reply “confirmed”."
+    }
+  },
+  "design": {
+    "n": "03",
+    "eyebrow": { "pt": "Decisões de design", "en": "Design decisions" },
+    "title": {
+      "pt": "Porto industrial, com um toque de latão.",
+      "en": "Industrial harbour, with a touch of brass."
+    },
+    "palette": {
+      "title": { "pt": "Paleta", "en": "Palette" },
+      "body": {
+        "pt": "Tons de cais e ferragem, tirados da arquitetura do Recife Antigo. Todo par de texto e fundo foi medido: nenhum fica abaixo de 4,5:1 (WCAG AA).",
+        "en": "Dock and hardware tones, taken from Old Recife's architecture. Every text/background pair was measured: none is below 4.5:1 (WCAG AA)."
+      }
+    },
+    "type": {
+      "title": { "pt": "Tipografia", "en": "Typography" },
+      "body": {
+        "pt": "Big Shoulders Display, condensada como um letreiro de armazém, nos títulos; Instrument Sans na leitura. Fontes variáveis servidas pelo próprio site: 2 arquivos, sem chamar o Google.",
+        "en": "Big Shoulders Display, condensed like a warehouse sign, for headings; Instrument Sans for reading. Variable fonts served by the site itself: 2 files, no calls to Google."
+      },
+      "sample": { "pt": "Seu horário em 30 segundos", "en": "Your chair in 30 seconds" },
+      "body2": {
+        "pt": "Corte, barba na toalha quente e café passado. Terça a sábado.",
+        "en": "Haircuts, hot-towel shaves and fresh coffee. Tuesday to Saturday."
+      }
+    },
+    "choices": [
+      {
+        "title": { "pt": "Por que uma página só", "en": "Why a single page" },
+        "body": {
+          "pt": "Quem chega pelo Maps ou pelo Instagram quer três coisas: preço, horário e endereço. Tudo numa rolagem, e o menu só leva às âncoras.",
+          "en": "People arriving from Maps or Instagram want three things: price, time and address. Everything sits in one scroll; the menu just jumps to anchors."
+        }
+      },
+      {
+        "title": { "pt": "Por que uma barra fixa no celular", "en": "Why a fixed bar on mobile" },
+        "body": {
+          "pt": "Agendar, WhatsApp e Ligar ficam ao alcance do polegar em qualquer ponto da página. A barra some quando o próprio agendamento está na tela.",
+          "en": "Book, WhatsApp and Call stay within thumb reach anywhere on the page. The bar steps aside when the booking form itself is on screen."
+        }
+      },
+      {
+        "title": { "pt": "Por que o WhatsApp é o formulário", "en": "Why WhatsApp is the form" },
+        "body": {
+          "pt": "É onde o cliente e o barbeiro já conversam. Sem cadastro, sem senha, sem mensalidade de plataforma de agenda.",
+          "en": "It's where customers and barbers already talk. No sign-up, no password, no monthly booking-platform fee."
+        }
+      },
+      {
+        "title": { "pt": "Movimento com moderação", "en": "Motion, sparingly" },
+        "body": {
+          "pt": "Só CSS e elementos nativos (dialog, details). As animações respeitam quem pede movimento reduzido no sistema.",
+          "en": "CSS and native elements only (dialog, details). Animations respect the system's reduced-motion setting."
+        }
+      }
+    ]
+  },
+  "numbers": {
+    "n": "04",
+    "eyebrow": { "pt": "Números", "en": "Numbers" },
+    "title": { "pt": "Leve de propósito.", "en": "Light on purpose." },
+    "lede": {
+      "pt": "Barbearia é negócio de celular e 4G. Cada item abaixo tinha um limite definido antes de escrever a primeira linha de código.",
+      "en": "Barbershops live on phones and 4G. Every item below had a budget set before the first line of code was written."
+    },
+    "items": [
+      {
+        "key": "firstViewKB",
+        "label": { "pt": "na primeira tela", "en": "for the first screen" },
+        "detail": { "pt": "HTML, CSS, JS e fontes", "en": "HTML, CSS, JS and fonts" }
+      },
+      {
+        "key": "totalKB",
+        "label": { "pt": "página inicial completa", "en": "full home page" },
+        "detail": { "pt": "com as 9 fotos · limite 1 MB", "en": "with all 9 photos · budget 1 MB" }
+      },
+      {
+        "key": "jsKB",
+        "label": { "pt": "de JavaScript", "en": "of JavaScript" },
+        "detail": {
+          "pt": "agendamento incluso · limite 50 KB",
+          "en": "booking included · budget 50 KB"
+        }
+      },
+      {
+        "key": "libs",
+        "label": { "pt": "bibliotecas no navegador", "en": "libraries in the browser" },
+        "detail": {
+          "pt": "nada de jQuery, React ou animação pronta",
+          "en": "no jQuery, React or animation kits"
+        }
+      }
+    ],
+    "method": {
+      "pt": "Medido em {date} com tools/metrics.mjs: texto comprimido (gzip); fotos no pior caso (maior AVIF de cada uma).",
+      "en": "Measured on {date} with tools/metrics.mjs: text gzip-compressed; photos at worst case (largest AVIF of each)."
+    },
+    "lighthouse": {
+      "title": { "pt": "Lighthouse no celular", "en": "Lighthouse on mobile" },
+      "labels": {
+        "performance": { "pt": "Desempenho", "en": "Performance" },
+        "accessibility": { "pt": "Acessibilidade", "en": "Accessibility" },
+        "bestPractices": { "pt": "Boas práticas", "en": "Best practices" },
+        "seo": { "pt": "SEO", "en": "SEO" }
+      },
+      "source": {
+        "pt": "PageSpeed Insights, celular, medido em {date}.",
+        "en": "PageSpeed Insights, mobile, measured on {date}."
+      }
+    },
+    "a11y": {
+      "title": { "pt": "Acessível por padrão", "en": "Accessible by default" },
+      "items": {
+        "pt": [
+          "Agendamento inteiro funciona só com teclado",
+          "Erros anunciados para leitores de tela",
+          "Contraste AA em todas as cores de texto",
+          "Zoom de 200% sem rolagem lateral",
+          "Funciona sem JavaScript (cai no WhatsApp direto)"
+        ],
+        "en": [
+          "The whole booking flow works with a keyboard alone",
+          "Errors announced to screen readers",
+          "AA contrast on every text colour",
+          "200% zoom with no sideways scrolling",
+          "Works without JavaScript (falls back to WhatsApp)"
+        ]
+      }
+    }
+  },
+  "owner": {
+    "n": "05",
+    "eyebrow": { "pt": "O que o dono ganha", "en": "What the owner gets" },
+    "title": {
+      "pt": "Menos conversa, mais cadeira ocupada.",
+      "en": "Less back-and-forth, more chairs filled."
+    },
+    "items": [
+      {
+        "title": { "pt": "Agenda no WhatsApp", "en": "Bookings in WhatsApp" },
+        "body": {
+          "pt": "Os pedidos chegam organizados no WhatsApp que a barbearia já usa. Nada de aplicativo novo para a equipe aprender.",
+          "en": "Requests arrive neatly formatted in the WhatsApp the shop already uses. No new app for the team to learn."
+        }
+      },
+      {
+        "title": { "pt": "Horário calculado sozinho", "en": "Slots worked out automatically" },
+        "body": {
+          "pt": "O site cruza a duração do serviço com os dias de cada barbeiro, o almoço e o que já está ocupado. Só aparece o que cabe.",
+          "en": "The site matches service length against each barber's days, lunch break and existing bookings. Only slots that fit are shown."
+        }
+      },
+      {
+        "title": { "pt": "Receita recorrente", "en": "Recurring revenue" },
+        "body": {
+          "pt": "A seção Clube vende uma assinatura mensal: o cliente fiel paga todo mês, e a barbearia sabe com quanto pode contar.",
+          "en": "The Club section sells a monthly membership: loyal customers pay every month, and the shop knows what it can count on."
+        }
+      },
+      {
+        "title": { "pt": "Pronto para crescer", "en": "Ready to grow" },
+        "body": {
+          "pt": "Dá para ligar um atendente com IA no WhatsApp ou uma agenda online completa depois, sem refazer o site.",
+          "en": "An AI assistant on WhatsApp or a full online calendar can be plugged in later without rebuilding the site."
+        }
+      },
+      {
+        "title": { "pt": "Fácil de adaptar", "en": "Easy to adapt" },
+        "body": {
+          "pt": "Serviços, preços, equipe e horários ficam em arquivos de dados. Uma versão para outro negócio sai em poucas horas.",
+          "en": "Services, prices, team and hours live in data files. A version for another business takes a few hours."
+        }
+      },
+      {
+        "title": { "pt": "Custo fixo zero", "en": "Zero running cost" },
+        "body": {
+          "pt": "Site estático no plano gratuito da Cloudflare, com HTTPS. Sem servidor para manter.",
+          "en": "A static site on Cloudflare's free tier, with HTTPS. No server to maintain."
+        }
+      }
+    ]
+  },
+  "cta": {
+    "title": {
+      "pt": "Quer um site assim para o seu negócio?",
+      "en": "Want a site like this for your business?"
+    },
+    "body": {
+      "pt": "Barbearia, salão, estúdio, clínica, café: troco nome, cores, fotos, serviços e horários. Me conte do seu negócio.",
+      "en": "Barbershop, salon, studio, clinic, café: I swap the name, colours, photos, services and hours. Tell me about your business."
+    },
+    "button": { "pt": "Conversar no WhatsApp", "en": "Chat on WhatsApp" },
+    "message": {
+      "pt": "Olá, Gian! Vi o estudo de caso da Ferro & Maré e quero um site assim para o meu negócio.",
+      "en": "Hi Gian! I saw the Ferro & Maré case study and I'd like a site like this for my business."
+    },
+    "github": { "pt": "Mais projetos no GitHub", "en": "More projects on GitHub" }
+  },
+  "credits": {
+    "n": "06",
+    "eyebrow": { "pt": "Créditos", "en": "Credits" },
+    "author": {
+      "pt": "Concepção, design e desenvolvimento: Gian Carlo Barbarini, Recife. Desenvolvido com assistência de IA (Claude Code), com revisão e testes manuais.",
+      "en": "Concept, design and development: Gian Carlo Barbarini, Recife, Brazil. Built with AI assistance (Claude Code), reviewed and tested by hand."
+    },
+    "photos": {
+      "pt": "Fotos da galeria (Unsplash License)",
+      "en": "Gallery photos (Unsplash License)"
+    },
+    "illustrations": {
+      "pt": "Ilustrações (cadeira, letreiro, ícones): SVG desenhado para o projeto.",
+      "en": "Illustrations (chair, street sign, icons): SVG drawn for the project."
+    },
+    "fonts": { "pt": "Fontes (SIL Open Font License)", "en": "Fonts (SIL Open Font License)" },
+    "tools": { "pt": "Ferramentas", "en": "Tools" }
+  },
+  "metrics": {
+    "measuredAt": "2026-11-25",
+    "firstViewKB": 93.7,
+    "totalKB": 260.3,
+    "jsKB": 5.4,
+    "libs": 0
+  },
+  "lighthouse": null
+}

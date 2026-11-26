@@ -184,8 +184,21 @@ DOM e ocupa 2 colunas, para a grade fechar sem buracos e a ordem do Tab seguir a
 - Favicon próprio (âncora de latão) + apple-touch-icon 180 px.
 
 ## D-027 — Hospedagem: Cloudflare Worker (static assets), não Pages
+
 - O painel do Cloudflare hoje cria Workers por padrão ("Workers Builds"). Para site estático
   é equivalente: `wrangler.jsonc` aponta `assets.directory` para `dist/`, com 404 próprio e
   barra final forçada. `_headers` funciona igual.
 - URL: https://ferro-e-mare.gianccsbb.workers.dev · cada push na `main` publica sozinho.
 - As variáveis `PUBLIC_*` ficam em Settings → Build → Variables (não nas variáveis de runtime).
+
+## D-028 — Estudo de caso (/case): só números conferíveis (Fase 8)
+
+- Única página `index`; entra no sitemap. Segue o handout §9: desafio → solução (prints dos
+  5 passos num celular) → design (paleta com contraste calculado no build, tipografia) →
+  números → o que o dono ganha → CTA no WhatsApp do estúdio → créditos.
+- Números vêm de `npm run metrics` (`tools/metrics.mjs`) e ficam em `src/data/case.json`
+  com a data da medição. O bloco do Lighthouse só aparece quando `lighthouse` for preenchido
+  com notas reais do PageSpeed (a API estava sem cota no dia). Nada estimado vai para a página.
+- Prints: `npm run shots` (`tools/shots/shots.sh`) injeta estado do agendamento e fotografa
+  com Firefox headless em 390×844 (1x: o headless ignora `devPixelsPerPx`).
+- Créditos das fotos lidos de `gallery.json` (autor + link), sem lista duplicada.

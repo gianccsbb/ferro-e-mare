@@ -4,62 +4,80 @@
     "alt": {
       "pt": "Risca lateral marcada com degradê, finalizada na tesoura e no pente",
       "en": "Hard side part with a fade, finished with scissors and comb"
-    }
+    },
+    "author": "David Cano Soriano",
+    "source": "https://unsplash.com/photos/Z4ZS4Ry6E-U"
   },
   {
     "id": "g2",
     "alt": {
       "pt": "Degradê alto com topo texturizado, acabamento na navalha",
       "en": "High fade with a textured top, razor finish"
-    }
+    },
+    "author": "Chris Knight",
+    "source": "https://unsplash.com/photos/vI3m5UnZ0aQ"
   },
   {
     "id": "g3",
     "alt": {
       "pt": "Cliente reclinado enquanto o barbeiro apara a barba na tesoura",
       "en": "Client reclined while the barber trims his beard with scissors"
-    }
+    },
+    "author": "Allef Vinicius",
+    "source": "https://unsplash.com/photos/IvQeAVeJULw"
   },
   {
     "id": "g4",
     "alt": {
       "pt": "Cadeira de barbeiro clássica em couro caramelo",
       "en": "Classic barber chair in tan leather"
-    }
+    },
+    "author": "Chris Knight",
+    "source": "https://unsplash.com/photos/_H1XXY96pqw"
   },
   {
     "id": "g5",
     "alt": {
       "pt": "Degradê na máquina, feito por um barbeiro tatuado",
       "en": "Clipper fade by a tattooed barber"
-    }
+    },
+    "author": "John Arano",
+    "source": "https://unsplash.com/photos/CCTCHXEsan8"
   },
   {
     "id": "g6",
     "alt": {
       "pt": "Pincéis de barbear e navalhas enfileirados na bancada",
       "en": "Shaving brushes and razors lined up on the counter"
-    }
+    },
+    "author": "David Trinks",
+    "source": "https://unsplash.com/photos/CbyN1eWQyS8"
   },
   {
     "id": "g7",
     "alt": {
       "pt": "Salão com parede de tijolo e luminárias de luz quente",
       "en": "Shop floor with brick walls and warm pendant lights"
-    }
+    },
+    "author": "Nathon Oski",
+    "source": "https://unsplash.com/photos/EW_rqoSdDes"
   },
   {
     "id": "g8",
     "alt": {
       "pt": "Corte infantil com risca lateral",
       "en": "Kids' cut with a side part"
-    }
+    },
+    "author": "Ibrahim guetar",
+    "source": "https://unsplash.com/photos/4brY7Bwss1I"
   },
   {
     "id": "g9",
     "alt": {
       "pt": "Acabamento na navalha na costeleta, visto por trás",
       "en": "Razor finish on the sideburn, seen from behind"
-    }
+    },
+    "author": "Michael DeMoya",
+    "source": "https://unsplash.com/photos/y9xnUFMFGKw"
   }
 ]

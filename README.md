@@ -1,6 +1,7 @@
 # Ferro & Maré Barbearia
 
 **Site no ar / Live site:** https://ferro-e-mare.gianccsbb.workers.dev/
+**Estudo de caso / Case study:** https://ferro-e-mare.gianccsbb.workers.dev/case/ · [EN](https://ferro-e-mare.gianccsbb.workers.dev/en/case/)
 
 > **Projeto conceitual de portfólio.** O negócio, o endereço e as avaliações são fictícios.
 > _Portfolio concept project — the business, address and reviews are fictional._
