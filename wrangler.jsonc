@@ -1,0 +1,13 @@
+// Cloudflare Workers (static assets): serve o site estático gerado em dist/.
+// Build: "npm run build" · Deploy: "npx wrangler deploy" (configurados no painel).
+{
+  "name": "ferro-e-mare",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./dist",
+    // Rotas inexistentes recebem dist/404.html com status 404.
+    "not_found_handling": "404-page",
+    // URLs com barra no fim (/obrigado/), como o Astro gera.
+    "html_handling": "force-trailing-slash"
+  }
+}
