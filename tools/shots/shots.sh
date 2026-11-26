@@ -2,6 +2,7 @@
 # Prints de celular (390 px, 2x) do fluxo de agendamento, para /case e press-kit.
 # Uso:  npm run build && npm run shots            (salva em src/assets/case/)
 #       bash tools/shots/shots.sh <pasta> [largura altura]
+#       SHOTS_EXTRA_CSS='...' bash tools/shots/shots.sh <pasta>   (CSS extra em todos os prints)
 # Como funciona: copia dist/ para uma pasta temporária, injeta em cada cópia um
 # estado pronto do agendamento (sessionStorage) e fotografa com Firefox headless.
 set -euo pipefail
@@ -41,7 +42,7 @@ base='"service":"corte-barba"'
 shot() {
   local name=$1 page=$2 key=$3 json=$4 css=${5:-}
   local file="_shot-$name.html"
-  local inject="<script>try{sessionStorage.setItem('$key',JSON.stringify($json))}catch(e){}</script><style>*,*::before,*::after{animation:none!important;transition:none!important}$css</style>"
+  local inject="<script>try{sessionStorage.setItem('$key',JSON.stringify($json))}catch(e){}</script><style>*,*::before,*::after{animation:none!important;transition:none!important}$css${SHOTS_EXTRA_CSS:-}</style>"
   # Injeta logo após <head> (sed com | como separador; o JSON não usa |).
   sed "0,/<head>/s|<head>|<head>${inject//&/\\&}|" "$tmp/site/$page" >"$tmp/site/$file"
   timeout 90 firefox --headless --no-remote --profile "$tmp/prof" \
