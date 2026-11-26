@@ -182,3 +182,10 @@ DOM e ocupa 2 colunas, para a grade fechar sem buracos e a ordem do Tab seguir a
   CSP ficou de fora por enquanto: o Astro embute scripts pequenos inline.
 - 404 bilíngue no estilo do site. Âncoras do menu viram `/#secao` fora da home.
 - Favicon próprio (âncora de latão) + apple-touch-icon 180 px.
+
+## D-027 — Hospedagem: Cloudflare Worker (static assets), não Pages
+- O painel do Cloudflare hoje cria Workers por padrão ("Workers Builds"). Para site estático
+  é equivalente: `wrangler.jsonc` aponta `assets.directory` para `dist/`, com 404 próprio e
+  barra final forçada. `_headers` funciona igual.
+- URL: https://ferro-e-mare.gianccsbb.workers.dev · cada push na `main` publica sozinho.
+- As variáveis `PUBLIC_*` ficam em Settings → Build → Variables (não nas variáveis de runtime).
