@@ -178,7 +178,7 @@ DOM e ocupa 2 colunas, para a grade fechar sem buracos e a ordem do Tab seguir a
 ## D-026 — Cloudflare Pages: `_headers` e 404
 
 - Cache de 1 ano para `/_astro/*` (nomes com hash), 30 dias para fontes.
-- `nosniff`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`.
+- `nosniff`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy` (sem `interest-cohort`, obsoleto e gera aviso no console).
   CSP ficou de fora por enquanto: o Astro embute scripts pequenos inline.
 - 404 bilíngue no estilo do site. Âncoras do menu viram `/#secao` fora da home.
 - Favicon próprio (âncora de latão) + apple-touch-icon 180 px.
